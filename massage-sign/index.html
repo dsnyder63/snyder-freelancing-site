@@ -1299,8 +1299,9 @@
 
         document.getElementById("doneBox").innerHTML = summaryTable(pkg, plan, m, a);
 
+        var sigDataUrl = canvas.toDataURL("image/png");
         var img = document.getElementById("sigImg");
-        img.src = canvas.toDataURL("image/png");
+        img.src = sigDataUrl;
         document.getElementById("sigCap").textContent = "Signed by " + signer + " · " + sigDate;
         document.getElementById("sigPreview").hidden = false;
 
@@ -1310,6 +1311,26 @@
           (plan.months === 0 ? " (" + money(m.dueToday) + " deposit)" : " (" + money(m.monthlyProject + pkg.care) + "/mo incl. care plan)") +
           ". — " + signer + "\n\n" + finalText;
         document.getElementById("smsBtn").href = "sms:+14126518449?&body=" + encodeURIComponent(smsBody);
+
+        /* Auto-submit the signed quote to the proposal inbox (fire-and-forget;
+           the SMS button above stays as the fallback if this ever fails). */
+        try {
+          fetch("https://snyder-freelancing-hq.onrender.com/api/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sourcePage: "massage-referral",
+              signerName: signer,
+              package: pkg.name,
+              paymentPlan: plan.label,
+              addons: selectedAddons().map(function (ad) { return addonLineName(ad); }),
+              questionnaire: a,
+              summaryText: smsBody,
+              signatureDataUrl: sigDataUrl
+            }),
+            keepalive: true
+          }).catch(function () { /* silent on error */ });
+        } catch (e) { /* silent on error */ }
         document.getElementById("doneText").textContent =
           "Thank you, " + signer.split(" ")[0] + "! One last step: tap the button below to text your signed quote to Daniel at Snyder Freelancing — that's what makes it official and gets your project on the schedule.";
         showStep(5);
