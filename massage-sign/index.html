@@ -397,7 +397,7 @@
             <span class="now">$600</span>
             <span class="save">Referral discount −$150</span>
           </div>
-          <p class="per">One-time · Referral price · $100 deposit to start<br />Care plan $50/mo — hosting, updates &amp; support · <b>first 3 months free</b></p>
+          <p class="per">One-time · Referral price · $100 deposit to start<br />Care plan — <b>first 3 months free</b><br />Then $50/mo — hosting, updates &amp; support</p>
           <ul class="includes">
             <li>Custom website designed for your practice</li>
             <li>Logo design included — no extra charge</li>
@@ -429,7 +429,7 @@
             <span class="now">$2,250</span>
             <span class="save">Referral discount −$250</span>
           </div>
-          <p class="per">One-time · Referral price · $200 deposit to start<br />Care plan <s>$150/mo</s> <span class="rate">$125/mo referral rate</span> — hosting, updates &amp; support · <b>first 3 months free</b></p>
+          <p class="per">One-time · Referral price · $200 deposit to start<br />Care plan — <b>first 3 months free</b><br />Then <s>$150/mo</s> <span class="rate">$100/mo referral rate</span> — hosting, updates &amp; support</p>
           <ul class="includes">
             <li>Everything in the Website package</li>
             <li>Logo design included — no extra charge</li>
@@ -729,7 +729,7 @@
       /* ---------------- Data ---------------- */
       var PACKAGES = {
         A: { key: "A", name: "Website", price: 600, market: 750, discount: 150, care: 50, careMarket: 50, deposit: 100 },
-        B: { key: "B", name: "Website + Practice App", price: 2250, market: 2500, discount: 250, care: 125, careMarket: 150, deposit: 200 }
+        B: { key: "B", name: "Website + Practice App", price: 2250, market: 2500, discount: 250, care: 100, careMarket: 150, deposit: 200 }
       };
       var CARE_FREE_MONTHS = 3;
       var PLANS = [
@@ -838,14 +838,14 @@
             title = "Pay in full";
             rows += "<tr><td>Deposit due at signing</td><td>" + money(m.dueToday) + "</td></tr>";
             rows += "<tr><td>Balance due at launch</td><td>" + money(m.balanceAtLaunch) + "</td></tr>";
-            rows += "<tr><td>Care plan (from launch)</td><td>" + money(pkg.care) + "/mo</td></tr>";
             rows += "<tr><td>Care plan — first " + CARE_FREE_MONTHS + " months</td><td>Free</td></tr>";
+            rows += "<tr><td>Care plan (after free months)</td><td>" + money(pkg.care) + "/mo</td></tr>";
             rows += "<tr class='total'><td>Total project price</td><td>" + money(pkg.price) + "</td></tr>";
           } else {
             title = plan.label + (plan.apr ? "<span class='apr-badge'>" + aprPct(plan.apr) + " APR</span>" : "<span class='zero-badge'>0% APR</span>");
             rows += "<tr><td>Project payment</td><td>" + money(m.monthlyProject) + "/mo</td></tr>";
-            rows += "<tr><td>Care plan</td><td>" + money(pkg.care) + "/mo</td></tr>";
             rows += "<tr><td>Care plan — first " + CARE_FREE_MONTHS + " months</td><td>Free</td></tr>";
+            rows += "<tr><td>Care plan (after free months)</td><td>" + money(pkg.care) + "/mo</td></tr>";
             rows += "<tr class='total'><td>Total monthly (after free months)</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
             rows += "<tr><td>Due at signing</td><td>$0 — deposit waived</td></tr>";
             if (plan.apr) {
@@ -954,8 +954,8 @@
         rows += "<tr><td>Regular price</td><td style='text-decoration:line-through;font-weight:400;'>" + money(pkg.market) + "</td></tr>";
         rows += "<tr><td>Referral discount</td><td>−" + money(pkg.discount) + "</td></tr>";
         rows += "<tr><td>Logo design</td><td>Included</td></tr>";
-        rows += "<tr><td>Care plan</td><td>" + careLabel(pkg) + "</td></tr>";
         rows += "<tr><td>Care plan — first " + CARE_FREE_MONTHS + " months</td><td>Free</td></tr>";
+        rows += "<tr><td>Care plan (after free months)</td><td>" + careLabel(pkg) + "</td></tr>";
         if (plan.months === 0) {
           rows += "<tr><td>Payment plan</td><td>Pay in full</td></tr>";
           rows += "<tr><td>Deposit due at signing</td><td>" + money(m.dueToday) + "</td></tr>";
