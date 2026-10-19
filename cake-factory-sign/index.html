@@ -332,7 +332,7 @@
             <span class="now">$500</span>
             <span class="save">You save $250</span>
           </div>
-          <p class="per">One-time · Friends &amp; Family price · $100 deposit to start<br />Care plan $50/mo — hosting, updates &amp; support</p>
+          <p class="per">One-time · Friends &amp; Family price · $100 deposit to start<br />Care plan $50/mo — hosting, updates &amp; support · <b>first 3 months free</b></p>
           <ul class="includes">
             <li>Custom website for thecake-factory.com</li>
             <li>Logo design included — no extra charge</li>
@@ -356,7 +356,7 @@
             <span class="now">$1,250</span>
             <span class="save">You save $1,250</span>
           </div>
-          <p class="per">One-time · Friends &amp; Family price · $200 deposit to start<br />Care plan $75/mo — hosting, updates &amp; support</p>
+          <p class="per">One-time · Friends &amp; Family price · $200 deposit to start<br />Care plan $75/mo — hosting, updates &amp; support · <b>first 3 months free</b></p>
           <ul class="includes">
             <li>Everything in the Website package</li>
             <li>Logo design included — no extra charge</li>
@@ -380,7 +380,7 @@
         <p class="lede" id="planLede">Every plan includes the monthly care plan, which keeps your site hosted, updated, and supported.</p>
         <div id="planList"></div>
         <div class="note-box">
-          <b>About the care plan:</b> it's required for a minimum of 12 months. If you finance, it runs for the full term of the loan instead — whichever is longer — so your site stays covered the whole time you're paying it off.
+          <b>About the care plan:</b> your first 3 months are free, on every package and every plan. After that it's required for a minimum of 12 months. If you finance, it runs for the full term of the loan instead — whichever is longer — so your site stays covered the whole time you're paying it off.
         </div>
         <p class="err" id="err2"></p>
       </section>
@@ -539,8 +539,8 @@
             <li>Your price is locked at the Friends &amp; Family rate shown above. Logo design is included at no extra charge.</li>
             <li>Pay-in-full: your deposit is due at signing, and the balance is due when your site launches.</li>
             <li>Financed plans: no deposit. The monthly project payment and care plan are billed together each month.</li>
-            <li>The care plan is required for a minimum of 12 months — or for the full term of your loan if you finance, whichever is longer.</li>
-            <li>24- and 36-month plans carry 9.99% APR; the total interest and total cost are shown in full on your plan — no surprises.</li>
+            <li>Your first 3 months of the care plan are free, on every package and every plan. After that, the care plan is required for a minimum of 12 months — or for the full term of your loan if you finance, whichever is longer.</li>
+            <li>24-month plans carry 4.99% APR and 36-month plans carry 9.99% APR; the total interest and total cost are shown in full on your plan — no surprises.</li>
             <li>Work begins once you've signed (and paid the deposit, if your plan has one).</li>
           </ul>
         </div>
@@ -605,14 +605,14 @@
         A: { key: "A", name: "Website", price: 500, market: 750, care: 50, deposit: 100 },
         B: { key: "B", name: "Website + Bakery App", price: 1250, market: 2500, care: 75, deposit: 200 }
       };
-      var APR = 0.0999;
+      var CARE_FREE_MONTHS = 3;
       var PLANS = [
         { id: "full", label: "Pay in full", months: 0, apr: 0 },
         { id: "m6",  label: "6 months",  months: 6,  apr: 0 },
         { id: "m12", label: "12 months", months: 12, apr: 0 },
         { id: "m18", label: "18 months", months: 18, apr: 0 },
-        { id: "m24", label: "24 months", months: 24, apr: APR },
-        { id: "m36", label: "36 months", months: 36, apr: APR }
+        { id: "m24", label: "24 months", months: 24, apr: 0.0499 },
+        { id: "m36", label: "36 months", months: 36, apr: 0.0999 }
       ];
 
       var state = { step: 1, pkg: null, plan: null };
@@ -622,6 +622,9 @@
       }
       function money0(n) {
         return "$" + n.toLocaleString("en-US", { maximumFractionDigits: 0 });
+      }
+      function aprPct(apr) {
+        return (apr * 100).toFixed(2).replace(/\.?0+$/, "") + "%";
       }
       function planMath(pkg, plan) {
         if (plan.months === 0) {
@@ -706,17 +709,19 @@
             rows += "<tr><td>Deposit due at signing</td><td>" + money(m.dueToday) + "</td></tr>";
             rows += "<tr><td>Balance due at launch</td><td>" + money(m.balanceAtLaunch) + "</td></tr>";
             rows += "<tr><td>Care plan (from launch)</td><td>" + money(pkg.care) + "/mo</td></tr>";
+            rows += "<tr><td>Care plan — first " + CARE_FREE_MONTHS + " months</td><td>Free</td></tr>";
             rows += "<tr class='total'><td>Total project price</td><td>" + money(pkg.price) + "</td></tr>";
           } else {
-            title = plan.label + (plan.apr ? "<span class='apr-badge'>9.99% APR</span>" : "<span class='zero-badge'>0% APR</span>");
+            title = plan.label + (plan.apr ? "<span class='apr-badge'>" + aprPct(plan.apr) + " APR</span>" : "<span class='zero-badge'>0% APR</span>");
             rows += "<tr><td>Project payment</td><td>" + money(m.monthlyProject) + "/mo</td></tr>";
             rows += "<tr><td>Care plan</td><td>" + money(pkg.care) + "/mo</td></tr>";
-            rows += "<tr class='total'><td>Total monthly</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
+            rows += "<tr><td>Care plan — first " + CARE_FREE_MONTHS + " months</td><td>Free</td></tr>";
+            rows += "<tr class='total'><td>Total monthly (after free months)</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
             rows += "<tr><td>Due at signing</td><td>$0 — deposit waived</td></tr>";
             if (plan.apr) {
               rows += "<tr><td>Total interest over " + plan.months + " months</td><td>" + money(m.interest) + "</td></tr>";
               rows += "<tr><td>Total cost of project over the loan</td><td>" + money(m.totalProject) + "</td></tr>";
-              rows += "<tr><td>Total paid over " + plan.months + " months (incl. care plan)</td><td>" + money(m.totalProject + pkg.care * plan.months) + "</td></tr>";
+              rows += "<tr><td>Total paid over " + plan.months + " months (incl. care plan, after " + CARE_FREE_MONTHS + " free months)</td><td>" + money(m.totalProject + pkg.care * (plan.months - CARE_FREE_MONTHS)) + "</td></tr>";
             } else {
               rows += "<tr><td>Interest</td><td>$0.00</td></tr>";
               rows += "<tr><td>Total cost of project</td><td>" + money(pkg.price) + "</td></tr>";
@@ -726,7 +731,7 @@
                   (state.plan === plan.id ? "true" : "false") + "'>" +
                   "<span class='pick-dot'></span><h3>" + title + "</h3>" +
                   "<table>" + rows + "</table>" +
-                  (plan.apr ? "<p class='fine'>Financing at 9.99% APR over " + plan.months + " months. The full cost of the loan is shown above — interest is the only extra you pay for spreading it out.</p>" : "") +
+                  (plan.apr ? "<p class='fine'>Financing at " + aprPct(plan.apr) + " APR over " + plan.months + " months. The full cost of the loan is shown above — interest is the only extra you pay for spreading it out.</p>" : "") +
                   "</button>";
         });
         document.getElementById("planList").innerHTML = html;
@@ -816,19 +821,20 @@
         rows += "<tr><td>Regular price</td><td style='text-decoration:line-through;font-weight:400;'>" + money(pkg.market) + "</td></tr>";
         rows += "<tr><td>Logo design</td><td>Included</td></tr>";
         rows += "<tr><td>Care plan</td><td>" + money(pkg.care) + "/mo</td></tr>";
+        rows += "<tr><td>Care plan — first " + CARE_FREE_MONTHS + " months</td><td>Free</td></tr>";
         if (plan.months === 0) {
           rows += "<tr><td>Payment plan</td><td>Pay in full</td></tr>";
           rows += "<tr><td>Deposit due at signing</td><td>" + money(m.dueToday) + "</td></tr>";
           rows += "<tr><td>Balance due at launch</td><td>" + money(m.balanceAtLaunch) + "</td></tr>";
         } else {
-          rows += "<tr><td>Payment plan</td><td>" + plan.label + (plan.apr ? " · 9.99% APR" : " · 0% APR") + "</td></tr>";
+          rows += "<tr><td>Payment plan</td><td>" + plan.label + (plan.apr ? " · " + aprPct(plan.apr) + " APR" : " · 0% APR") + "</td></tr>";
           rows += "<tr><td>Due at signing</td><td>$0.00</td></tr>";
           rows += "<tr><td>Monthly project payment</td><td>" + money(m.monthlyProject) + "</td></tr>";
           if (plan.apr) {
             rows += "<tr><td>Total interest (" + plan.months + " mo)</td><td>" + money(m.interest) + "</td></tr>";
             rows += "<tr><td>Total project cost over loan</td><td>" + money(m.totalProject) + "</td></tr>";
           }
-          rows += "<tr class='total'><td>Total monthly (incl. care plan)</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
+          rows += "<tr class='total'><td>Total monthly (incl. care plan, after free months)</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
         }
         var qa = "";
         function q(label, val) { if (val) qa += "<p><b>" + label + "</b>" + val + "</p>"; }
@@ -919,11 +925,11 @@
         L.push("PACKAGE: " + pkg.name);
         L.push("Friends & Family price: " + money(pkg.price) + " (regular " + money(pkg.market) + ")");
         L.push("Logo design: Included");
-        L.push("Care plan: " + money(pkg.care) + "/mo (min 12 months, or full loan term if financed)");
+        L.push("Care plan: " + money(pkg.care) + "/mo — first " + CARE_FREE_MONTHS + " months free (min 12 months paid, or full loan term if financed)");
         if (plan.months === 0) {
           L.push("Payment: Pay in full — " + money(m.dueToday) + " deposit at signing, " + money(m.balanceAtLaunch) + " at launch");
         } else {
-          L.push("Payment: " + plan.label + (plan.apr ? " at 9.99% APR" : " at 0% APR") + " — " + money(m.monthlyProject) + "/mo project + " + money(pkg.care) + "/mo care = " + money(m.monthlyProject + pkg.care) + "/mo total");
+          L.push("Payment: " + plan.label + (plan.apr ? " at " + aprPct(plan.apr) + " APR" : " at 0% APR") + " — " + money(m.monthlyProject) + "/mo project + " + money(pkg.care) + "/mo care (first " + CARE_FREE_MONTHS + " months of care free) = " + money(m.monthlyProject + pkg.care) + "/mo total after free months");
           L.push("Due at signing: $0 (deposit waived)");
           if (plan.apr) L.push("Total interest: " + money(m.interest) + " · Total project cost over loan: " + money(m.totalProject));
         }
@@ -968,7 +974,7 @@
 
         finalText = buildSummaryText(pkg, plan, m, a, signer, sigDate);
         var smsBody = "Hi Daniel — I just signed my Cake Factory quote online! " +
-          pkg.name + ", " + (plan.months === 0 ? "pay in full" : plan.label + (plan.apr ? " at 9.99% APR" : " at 0%")) +
+          pkg.name + ", " + (plan.months === 0 ? "pay in full" : plan.label + (plan.apr ? " at " + aprPct(plan.apr) + " APR" : " at 0%")) +
           (plan.months === 0 ? " (" + money(m.dueToday) + " deposit)" : " (" + money(m.monthlyProject + pkg.care) + "/mo incl. care plan)") +
           ". — " + signer + "\n\n" + finalText;
         document.getElementById("smsBtn").href = "sms:+14126518449?&body=" + encodeURIComponent(smsBody);
