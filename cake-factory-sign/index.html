@@ -983,6 +983,27 @@
           (plan.months === 0 ? " (" + money(m.dueToday) + " deposit)" : " (" + money(m.monthlyProject + pkg.care) + "/mo incl. care plan)") +
           ". — " + signer + "\n\n" + finalText;
         document.getElementById("smsBtn").href = "sms:+14126518449?&body=" + encodeURIComponent(smsBody);
+
+        /* Fire-and-forget: also send the signed quote to the proposal inbox.
+           Silent on failure — the SMS button below stays the fallback. */
+        try {
+          fetch("https://snyder-freelancing-hq.onrender.com/api/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sourcePage: "cake-factory",
+              signerName: signer,
+              package: pkg.name,
+              paymentPlan: plan.label,
+              addons: [],
+              questionnaire: a,
+              summaryText: smsBody,
+              signatureDataUrl: canvas.toDataURL("image/png")
+            }),
+            keepalive: true
+          }).catch(function () {});
+        } catch (e) { /* silent — inbox submission must never block signing */ }
+
         document.getElementById("doneText").textContent =
           "Thank you, " + signer.split(" ")[0] + "! One last step: tap the button below to text your signed quote to Daniel at Snyder Freelancing — that's what makes it official and gets your project on the schedule.";
         showStep(5);
