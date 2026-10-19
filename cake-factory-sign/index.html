@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>The Cake Factory — Quote &amp; Sign · Snyder Freelancing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #fdf6ec;
+        --surface: #ffffff;
+        --surface-2: #fff3e2;
+        --ink: #33231d;
+        --ink-soft: #6d554a;
+        --line: #ecd9c6;
+        --berry: #b23a5e;
+        --berry-deep: #8e2a49;
+        --berry-soft: #fbe7ee;
+        --apricot: #e8833a;
+        --apricot-soft: #fdeeda;
+        --gold: #c99a2e;
+        --sage: #5d7d4f;
+        --sage-soft: #eaf1e3;
+        --danger: #b3382e;
+        --shadow: 0 10px 30px rgba(94, 52, 30, 0.12);
+        --radius: 18px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1d1410;
+          --surface: #2a1d16;
+          --surface-2: #33241a;
+          --ink: #f6e9dc;
+          --ink-soft: #c9ab97;
+          --line: #4a3427;
+          --berry: #e0688c;
+          --berry-deep: #f08bab;
+          --berry-soft: #40222e;
+          --apricot: #f09a52;
+          --apricot-soft: #3d2a18;
+          --gold: #dcb04e;
+          --sage: #93b57f;
+          --sage-soft: #26301f;
+          --danger: #ef8a7d;
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+        font-size: 16.5px;
+        line-height: 1.5;
+      }
+      .wrap { max-width: 640px; margin: 0 auto; padding: 0 18px 120px; }
+
+      /* ---------- Header ---------- */
+      header.top {
+        background: var(--berry);
+        color: #fff;
+        padding: 26px 18px 22px;
+        margin: 0 -18px;
+      }
+      @media (prefers-color-scheme: dark) { header.top { background: #5c2436; } }
+      .brand {
+        font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em;
+        text-transform: uppercase; opacity: 0.85; margin: 0 0 6px;
+      }
+      header.top h1 {
+        font-family: "DM Serif Display", Georgia, serif;
+        font-weight: 400; font-size: 32px; line-height: 1.12; margin: 0 0 8px;
+      }
+      header.top p { margin: 0; font-size: 15.5px; opacity: 0.93; max-width: 46ch; }
+      header.top .phone-line { margin-top: 12px; font-size: 14.5px; }
+      header.top a { color: #ffd9a8; font-weight: 700; text-decoration: none; }
+
+      /* ---------- Progress ---------- */
+      .steps {
+        display: flex; gap: 6px; margin: 20px 0 4px;
+      }
+      .steps .step {
+        flex: 1; text-align: center; font-size: 12px; font-weight: 700;
+        color: var(--ink-soft); padding-top: 10px; position: relative;
+      }
+      .steps .step::before {
+        content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+        border-radius: 99px; background: var(--line);
+      }
+      .steps .step.active { color: var(--berry); }
+      .steps .step.active::before { background: var(--berry); }
+      .steps .step.done { color: var(--sage); }
+      .steps .step.done::before { background: var(--sage); }
+
+      section.page { display: none; }
+      section.page.on { display: block; }
+      h2.sec {
+        font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
+        font-size: 26px; margin: 22px 0 4px;
+      }
+      .lede { color: var(--ink-soft); margin: 0 0 18px; font-size: 15.5px; }
+
+      /* ---------- Choice cards ---------- */
+      .choice {
+        display: block; width: 100%; text-align: left; cursor: pointer;
+        background: var(--surface); border: 2px solid var(--line);
+        border-radius: var(--radius); padding: 18px; margin: 0 0 14px;
+        font: inherit; color: inherit; box-shadow: none;
+      }
+      .choice[aria-checked="true"] { border-color: var(--berry); box-shadow: var(--shadow); }
+      .choice .tag {
+        display: inline-block; font-size: 11.5px; font-weight: 700;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        background: var(--apricot-soft); color: var(--apricot);
+        border-radius: 99px; padding: 3px 10px; margin-bottom: 8px;
+      }
+      .choice h3 {
+        font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
+        font-size: 22px; margin: 0 0 2px;
+      }
+      .price-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 4px 0 2px; }
+      .was { color: var(--ink-soft); text-decoration: line-through; font-size: 17px; }
+      .now { font-size: 30px; font-weight: 700; color: var(--berry); }
+      .save {
+        background: var(--sage-soft); color: var(--sage); font-weight: 700;
+        font-size: 13px; border-radius: 99px; padding: 3px 10px;
+      }
+      .per { color: var(--ink-soft); font-size: 14.5px; }
+      ul.includes { margin: 12px 0 0; padding: 0; list-style: none; font-size: 15px; }
+      ul.includes li { padding: 4px 0 4px 26px; position: relative; }
+      ul.includes li::before {
+        content: "✓"; position: absolute; left: 2px; top: 4px;
+        color: var(--sage); font-weight: 700;
+      }
+      .pick-dot {
+        float: right; width: 24px; height: 24px; border-radius: 50%;
+        border: 2px solid var(--line); margin-top: 2px;
+      }
+      .choice[aria-checked="true"] .pick-dot {
+        border-color: var(--berry); background: var(--berry);
+        box-shadow: inset 0 0 0 4px var(--surface);
+      }
+
+      /* mini website mock */
+      .mock {
+        margin-top: 14px; border: 1.5px solid var(--line); border-radius: 12px;
+        overflow: hidden; background: var(--surface-2);
+      }
+      .mock .bar { display: flex; gap: 5px; padding: 7px 10px; background: var(--surface); border-bottom: 1.5px solid var(--line); }
+      .mock .bar i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+      .mock .hero { padding: 12px 14px 10px; background: linear-gradient(120deg, var(--berry-soft), var(--apricot-soft)); }
+      .mock .hero b { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 17px; display: block; }
+      .mock .hero span { font-size: 12px; color: var(--ink-soft); }
+      .mock .tiles { display: flex; gap: 8px; padding: 10px; }
+      .mock .tiles i { flex: 1; height: 34px; border-radius: 8px; display: block; }
+
+      /* ---------- Plan cards ---------- */
+      .plan { padding: 16px 18px; }
+      .plan h3 { font-size: 19px; font-family: "DM Sans", sans-serif; font-weight: 700; }
+      .plan .big { font-size: 26px; font-weight: 700; color: var(--berry); }
+      .plan table { width: 100%; border-collapse: collapse; font-size: 14.5px; margin-top: 10px; }
+      .plan table td { padding: 5px 0; vertical-align: top; }
+      .plan table td:last-child { text-align: right; font-weight: 700; white-space: nowrap; padding-left: 12px; }
+      .plan table tr.total td { border-top: 1.5px solid var(--line); padding-top: 9px; font-size: 15.5px; }
+      .plan .fine { font-size: 13px; color: var(--ink-soft); margin: 10px 0 0; }
+      .apr-badge {
+        display: inline-block; background: var(--berry-soft); color: var(--berry);
+        font-weight: 700; font-size: 13px; border-radius: 99px; padding: 3px 10px; margin-left: 8px;
+      }
+      .zero-badge {
+        display: inline-block; background: var(--sage-soft); color: var(--sage);
+        font-weight: 700; font-size: 13px; border-radius: 99px; padding: 3px 10px; margin-left: 8px;
+      }
+
+      .note-box {
+        background: var(--apricot-soft); border-radius: 14px; padding: 14px 16px;
+        font-size: 14.5px; margin: 16px 0;
+      }
+      .note-box b { color: var(--apricot); }
+
+      /* ---------- Form ---------- */
+      .field { margin: 0 0 16px; }
+      .field label, .field .flabel {
+        display: block; font-weight: 700; font-size: 15px; margin-bottom: 6px;
+      }
+      .field .hint { font-weight: 400; color: var(--ink-soft); font-size: 13.5px; display: block; margin-top: 2px; }
+      input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+        width: 100%; font: inherit; color: var(--ink);
+        background: var(--surface); border: 1.5px solid var(--line);
+        border-radius: 12px; padding: 13px 14px; appearance: none;
+      }
+      textarea { min-height: 84px; resize: vertical; }
+      input:focus, select:focus, textarea:focus { outline: 2px solid var(--berry); outline-offset: 1px; }
+      .field.invalid input, .field.invalid textarea { border-color: var(--danger); outline-color: var(--danger); }
+      .req { color: var(--berry); }
+      fieldset { border: none; margin: 0 0 18px; padding: 0; }
+      legend { font-weight: 700; font-size: 15.5px; padding: 0; margin-bottom: 4px; }
+      fieldset .hint { color: var(--ink-soft); font-size: 13.5px; margin: 0 0 10px; }
+      .checks { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+        background: var(--surface); border: 1.5px solid var(--line);
+        border-radius: 99px; padding: 9px 14px; font-size: 14.5px; font-weight: 500;
+      }
+      .chip input { accent-color: var(--berry); width: 17px; height: 17px; margin: 0; }
+      .chip:has(input:checked) { border-color: var(--berry); background: var(--berry-soft); }
+      .group-title {
+        font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
+        font-size: 21px; margin: 28px 0 12px; padding-top: 20px;
+        border-top: 1.5px solid var(--line);
+      }
+      .group-title:first-of-type { border-top: none; padding-top: 0; margin-top: 6px; }
+
+      /* ---------- Review / sign ---------- */
+      .summary {
+        background: var(--surface); border: 2px solid var(--line);
+        border-radius: var(--radius); padding: 18px; margin-bottom: 16px;
+      }
+      .summary h3 { margin: 0 0 10px; font-size: 17px; }
+      .summary table { width: 100%; border-collapse: collapse; font-size: 15px; }
+      .summary table td { padding: 6px 0; vertical-align: top; }
+      .summary table td:last-child { text-align: right; font-weight: 700; white-space: nowrap; padding-left: 12px; }
+      .summary table tr.total td { border-top: 1.5px solid var(--line); padding-top: 10px; }
+      .summary .qa { font-size: 14.5px; margin-top: 12px; border-top: 1.5px solid var(--line); padding-top: 12px; }
+      .summary .qa p { margin: 0 0 8px; }
+      .summary .qa b { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); }
+      .terms {
+        background: var(--surface-2); border-radius: 14px; padding: 14px 16px;
+        font-size: 14px; color: var(--ink-soft); margin-bottom: 16px;
+      }
+      .terms b { color: var(--ink); }
+      .terms ul { margin: 8px 0 0; padding-left: 18px; }
+      .terms li { margin-bottom: 5px; }
+      .sig-wrap {
+        background: var(--surface); border: 2px dashed var(--berry);
+        border-radius: 14px; padding: 10px; margin-bottom: 8px;
+      }
+      #sig {
+        display: block; width: 100%; height: 170px; touch-action: none;
+        border-radius: 8px; background:
+          repeating-linear-gradient(transparent, transparent 41px, var(--line) 41px, var(--line) 42px);
+        cursor: crosshair;
+      }
+      .sig-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+      .sig-actions .x-line { font-family: "Caveat", cursive; font-size: 22px; color: var(--ink-soft); }
+      .btn-clear {
+        background: none; border: 1.5px solid var(--line); color: var(--ink-soft);
+        border-radius: 99px; padding: 7px 16px; font: inherit; font-size: 14px;
+        font-weight: 700; cursor: pointer;
+      }
+      .agree {
+        display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+        background: var(--surface); border: 1.5px solid var(--line);
+        border-radius: 14px; padding: 14px 16px; font-size: 14.5px; margin-bottom: 8px;
+      }
+      .agree input { width: 22px; height: 22px; accent-color: var(--berry); flex: none; margin-top: 1px; }
+      .err { color: var(--danger); font-size: 14px; font-weight: 700; min-height: 20px; margin: 4px 0; }
+
+      /* ---------- Sticky nav ---------- */
+      .nav {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border-top: 1.5px solid var(--line);
+        padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+      }
+      .nav .inner { max-width: 640px; margin: 0 auto; display: flex; gap: 10px; }
+      .btn {
+        flex: 1; border: none; border-radius: 99px; padding: 16px 18px;
+        font: inherit; font-weight: 700; font-size: 16.5px; cursor: pointer;
+        background: var(--berry); color: #fff; text-align: center;
+        text-decoration: none; display: block;
+      }
+      .btn:active { background: var(--berry-deep); }
+      .btn.back { flex: 0 0 auto; background: var(--surface); color: var(--ink-soft); border: 1.5px solid var(--line); padding: 16px 20px; }
+      .btn.secondary { background: var(--surface); color: var(--berry); border: 2px solid var(--berry); }
+
+      /* ---------- Done ---------- */
+      .done-hero { text-align: center; padding: 28px 0 6px; }
+      .done-hero .ring {
+        width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 14px;
+        background: var(--sage-soft); color: var(--sage);
+        display: flex; align-items: center; justify-content: center; font-size: 42px;
+      }
+      .done-hero h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 30px; margin: 0 0 8px; }
+      .done-hero p { color: var(--ink-soft); margin: 0 auto; max-width: 44ch; }
+      .stack { display: grid; gap: 10px; margin-top: 22px; }
+      .sig-preview {
+        background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px;
+        padding: 8px; margin-top: 14px;
+      }
+      .sig-preview img { display: block; max-width: 100%; height: auto; }
+      .sig-preview .cap { font-size: 12.5px; color: var(--ink-soft); padding: 4px 4px 2px; }
+      footer.foot { text-align: center; color: var(--ink-soft); font-size: 13.5px; margin-top: 34px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <p class="brand">Snyder Freelancing</p>
+        <h1>The Cake Factory — your website quote</h1>
+        <p>Pick your package, choose how you'd like to pay, answer a few design questions, and sign — right here on your phone. Takes about five minutes.</p>
+        <p class="phone-line">Questions? Call or text Daniel at <a href="tel:+14126518449">412-651-8449</a></p>
+      </header>
+
+      <div class="steps" id="stepsBar" aria-hidden="true">
+        <div class="step" data-step="1">Package</div>
+        <div class="step" data-step="2">Payment</div>
+        <div class="step" data-step="3">Design</div>
+        <div class="step" data-step="4">Sign</div>
+      </div>
+
+      <!-- ================= STEP 1 : PACKAGE ================= -->
+      <section class="page" id="page1">
+        <h2 class="sec">Choose your package</h2>
+        <p class="lede">Both are priced at our Friends &amp; Family rate — and both include a custom logo design at no extra charge. Your domain, <b>thecake-factory.com</b>, is already secured.</p>
+
+        <button type="button" class="choice" id="pkgA" role="radio" aria-checked="false">
+          <span class="pick-dot"></span>
+          <span class="tag">Option A</span>
+          <h3>Website</h3>
+          <div class="price-row">
+            <span class="was">$750</span>
+            <span class="now">$500</span>
+            <span class="save">You save $250</span>
+          </div>
+          <p class="per">One-time · Friends &amp; Family price · $100 deposit to start<br />Care plan $50/mo — hosting, updates &amp; support</p>
+          <ul class="includes">
+            <li>Custom website for thecake-factory.com</li>
+            <li>Logo design included — no extra charge</li>
+            <li>Menu, photos, your story &amp; contact form</li>
+            <li>Built to look great on phones</li>
+            <li>Online ordering can be added later</li>
+          </ul>
+          <div class="mock" aria-hidden="true">
+            <div class="bar"><i style="background:#e0688c"></i><i style="background:#f0b35e"></i><i style="background:#93b57f"></i></div>
+            <div class="hero"><b>The Cake Factory</b><span>Fresh from the oven, made to order</span></div>
+            <div class="tiles"><i style="background:#f6c453"></i><i style="background:#e0688c"></i><i style="background:#7fb3d5"></i></div>
+          </div>
+        </button>
+
+        <button type="button" class="choice" id="pkgB" role="radio" aria-checked="false">
+          <span class="pick-dot"></span>
+          <span class="tag">Option B · Most popular</span>
+          <h3>Website + Bakery App</h3>
+          <div class="price-row">
+            <span class="was">$2,500</span>
+            <span class="now">$1,250</span>
+            <span class="save">You save $1,250</span>
+          </div>
+          <p class="per">One-time · Friends &amp; Family price · $200 deposit to start<br />Care plan $75/mo — hosting, updates &amp; support</p>
+          <ul class="includes">
+            <li>Everything in the Website package</li>
+            <li>Logo design included — no extra charge</li>
+            <li>Private app to run the bakery: orders, bake days, shopping lists, recipes &amp; expenses</li>
+            <li>Website inquiries land right in the app</li>
+            <li>Online ordering can be added later</li>
+          </ul>
+          <div class="mock" aria-hidden="true">
+            <div class="bar"><i style="background:#e0688c"></i><i style="background:#f0b35e"></i><i style="background:#93b57f"></i></div>
+            <div class="hero"><b>The Cake Factory</b><span>Fresh from the oven, made to order</span></div>
+            <div class="tiles"><i style="background:#a569bd"></i><i style="background:#f6c453"></i><i style="background:#58b09c"></i></div>
+          </div>
+        </button>
+
+        <p class="err" id="err1"></p>
+      </section>
+
+      <!-- ================= STEP 2 : PAYMENT ================= -->
+      <section class="page" id="page2">
+        <h2 class="sec">How would you like to pay?</h2>
+        <p class="lede" id="planLede">Every plan includes the monthly care plan, which keeps your site hosted, updated, and supported.</p>
+        <div id="planList"></div>
+        <div class="note-box">
+          <b>About the care plan:</b> it's required for a minimum of 12 months. If you finance, it runs for the full term of the loan instead — whichever is longer — so your site stays covered the whole time you're paying it off.
+        </div>
+        <p class="err" id="err2"></p>
+      </section>
+
+      <!-- ================= STEP 3 : QUESTIONNAIRE ================= -->
+      <section class="page" id="page3">
+        <h2 class="sec">Tell us about your bakery</h2>
+        <p class="lede">This is everything we need to design a site that feels like <i>your</i> bakery. Skip anything you're not sure about — we can talk it through.</p>
+
+        <h3 class="group-title">About you</h3>
+        <div class="field" id="f-name">
+          <label for="q_name">Your full name <span class="req">*</span></label>
+          <input type="text" id="q_name" autocomplete="name" placeholder="e.g. Jane Baker" />
+        </div>
+        <div class="field">
+          <label for="q_biz">Business name</label>
+          <input type="text" id="q_biz" value="The Cake Factory" />
+        </div>
+        <div class="field" id="f-email">
+          <label for="q_email">Email <span class="req">*</span></label>
+          <input type="email" id="q_email" autocomplete="email" placeholder="you@example.com" />
+        </div>
+        <div class="field" id="f-phone">
+          <label for="q_phone">Cell phone <span class="req">*</span>
+            <span class="hint">So Daniel can text you about the design.</span></label>
+          <input type="tel" id="q_phone" autocomplete="tel" placeholder="(412) 555-0123" />
+        </div>
+        <div class="field">
+          <label for="q_contact">Best way to reach you</label>
+          <select id="q_contact">
+            <option>Text</option>
+            <option>Call</option>
+            <option>Email</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q_about">Your story
+            <span class="hint">How did The Cake Factory start? What are you known for? A few sentences is plenty — this becomes your About page.</span></label>
+          <textarea id="q_about" placeholder="e.g. I started baking for church bake sales…"></textarea>
+        </div>
+
+        <h3 class="group-title">What you bake</h3>
+        <fieldset>
+          <legend>What should we list on the menu?</legend>
+          <p class="hint">Tap everything you sell — we'll only list what you actually make.</p>
+          <div class="checks" id="products">
+            <label class="chip"><input type="checkbox" value="Custom cakes" /> Custom cakes</label>
+            <label class="chip"><input type="checkbox" value="Cupcakes" /> Cupcakes</label>
+            <label class="chip"><input type="checkbox" value="Cookies" /> Cookies</label>
+            <label class="chip"><input type="checkbox" value="Pies" /> Pies</label>
+            <label class="chip"><input type="checkbox" value="Pastries & danishes" /> Pastries &amp; danishes</label>
+            <label class="chip"><input type="checkbox" value="Breads & rolls" /> Breads &amp; rolls</label>
+            <label class="chip"><input type="checkbox" value="Wedding cakes" /> Wedding cakes</label>
+            <label class="chip"><input type="checkbox" value="Cake pops" /> Cake pops</label>
+            <label class="chip"><input type="checkbox" value="Seasonal specials" /> Seasonal specials</label>
+            <label class="chip"><input type="checkbox" value="Gluten-free options" /> Gluten-free options</label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="q_signature">Signature items
+            <span class="hint">The things people drive across town for.</span></label>
+          <input type="text" id="q_signature" placeholder="e.g. Burnt almond torte, …" />
+        </div>
+        <div class="field">
+          <label for="q_notlist">Anything we should NOT list?
+            <span class="hint">Things you used to make, or get asked for but don't sell.</span></label>
+          <input type="text" id="q_notlist" placeholder="e.g. No donuts, please" />
+        </div>
+
+        <h3 class="group-title">Look &amp; feel</h3>
+        <fieldset>
+          <legend>Pick a style</legend>
+          <div class="checks" id="stylePick">
+            <label class="chip"><input type="radio" name="style" value="Colorful & playful" /> Colorful &amp; playful</label>
+            <label class="chip"><input type="radio" name="style" value="Warm & rustic" /> Warm &amp; rustic</label>
+            <label class="chip"><input type="radio" name="style" value="Elegant & classic" /> Elegant &amp; classic</label>
+            <label class="chip"><input type="radio" name="style" value="Clean & modern" /> Clean &amp; modern</label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="q_colors_like">Colors you love</label>
+          <input type="text" id="q_colors_like" placeholder="e.g. Blush pink, cream, gold" />
+        </div>
+        <div class="field">
+          <label for="q_colors_avoid">Colors to avoid</label>
+          <input type="text" id="q_colors_avoid" placeholder="e.g. Nothing neon" />
+        </div>
+        <div class="field">
+          <label for="q_inspo">Websites or bakeries whose look you like</label>
+          <input type="text" id="q_inspo" placeholder="Names or links are fine" />
+        </div>
+        <fieldset>
+          <legend>Your logo</legend>
+          <p class="hint">A custom logo design is included in both packages, free.</p>
+          <div class="checks" id="logoPick">
+            <label class="chip"><input type="radio" name="logo" value="Design me a new logo (included)" /> Design me a new one</label>
+            <label class="chip"><input type="radio" name="logo" value="I have a logo — I'll send it" /> I have one I'll send</label>
+            <label class="chip"><input type="radio" name="logo" value="Not sure yet" /> Not sure yet</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Photos</legend>
+          <div class="checks" id="photoPick">
+            <label class="chip"><input type="radio" name="photos" value="I have photos to share" /> I have photos to share</label>
+            <label class="chip"><input type="radio" name="photos" value="I'll take some" /> I'll take some</label>
+            <label class="chip"><input type="radio" name="photos" value="I need help with photos" /> I need help with photos</label>
+          </div>
+        </fieldset>
+
+        <h3 class="group-title">Pages &amp; features</h3>
+        <fieldset>
+          <legend>What should the website have?</legend>
+          <div class="checks" id="features">
+            <label class="chip"><input type="checkbox" value="Online menu" /> Online menu</label>
+            <label class="chip"><input type="checkbox" value="Contact / order inquiry form" /> Contact form</label>
+            <label class="chip"><input type="checkbox" value="Photo gallery" /> Photo gallery</label>
+            <label class="chip"><input type="checkbox" value="About / my story page" /> About page</label>
+            <label class="chip"><input type="checkbox" value="Google reviews" /> Google reviews</label>
+            <label class="chip"><input type="checkbox" value="Links to Facebook / Instagram" /> Social links</label>
+            <label class="chip"><input type="checkbox" value="Online ordering later" /> Online ordering (later)</label>
+          </div>
+        </fieldset>
+
+        <div id="appQuestions">
+          <h3 class="group-title">Running the bakery (your app)</h3>
+          <fieldset>
+            <legend>What would help you most day-to-day?</legend>
+            <div class="checks" id="appFeatures">
+              <label class="chip"><input type="checkbox" value="Order tracking" /> Order tracking</label>
+              <label class="chip"><input type="checkbox" value="Bake-day planner" /> Bake-day planner</label>
+              <label class="chip"><input type="checkbox" value="Shopping lists" /> Shopping lists</label>
+              <label class="chip"><input type="checkbox" value="Recipes & menu manager" /> Recipes &amp; menu</label>
+              <label class="chip"><input type="checkbox" value="Expense tracking" /> Expense tracking</label>
+              <label class="chip"><input type="checkbox" value="Customer list" /> Customer list</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="field">
+          <label for="q_anything">Anything else we should know?</label>
+          <textarea id="q_anything" placeholder="Deadlines, ideas, questions — anything at all"></textarea>
+        </div>
+        <p class="err" id="err3"></p>
+      </section>
+
+      <!-- ================= STEP 4 : REVIEW & SIGN ================= -->
+      <section class="page" id="page4">
+        <h2 class="sec">Review &amp; sign</h2>
+        <p class="lede">Here's your quote. Sign with your finger to lock in the Friends &amp; Family pricing.</p>
+
+        <div class="summary" id="reviewBox"></div>
+
+        <div class="terms">
+          <b>The short version, in plain words:</b>
+          <ul>
+            <li>Your price is locked at the Friends &amp; Family rate shown above. Logo design is included at no extra charge.</li>
+            <li>Pay-in-full: your deposit is due at signing, and the balance is due when your site launches.</li>
+            <li>Financed plans: no deposit. The monthly project payment and care plan are billed together each month.</li>
+            <li>The care plan is required for a minimum of 12 months — or for the full term of your loan if you finance, whichever is longer.</li>
+            <li>24- and 36-month plans carry 9.99% APR; the total interest and total cost are shown in full on your plan — no surprises.</li>
+            <li>Work begins once you've signed (and paid the deposit, if your plan has one).</li>
+          </ul>
+        </div>
+
+        <div class="field">
+          <label for="sign_name">Type your full name <span class="req">*</span></label>
+          <input type="text" id="sign_name" autocomplete="name" placeholder="Your full legal name" />
+        </div>
+        <label class="flabel" style="font-weight:700;font-size:15px;display:block;margin-bottom:6px;">Sign here <span class="req">*</span></label>
+        <div class="sig-wrap">
+          <canvas id="sig"></canvas>
+        </div>
+        <div class="sig-actions">
+          <span class="x-line">✕ Sign above</span>
+          <button type="button" class="btn-clear" id="sigClear">Clear</button>
+        </div>
+        <div class="field">
+          <label for="sign_date">Date</label>
+          <input type="text" id="sign_date" readonly />
+        </div>
+        <label class="agree">
+          <input type="checkbox" id="agreeBox" />
+          <span>I agree to the package, payment plan, and terms shown above, and I understand my signature here counts the same as signing on paper.</span>
+        </label>
+        <p class="err" id="err4"></p>
+      </section>
+
+      <!-- ================= DONE ================= -->
+      <section class="page" id="pageDone">
+        <div class="done-hero">
+          <div class="ring">✓</div>
+          <h2>You're signed!</h2>
+          <p id="doneText">Thank you! One last step: tap the button below to text your signed quote to Daniel — that's what makes it official and gets your project on the schedule.</p>
+        </div>
+        <div class="summary" id="doneBox"></div>
+        <div class="sig-preview" id="sigPreview" hidden>
+          <img id="sigImg" alt="Your signature" />
+          <div class="cap" id="sigCap"></div>
+        </div>
+        <div class="stack">
+          <a class="btn" id="smsBtn" href="#">📱 Text my signed quote to Daniel</a>
+          <button type="button" class="btn secondary" id="dlBtn">Download a copy for my records</button>
+        </div>
+        <p class="lede" style="margin-top:16px;font-size:14.5px;">Prefer email? Send your downloaded copy to Daniel, or just call <a href="tel:+14126518449" style="color:var(--berry);font-weight:700;">412-651-8449</a> and he'll take it from there.</p>
+      </section>
+
+      <footer class="foot" id="mainFoot">Snyder Freelancing · Business phone 412-651-8449<br />Prepared for The Cake Factory · thecake-factory.com</footer>
+    </div>
+
+    <nav class="nav" id="mainNav">
+      <div class="inner">
+        <button type="button" class="btn back" id="backBtn" hidden>‹ Back</button>
+        <button type="button" class="btn" id="nextBtn">Continue</button>
+      </div>
+    </nav>
+
+    <script>
+      "use strict";
+
+      /* ---------------- Data ---------------- */
+      var PACKAGES = {
+        A: { key: "A", name: "Website", price: 500, market: 750, care: 50, deposit: 100 },
+        B: { key: "B", name: "Website + Bakery App", price: 1250, market: 2500, care: 75, deposit: 200 }
+      };
+      var APR = 0.0999;
+      var PLANS = [
+        { id: "full", label: "Pay in full", months: 0, apr: 0 },
+        { id: "m6",  label: "6 months",  months: 6,  apr: 0 },
+        { id: "m12", label: "12 months", months: 12, apr: 0 },
+        { id: "m18", label: "18 months", months: 18, apr: 0 },
+        { id: "m24", label: "24 months", months: 24, apr: APR },
+        { id: "m36", label: "36 months", months: 36, apr: APR }
+      ];
+
+      var state = { step: 1, pkg: null, plan: null };
+
+      function money(n) {
+        return "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      function money0(n) {
+        return "$" + n.toLocaleString("en-US", { maximumFractionDigits: 0 });
+      }
+      function planMath(pkg, plan) {
+        if (plan.months === 0) {
+          return { dueToday: pkg.deposit, monthlyProject: 0, interest: 0,
+                   totalProject: pkg.price, balanceAtLaunch: pkg.price - pkg.deposit };
+        }
+        var pmt;
+        if (plan.apr === 0) {
+          pmt = pkg.price / plan.months;
+          return { dueToday: 0, monthlyProject: pmt, interest: 0, totalProject: pkg.price };
+        }
+        var r = plan.apr / 12;
+        pmt = pkg.price * r / (1 - Math.pow(1 + r, -plan.months));
+        var total = pmt * plan.months;
+        return { dueToday: 0, monthlyProject: pmt, interest: total - pkg.price, totalProject: total };
+      }
+
+      /* ---------------- Step navigation ---------------- */
+      var pages = { 1: "page1", 2: "page2", 3: "page3", 4: "page4", 5: "pageDone" };
+      var backBtn = document.getElementById("backBtn");
+      var nextBtn = document.getElementById("nextBtn");
+
+      function showStep(n) {
+        state.step = n;
+        Object.keys(pages).forEach(function (k) {
+          document.getElementById(pages[k]).classList.toggle("on", Number(k) === n);
+        });
+        document.querySelectorAll("#stepsBar .step").forEach(function (el) {
+          var s = Number(el.getAttribute("data-step"));
+          el.classList.toggle("active", s === Math.min(n, 4));
+          el.classList.toggle("done", s < Math.min(n, 4) || n === 5);
+        });
+        document.getElementById("stepsBar").style.display = n === 5 ? "none" : "flex";
+        document.getElementById("mainNav").style.display = n === 5 ? "none" : "block";
+        document.getElementById("mainFoot").style.display = n === 5 ? "none" : "block";
+        backBtn.hidden = n === 1;
+        nextBtn.textContent = n === 4 ? "Sign & finish ✓" : "Continue";
+        window.scrollTo({ top: 0 });
+        if (n === 4) { buildReview(); sizeCanvas(); }
+      }
+
+      backBtn.addEventListener("click", function () { if (state.step > 1) showStep(state.step - 1); });
+      nextBtn.addEventListener("click", function () {
+        if (state.step === 1 && validateStep1()) showStep(2);
+        else if (state.step === 2 && validateStep2()) showStep(3);
+        else if (state.step === 3 && validateStep3()) showStep(4);
+        else if (state.step === 4) finish();
+      });
+
+      /* ---------------- Step 1 : package ---------------- */
+      function selectPkg(key) {
+        state.pkg = key;
+        document.getElementById("pkgA").setAttribute("aria-checked", key === "A" ? "true" : "false");
+        document.getElementById("pkgB").setAttribute("aria-checked", key === "B" ? "true" : "false");
+        document.getElementById("err1").textContent = "";
+        renderPlans();
+        document.getElementById("appQuestions").style.display = key === "B" ? "block" : "none";
+      }
+      document.getElementById("pkgA").addEventListener("click", function () { selectPkg("A"); });
+      document.getElementById("pkgB").addEventListener("click", function () { selectPkg("B"); });
+      function validateStep1() {
+        if (!state.pkg) {
+          document.getElementById("err1").textContent = "Please tap a package to choose one.";
+          return false;
+        }
+        return true;
+      }
+
+      /* ---------------- Step 2 : plans ---------------- */
+      function renderPlans() {
+        var pkg = PACKAGES[state.pkg];
+        if (!pkg) return;
+        document.getElementById("planLede").innerHTML =
+          "For the <b>" + pkg.name + "</b> package (" + money0(pkg.price) + " one-time + " + money0(pkg.care) + "/mo care plan). " +
+          "Every plan includes the monthly care plan, which keeps your site hosted, updated, and supported.";
+        var html = "";
+        PLANS.forEach(function (plan) {
+          var m = planMath(pkg, plan);
+          var title, rows = "";
+          if (plan.months === 0) {
+            title = "Pay in full";
+            rows += "<tr><td>Deposit due at signing</td><td>" + money(m.dueToday) + "</td></tr>";
+            rows += "<tr><td>Balance due at launch</td><td>" + money(m.balanceAtLaunch) + "</td></tr>";
+            rows += "<tr><td>Care plan (from launch)</td><td>" + money(pkg.care) + "/mo</td></tr>";
+            rows += "<tr class='total'><td>Total project price</td><td>" + money(pkg.price) + "</td></tr>";
+          } else {
+            title = plan.label + (plan.apr ? "<span class='apr-badge'>9.99% APR</span>" : "<span class='zero-badge'>0% APR</span>");
+            rows += "<tr><td>Project payment</td><td>" + money(m.monthlyProject) + "/mo</td></tr>";
+            rows += "<tr><td>Care plan</td><td>" + money(pkg.care) + "/mo</td></tr>";
+            rows += "<tr class='total'><td>Total monthly</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
+            rows += "<tr><td>Due at signing</td><td>$0 — deposit waived</td></tr>";
+            if (plan.apr) {
+              rows += "<tr><td>Total interest over " + plan.months + " months</td><td>" + money(m.interest) + "</td></tr>";
+              rows += "<tr><td>Total cost of project over the loan</td><td>" + money(m.totalProject) + "</td></tr>";
+              rows += "<tr><td>Total paid over " + plan.months + " months (incl. care plan)</td><td>" + money(m.totalProject + pkg.care * plan.months) + "</td></tr>";
+            } else {
+              rows += "<tr><td>Interest</td><td>$0.00</td></tr>";
+              rows += "<tr><td>Total cost of project</td><td>" + money(pkg.price) + "</td></tr>";
+            }
+          }
+          html += "<button type='button' class='choice plan' data-plan='" + plan.id + "' role='radio' aria-checked='" +
+                  (state.plan === plan.id ? "true" : "false") + "'>" +
+                  "<span class='pick-dot'></span><h3>" + title + "</h3>" +
+                  "<table>" + rows + "</table>" +
+                  (plan.apr ? "<p class='fine'>Financing at 9.99% APR over " + plan.months + " months. The full cost of the loan is shown above — interest is the only extra you pay for spreading it out.</p>" : "") +
+                  "</button>";
+        });
+        document.getElementById("planList").innerHTML = html;
+        var btns = document.querySelectorAll("#planList .plan");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function () {
+            state.plan = this.getAttribute("data-plan");
+            document.getElementById("err2").textContent = "";
+            var all = document.querySelectorAll("#planList .plan");
+            for (var j = 0; j < all.length; j++) {
+              all[j].setAttribute("aria-checked", all[j].getAttribute("data-plan") === state.plan ? "true" : "false");
+            }
+          });
+        }
+      }
+      function validateStep2() {
+        if (!state.plan) {
+          document.getElementById("err2").textContent = "Please tap a payment plan to choose one.";
+          return false;
+        }
+        return true;
+      }
+      function currentPlan() {
+        for (var i = 0; i < PLANS.length; i++) if (PLANS[i].id === state.plan) return PLANS[i];
+        return null;
+      }
+
+      /* ---------------- Step 3 : questionnaire ---------------- */
+      function fieldVal(id) { return document.getElementById(id).value.trim(); }
+      function checkedVals(id) {
+        var out = [], boxes = document.querySelectorAll("#" + id + " input:checked");
+        for (var i = 0; i < boxes.length; i++) out.push(boxes[i].value);
+        return out;
+      }
+      function radioVal(name) {
+        var el = document.querySelector("input[name='" + name + "']:checked");
+        return el ? el.value : "";
+      }
+      function markInvalid(fieldId, inputId, bad) {
+        document.getElementById(fieldId).classList.toggle("invalid", bad);
+        return !bad;
+      }
+      function validateStep3() {
+        var ok = true;
+        ok = markInvalid("f-name", "q_name", fieldVal("q_name") === "") && ok;
+        var email = fieldVal("q_email");
+        ok = markInvalid("f-email", "q_email", email === "" || email.indexOf("@") < 1) && ok;
+        ok = markInvalid("f-phone", "q_phone", fieldVal("q_phone").replace(/\D/g, "").length < 7) && ok;
+        if (!ok) {
+          document.getElementById("err3").textContent = "We just need your name, email, and cell phone — the rest is optional.";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          document.getElementById("err3").textContent = "";
+          var sn = document.getElementById("sign_name");
+          if (!sn.value.trim()) sn.value = fieldVal("q_name");
+        }
+        return ok;
+      }
+      function collectAnswers() {
+        return {
+          name: fieldVal("q_name"),
+          biz: fieldVal("q_biz") || "The Cake Factory",
+          email: fieldVal("q_email"),
+          phone: fieldVal("q_phone"),
+          contactPref: fieldVal("q_contact"),
+          about: fieldVal("q_about"),
+          products: checkedVals("products"),
+          signatureItems: fieldVal("q_signature"),
+          notList: fieldVal("q_notlist"),
+          style: radioVal("style"),
+          colorsLike: fieldVal("q_colors_like"),
+          colorsAvoid: fieldVal("q_colors_avoid"),
+          inspo: fieldVal("q_inspo"),
+          logo: radioVal("logo"),
+          photos: radioVal("photos"),
+          features: checkedVals("features"),
+          appFeatures: state.pkg === "B" ? checkedVals("appFeatures") : [],
+          anything: fieldVal("q_anything")
+        };
+      }
+
+      /* ---------------- Step 4 : review ---------------- */
+      function summaryTable(pkg, plan, m, a) {
+        var rows = "";
+        rows += "<tr><td>Package</td><td>" + pkg.name + "</td></tr>";
+        rows += "<tr><td>Project price (Friends &amp; Family)</td><td>" + money(pkg.price) + "</td></tr>";
+        rows += "<tr><td>Regular price</td><td style='text-decoration:line-through;font-weight:400;'>" + money(pkg.market) + "</td></tr>";
+        rows += "<tr><td>Logo design</td><td>Included</td></tr>";
+        rows += "<tr><td>Care plan</td><td>" + money(pkg.care) + "/mo</td></tr>";
+        if (plan.months === 0) {
+          rows += "<tr><td>Payment plan</td><td>Pay in full</td></tr>";
+          rows += "<tr><td>Deposit due at signing</td><td>" + money(m.dueToday) + "</td></tr>";
+          rows += "<tr><td>Balance due at launch</td><td>" + money(m.balanceAtLaunch) + "</td></tr>";
+        } else {
+          rows += "<tr><td>Payment plan</td><td>" + plan.label + (plan.apr ? " · 9.99% APR" : " · 0% APR") + "</td></tr>";
+          rows += "<tr><td>Due at signing</td><td>$0.00</td></tr>";
+          rows += "<tr><td>Monthly project payment</td><td>" + money(m.monthlyProject) + "</td></tr>";
+          if (plan.apr) {
+            rows += "<tr><td>Total interest (" + plan.months + " mo)</td><td>" + money(m.interest) + "</td></tr>";
+            rows += "<tr><td>Total project cost over loan</td><td>" + money(m.totalProject) + "</td></tr>";
+          }
+          rows += "<tr class='total'><td>Total monthly (incl. care plan)</td><td>" + money(m.monthlyProject + pkg.care) + "/mo</td></tr>";
+        }
+        var qa = "";
+        function q(label, val) { if (val) qa += "<p><b>" + label + "</b>" + val + "</p>"; }
+        q("Contact", a.name + " · " + a.phone + " · " + a.email + " (prefers " + a.contactPref.toLowerCase() + ")");
+        q("Menu items", a.products.join(", "));
+        q("Signature items", a.signatureItems);
+        q("Do not list", a.notList);
+        q("Style", a.style);
+        q("Colors", [a.colorsLike ? "loves " + a.colorsLike : "", a.colorsAvoid ? "avoid " + a.colorsAvoid : ""].filter(Boolean).join(" · "));
+        q("Inspiration", a.inspo);
+        q("Logo", a.logo);
+        q("Photos", a.photos);
+        q("Website features", a.features.join(", "));
+        q("App wishlist", a.appFeatures.join(", "));
+        q("Her story", a.about);
+        q("Anything else", a.anything);
+        return "<h3>" + a.biz + " — " + pkg.name + "</h3><table>" + rows + "</table>" +
+               (qa ? "<div class='qa'>" + qa + "</div>" : "");
+      }
+      function buildReview() {
+        var pkg = PACKAGES[state.pkg], plan = currentPlan(), a = collectAnswers();
+        var m = planMath(pkg, plan);
+        document.getElementById("reviewBox").innerHTML = summaryTable(pkg, plan, m, a);
+      }
+
+      /* ---------------- Signature pad ---------------- */
+      var canvas = document.getElementById("sig");
+      var ctx = canvas.getContext("2d");
+      var drawing = false, hasInk = false, lastX = 0, lastY = 0;
+
+      function sizeCanvas() {
+        var ratio = window.devicePixelRatio || 1;
+        var w = canvas.clientWidth, h = canvas.clientHeight;
+        if (!w) return;
+        var prev = hasInk ? canvas.toDataURL() : null;
+        canvas.width = w * ratio; canvas.height = h * ratio;
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        ctx.lineWidth = 2.4; ctx.lineCap = "round"; ctx.lineJoin = "round";
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink") || "#33231d";
+        if (prev) {
+          var img = new Image();
+          img.onload = function () { ctx.drawImage(img, 0, 0, w, h); };
+          img.src = prev;
+        }
+      }
+      function pos(e) {
+        var r = canvas.getBoundingClientRect();
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      }
+      canvas.addEventListener("pointerdown", function (e) {
+        e.preventDefault();
+        canvas.setPointerCapture(e.pointerId);
+        drawing = true; hasInk = true;
+        var p = pos(e); lastX = p.x; lastY = p.y;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + 0.1, p.y + 0.1); ctx.stroke();
+      });
+      canvas.addEventListener("pointermove", function (e) {
+        if (!drawing) return;
+        var p = pos(e);
+        ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+        lastX = p.x; lastY = p.y;
+      });
+      function endStroke() { drawing = false; }
+      canvas.addEventListener("pointerup", endStroke);
+      canvas.addEventListener("pointercancel", endStroke);
+      document.getElementById("sigClear").addEventListener("click", function () {
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        hasInk = false;
+      });
+      window.addEventListener("resize", function () { if (state.step === 4) sizeCanvas(); });
+
+      var today = new Date();
+      var dateStr = today.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+      document.getElementById("sign_date").value = dateStr;
+
+      /* ---------------- Finish ---------------- */
+      function buildSummaryText(pkg, plan, m, a, signer, sigDate) {
+        var L = [];
+        L.push("CAKE FACTORY — SIGNED QUOTE");
+        L.push("Snyder Freelancing · 412-651-8449");
+        L.push("--------------------------------");
+        L.push("Signed by: " + signer);
+        L.push("Date: " + sigDate);
+        L.push("Business: " + a.biz);
+        L.push("Email: " + a.email);
+        L.push("Phone: " + a.phone + " (prefers " + a.contactPref.toLowerCase() + ")");
+        L.push("");
+        L.push("PACKAGE: " + pkg.name);
+        L.push("Friends & Family price: " + money(pkg.price) + " (regular " + money(pkg.market) + ")");
+        L.push("Logo design: Included");
+        L.push("Care plan: " + money(pkg.care) + "/mo (min 12 months, or full loan term if financed)");
+        if (plan.months === 0) {
+          L.push("Payment: Pay in full — " + money(m.dueToday) + " deposit at signing, " + money(m.balanceAtLaunch) + " at launch");
+        } else {
+          L.push("Payment: " + plan.label + (plan.apr ? " at 9.99% APR" : " at 0% APR") + " — " + money(m.monthlyProject) + "/mo project + " + money(pkg.care) + "/mo care = " + money(m.monthlyProject + pkg.care) + "/mo total");
+          L.push("Due at signing: $0 (deposit waived)");
+          if (plan.apr) L.push("Total interest: " + money(m.interest) + " · Total project cost over loan: " + money(m.totalProject));
+        }
+        L.push("");
+        L.push("DESIGN QUESTIONNAIRE");
+        function add(label, val) { if (val) L.push(label + ": " + val); }
+        add("Menu items", a.products.join(", "));
+        add("Signature items", a.signatureItems);
+        add("Do NOT list", a.notList);
+        add("Style", a.style);
+        add("Colors loved", a.colorsLike);
+        add("Colors to avoid", a.colorsAvoid);
+        add("Inspiration", a.inspo);
+        add("Logo", a.logo);
+        add("Photos", a.photos);
+        add("Website features", a.features.join(", "));
+        add("App wishlist", a.appFeatures.join(", "));
+        add("Her story", a.about);
+        add("Anything else", a.anything);
+        return L.join("\n");
+      }
+
+      var finalText = "";
+      function finish() {
+        var err = document.getElementById("err4");
+        var signer = document.getElementById("sign_name").value.trim();
+        if (!signer) { err.textContent = "Please type your full name."; return; }
+        if (!hasInk) { err.textContent = "Please sign in the box with your finger."; return; }
+        if (!document.getElementById("agreeBox").checked) { err.textContent = "Please tap the agreement box to finish."; return; }
+        err.textContent = "";
+
+        var pkg = PACKAGES[state.pkg], plan = currentPlan(), a = collectAnswers();
+        var m = planMath(pkg, plan);
+        var sigDate = document.getElementById("sign_date").value;
+
+        document.getElementById("doneBox").innerHTML = summaryTable(pkg, plan, m, a);
+
+        var img = document.getElementById("sigImg");
+        img.src = canvas.toDataURL("image/png");
+        document.getElementById("sigCap").textContent = "Signed by " + signer + " · " + sigDate;
+        document.getElementById("sigPreview").hidden = false;
+
+        finalText = buildSummaryText(pkg, plan, m, a, signer, sigDate);
+        var smsBody = "Hi Daniel — I just signed my Cake Factory quote online! " +
+          pkg.name + ", " + (plan.months === 0 ? "pay in full" : plan.label + (plan.apr ? " at 9.99% APR" : " at 0%")) +
+          (plan.months === 0 ? " (" + money(m.dueToday) + " deposit)" : " (" + money(m.monthlyProject + pkg.care) + "/mo incl. care plan)") +
+          ". — " + signer + "\n\n" + finalText;
+        document.getElementById("smsBtn").href = "sms:+14126518449?&body=" + encodeURIComponent(smsBody);
+        document.getElementById("doneText").textContent =
+          "Thank you, " + signer.split(" ")[0] + "! One last step: tap the button below to text your signed quote to Daniel at Snyder Freelancing — that's what makes it official and gets your project on the schedule.";
+        showStep(5);
+      }
+
+      document.getElementById("dlBtn").addEventListener("click", function () {
+        var blob = new Blob([finalText], { type: "text/plain;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var aEl = document.createElement("a");
+        aEl.href = url;
+        aEl.download = "cake-factory-signed-quote.txt";
+        document.body.appendChild(aEl);
+        aEl.click();
+        document.body.removeChild(aEl);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      });
+
+      showStep(1);
+    </script>
+  </body>
+</html>
