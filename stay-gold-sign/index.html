@@ -669,13 +669,14 @@
       <!-- Review -->
       <div class="survey-card" id="reviewCard">
         <h3><span class="survey-num">✓</span> Review your answers</h3>
-        <p>Tap the button below and this pulls everything you wrote into one clean summary. Check it over, then copy it or download it and send it to Daniel at 412-651-8449. Nothing is sent automatically from this page, you stay in control of when you share it.</p>
+        <p>Tap the button below and this pulls everything you wrote into one clean summary. Check it over, then tap Send my answers to Daniel and it goes straight to him. Copy, download, and text options are there too if you prefer.</p>
         <button type="button" class="btn-dark" id="reviewBtn">Review my answers</button>
         <p class="survey-progress" id="surveyProgress">Tip: you do not have to finish every box. Even a few honest answers give us a strong direction.</p>
         <div id="reviewWrap" style="display:none;margin-top:16px">
           <div class="review-box" id="reviewBox" tabindex="0"></div>
           <div class="review-actions">
-            <button type="button" class="btn-gold" id="copyBtn">Copy my answers</button>
+            <button type="button" class="btn-gold" id="sendBtn">Send my answers to Daniel</button>
+            <button type="button" class="btn-ghost" id="copyBtn">Copy my answers</button>
             <button type="button" class="btn-ghost" id="downloadBtn">Download as a file</button>
             <a class="btn-ghost" id="textLink" href="#" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">Text it to Daniel</a>
           </div>
@@ -942,6 +943,37 @@
     var a=document.createElement('a'); a.href=url; a.download='stay-gold-survey-jeff.txt'; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
     document.getElementById('copyToast').textContent='Downloaded. Send that file to Daniel.';
+  });
+  document.getElementById('sendBtn').addEventListener('click', function(){
+    var toast=document.getElementById('copyToast');
+    var btn=document.getElementById('sendBtn');
+    if(countFilled()===0){ toast.textContent='Add a few answers above first, then tap Send.'; return; }
+    var text = lastSummary || buildSummary();
+    var q = {};
+    text.split('\n').forEach(function(line){
+      var i = line.indexOf(': ');
+      if(i > 0){ var k = line.slice(0, i).trim(); var v = line.slice(i + 2).trim(); if(k && v && !/^\d+\./.test(k)) q[k] = v; }
+    });
+    btn.disabled = true; btn.textContent = 'Sending...';
+    fetch('https://snyder-freelancing-hq.onrender.com/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sourcePage: 'stay-gold',
+        signerName: val('f-name') || 'Jeff',
+        package: 'Stay Gold Apparel - free build (design survey)',
+        paymentPlan: '',
+        addons: [],
+        questionnaire: q,
+        summaryText: text,
+        signatureDataUrl: ''
+      })
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if(res && res.ok){ btn.textContent = 'Sent to Daniel ✓'; toast.textContent = 'Sent. Daniel has your answers now. Thank you!'; }
+      else { btn.disabled = false; btn.textContent = 'Send my answers to Daniel'; toast.textContent = 'Send did not go through. Use Copy, Download, or Text instead.'; }
+    }).catch(function(){
+      btn.disabled = false; btn.textContent = 'Send my answers to Daniel'; toast.textContent = 'Send did not go through. Use Copy, Download, or Text instead.';
+    });
   });
   updateProgress();
 })();
