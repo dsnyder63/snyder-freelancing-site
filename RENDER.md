@@ -3,5 +3,7 @@
 Private repo for Snyder Freelancing client pages.
 
 ## Deploy
-Render static site `snyder-freelancing`, publish directory = repo root.
-- `/cake-factory-sign/` → The Cake Factory mobile quote & sign page
+Each folder is its own Render static site, publish path set to that folder, auto-deploy on push to main.
+- `cake-factory-sign/` → service `snyder-freelancing-site` → The Cake Factory quote & sign page
+- `massage-sign/` → service `massage-sign` → Massage referral quote & sign page
+- `stay-gold-sign/` → service `stay-gold-sign` → Stay Gold Apparel quote and mockup page for Jeff
