@@ -111,8 +111,16 @@
   /* Story */
   .story{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .story-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center}
-  .story-art{display:flex;justify-content:center}
+  .story-art{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
   .story-art img{width:min(280px,64vw)}
+  .founder{text-align:center}
+  .founder-frame{width:176px;height:176px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(circle at 50% 38%, #2e2e2e 0%, #131313 82%);display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 auto 12px}
+  .founder-frame img{width:62%;height:auto}
+  .founder-frame img.photo{width:100%;height:100%;object-fit:cover}
+  .founder-name{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:1.05rem;font-weight:700;margin:0}
+  .founder-role{color:var(--muted);font-size:.9rem;margin:3px 0 0}
+  .story-quote{border-left:3px solid var(--gold);padding:4px 0 4px 16px;margin:20px 0 4px;color:var(--ink);font-size:1.08rem;line-height:1.45}
+  .story-quote span{display:block;color:var(--muted);font-size:.88rem;margin-top:6px}
   .story-copy h2{font-family:var(--display);font-size:clamp(2.1rem,5.4vw,3.2rem);text-transform:uppercase;margin:6px 0 14px;line-height:1.02}
   .story-copy p{color:#cfcfcf;margin:0 0 14px;max-width:58ch}
   .story-copy p strong{color:var(--ink)}
@@ -285,12 +293,23 @@
     <div class="wrap story-grid">
       <div class="story-art">
         <img src="assets/logo-distressed-white.svg" alt="Stay Gold Apparel logo, distressed white gothic SG monogram in a diamond frame over crossed bones" />
+        <!-- JEFF HEADSHOT: replace this placeholder with assets/jeff-headshot.jpg when the headshot arrives -->
+        <div class="founder">
+          <div class="founder-frame"><img src="assets/logo-distressed-white.svg" alt="Stay Gold Apparel logo" /></div>
+          <p class="founder-name">Jeff</p>
+          <p class="founder-role">Founder, Stay Gold Apparel</p>
+        </div>
       </div>
       <div class="story-copy">
         <p class="eyebrow">Why Stay Gold exists</p>
         <h2>Stay golden.</h2>
-        <p>Stay Gold started more than 15 years ago with a book. Jeff read <strong>The Outsiders</strong>, and two words never let go of him: <strong>stay golden</strong>. He has lived his life around them ever since.</p>
-        <p>This brand is built for the ones considered <strong>outcasts, black sheep, and misfits</strong>. All walks of life, living in the fast lane, raised on heavy music and tattoo shops. The designs carry the message, and the message is togetherness: wear it proud, wear it rebellious, and know you are part of something.</p>
+        <p>Stay Gold did not start as a business plan. It started more than 15 years ago with a book. Jeff read <strong>The Outsiders</strong>, and two words stayed with him: <strong>stay golden</strong>. He has carried them ever since, and he lives his life around them.</p>
+        <p>That is what Stay Gold Apparel is. A brand built for the ones who rarely get a brand built for them: the <strong>outcasts, the black sheep, the misfits</strong>. People from all walks of life who live in the <strong>fast lane</strong>, who love <strong>heavy music and tattoos</strong>, and who never quite fit the clean, polished mold.</p>
+        <p>Jeff wants anyone who puts on a Stay Gold shirt or hoodie to feel three things: <strong>proud, rebellious, and part of something</strong>. Proud of who they are. Rebellious enough not to sand off their edges for anyone. And part of something bigger than a shirt, a group of people who get it.</p>
+        <div class="story-quote">Designs, message, togetherness.<span>Jeff, on what makes Stay Gold different</span></div>
+        <p>This has been a <strong>side project</strong> for a long time. Now Jeff is turning it into something real, a side project into <strong>steady income</strong>. He runs it all himself, day to day, and he is building it drop by drop, at markets, pop ups, and events, and on Instagram, where his people already find him. In the next 2 to 3 years he wants a known name with a bigger following behind it.</p>
+        <p>Stay Gold is <strong>dark, gritty, and rough around the edges on purpose</strong>. Like walking into a <strong>tattoo shop</strong> that sells clothes. The logo stays distressed. The colors stay black and white, with a hit of gold. Nothing is cleaned up to look like everyone else, because the people it is for never asked it to be.</p>
+        <p>Stay golden. That was never just a line from a book for Jeff. It is the whole reason this exists.</p>
         <p>Nobody here fits in. Everybody here belongs.</p>
         <div class="creed"><span>Proud</span><span>Rebellious</span><span>Part of something</span></div>
       </div>
