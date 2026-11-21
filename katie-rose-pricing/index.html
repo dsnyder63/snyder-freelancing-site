@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Katie Rose Kreations Pricing Tool. Punch in your costs, see the full breakdown and your net margin.">
+<title>Katie Rose Kreations, Pricing Tool</title>
+<link rel="icon" href="assets/logo.png">
+<style>
+body{background:#F3E7D3;margin:0;padding:14px;font-family:Helvetica,Arial,sans-serif}
+.krk-wrap{max-width:560px;margin:0 auto}
+.krk-under{margin-top:12px;text-align:center;color:#8A6F52;font-size:12.5px;letter-spacing:1.5px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="krk-wrap">
+<div class="cogs">
+  <div class="cogs-head">
+    <img class="cogs-logo" src="assets/logo.png" alt="Katie Rose Kreations logo">
+    <div class="cogs-title">Pricing Tool</div>
+    <div class="cogs-sub">Know your numbers, price it right</div>
+  </div>
+
+  <label class="cogs-lab">Product name</label>
+  <input id="pname" class="cogs-in cogs-text" type="text" placeholder="Example: Pumpkin Roll">
+
+  <div class="cogs-sec">Your price</div>
+  <div class="cogs-row"><span>Selling price (per item)</span><div class="cogs-money"><em>$</em><input id="price" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+
+  <div class="cogs-sec">Cost to make it, per item</div>
+  <div class="cogs-row"><span>Ingredients</span><div class="cogs-money"><em>$</em><input id="ingredients" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+  <div class="cogs-row"><span>Packaging (box, bag, board)</span><div class="cogs-money"><em>$</em><input id="pack" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+  <div class="cogs-row"><span>Labels and stickers</span><div class="cogs-money"><em>$</em><input id="labels" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+  <div class="cogs-row"><span>Your time, minutes per item</span><div class="cogs-money"><em>min</em><input id="laborMin" type="number" min="0" step="1" placeholder="0"></div></div>
+  <div class="cogs-row"><span>What your time is worth, per hour</span><div class="cogs-money"><em>$</em><input id="laborRate" type="number" min="0" step="0.50"></div></div>
+  <div class="cogs-row"><span>Other cost per item</span><div class="cogs-money"><em>$</em><input id="other" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+
+  <div class="cogs-sec">Cost to sell it, per order</div>
+  <div class="cogs-row"><span>Card processing, percent of price</span><div class="cogs-money"><em>%</em><input id="feePct" type="number" min="0" step="0.1"></div></div>
+  <div class="cogs-row"><span>Card fee, fixed per order</span><div class="cogs-money"><em>$</em><input id="feeFixed" type="number" min="0" step="0.01"></div></div>
+  <div class="cogs-row"><span>Delivery or shipping cost per order</span><div class="cogs-money"><em>$</em><input id="shipCost" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+  <div class="cogs-row"><span>Delivery fee you charge the customer</span><div class="cogs-money"><em>$</em><input id="shipCharged" type="number" min="0" step="0.01" placeholder="0.00"></div></div>
+  <div class="cogs-row"><span>Items in a typical order</span><div class="cogs-money"><em>#</em><input id="itemsPerOrder" type="number" min="1" step="1"></div></div>
+
+  <div class="cogs-sec">Overhead, optional but honest</div>
+  <div class="cogs-row"><span>Monthly overhead (market fees, website, supplies)</span><div class="cogs-money"><em>$</em><input id="overheadMonth" type="number" min="0" step="1" placeholder="0"></div></div>
+  <div class="cogs-row"><span>Items you sell per month</span><div class="cogs-money"><em>#</em><input id="itemsPerMonth" type="number" min="0" step="1" placeholder="0"></div></div>
+
+  <div class="cogs-sec">The breakdown</div>
+  <table class="cogs-table">
+    <thead><tr><th>Line</th><th class="r">Cost</th><th class="r">% of price</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <div class="cogs-net">
+    <div class="cogs-netlab">NET PROFIT PER ITEM</div>
+    <div class="cogs-netbig" id="netBig">$0.00</div>
+    <div class="cogs-netmargin" id="netMargin">Net margin 0.0%</div>
+    <div class="cogs-health" id="health">Punch in a price and your costs to see where you stand.</div>
+    <div class="cogs-scale" id="scale"></div>
+  </div>
+
+  <div class="cogs-sec">Price finder</div>
+  <div class="cogs-row"><span>Net margin you want, percent</span><div class="cogs-money"><em>%</em><input id="targetMargin" type="number" min="0" step="1"></div></div>
+  <div class="cogs-finder" id="finder">Add your costs and the finder shows the price that hits your target margin.</div>
+
+  <button class="cogs-print" onclick="window.print()">Print or save this breakdown</button>
+  <div class="cogs-foot">Katie Rose Kreations Pricing Tool. COGS means cost of goods sold, every cost of making and selling one item. Card processing defaults to Square online, 3.3% plus 30 cents per order. For in person sales Square is 2.6% plus 15 cents, just change the two card fee numbers. Tip: the Recipes tab in your back office already figures the ingredient cost per item for every recipe. Change any number, everything updates live.</div>
+</div>
+  <div class="krk-under">Katie Rose Kreations</div>
+</div>
+
+<style>
+.cogs{box-sizing:border-box;max-width:560px;margin:0 auto;background:#FDF8EE;color:#3A2413;font-family:Helvetica,Arial,sans-serif;padding:20px 18px 16px;border:1.5px solid #B84A1F;border-radius:14px}
+.cogs *{box-sizing:border-box}
+.cogs-head{text-align:center;border-bottom:2px solid #C6982C;padding-bottom:12px}
+.cogs-logo{width:250px;max-width:82%;height:auto;display:block;margin:0 auto 6px}
+.cogs-title{font-weight:bold;font-size:19px;letter-spacing:2px;color:#8C3A16;text-transform:uppercase}
+.cogs-sub{font-size:12.5px;color:#8A6F52;margin-top:2px}
+.cogs-lab{display:block;font-size:11px;letter-spacing:1px;color:#8A6F52;margin:14px 0 5px;text-transform:uppercase}
+.cogs-in{width:100%;background:#FFFDF8;border:1px solid #D8C3A5;border-radius:8px;color:#3A2413;padding:9px 10px;font-size:15px}
+.cogs-sec{margin:18px 0 6px;font-size:12px;font-weight:bold;letter-spacing:2px;color:#B84A1F;border-bottom:1px solid #E8D9BE;padding-bottom:5px;text-transform:uppercase}
+.cogs-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 0;font-size:13.5px}
+.cogs-row span{flex:1;color:#4A3220}
+.cogs-money{display:flex;align-items:center;gap:5px}
+.cogs-money em{font-style:normal;color:#8A6F52;font-size:12px;min-width:14px;text-align:right}
+.cogs-money input{width:92px;background:#FFFDF8;border:1px solid #D8C3A5;border-radius:8px;color:#3A2413;padding:8px 9px;font-size:15px;text-align:right}
+.cogs-money input:focus,.cogs-in:focus{outline:none;border-color:#B84A1F}
+.cogs-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:4px}
+.cogs-table th{font-size:11px;letter-spacing:1px;color:#8A6F52;text-transform:uppercase;text-align:left;padding:5px 4px;border-bottom:1px solid #E8D9BE}
+.cogs-table td{padding:5px 4px;border-bottom:1px solid #F0E4CC;color:#4A3220}
+.cogs-table .r{text-align:right;white-space:nowrap}
+.cogs-table tr.sub td{font-weight:bold;color:#3A2413;border-top:1px solid #C6982C;border-bottom:1px solid #C6982C;background:#FAF1DC}
+.cogs-table tr.neg td{color:#3E7C43}
+.cogs-net{margin-top:16px;background:#FAF1DC;border:1.5px solid #C6982C;border-radius:12px;padding:14px;text-align:center}
+.cogs-netlab{font-size:11px;letter-spacing:2px;color:#8A6F52}
+.cogs-netbig{font-size:34px;font-weight:bold;color:#B84A1F;margin:4px 0 0}
+.cogs-netmargin{font-size:16px;font-weight:bold;color:#3A2413;margin-top:2px}
+.cogs-health{font-size:13px;color:#6B5138;margin-top:7px}
+.cogs-scale{font-size:12.5px;color:#8A6F52;margin-top:5px}
+.cogs-finder{background:#FAF1DC;border:1px solid #E8D9BE;border-radius:10px;padding:11px 12px;font-size:14px;color:#4A3220;margin-top:8px;line-height:1.5}
+.cogs-finder b{color:#B84A1F}
+.cogs-print{width:100%;margin-top:16px;background:#B84A1F;color:#FFF;border:none;border-radius:9px;padding:12px;font-size:15px;font-weight:bold;cursor:pointer}
+.cogs-foot{font-size:11px;color:#9A8266;margin-top:10px;line-height:1.5;text-align:center}
+@media print{.cogs-print{display:none}}
+</style>
+
+<script>
+(function(){
+  var FIELDS=["price","ingredients","pack","labels","laborMin","laborRate","other","feePct","feeFixed","shipCost","shipCharged","itemsPerOrder","overheadMonth","itemsPerMonth","targetMargin","pname"];
+  var DEF={price:"",ingredients:"",pack:"",labels:"",laborMin:"",laborRate:"20",other:"",feePct:"3.3",feeFixed:"0.30",shipCost:"",shipCharged:"",itemsPerOrder:"1",overheadMonth:"",itemsPerMonth:"",targetMargin:"40",pname:""};
+  var state={};
+  for(var k in DEF) state[k]=DEF[k];
+  function $(id){return document.getElementById(id);}
+  function load(){
+    if(window.hatchWidget){ var s=window.hatchWidget.getState(DEF)||{}; for(var k in DEF) if(s[k]!==undefined) state[k]=s[k]; }
+    else{ try{ var s2=JSON.parse(localStorage.getItem("krk-pricing")||"{}"); for(var k2 in DEF) if(s2[k2]!==undefined) state[k2]=s2[k2]; }catch(e){} }
+  }
+  function save(){
+    if(window.hatchWidget){ window.hatchWidget.setState(state); }
+    else{ try{ localStorage.setItem("krk-pricing",JSON.stringify(state)); }catch(e){} }
+  }
+  function num(id){ var v=parseFloat(state[id]); return isNaN(v)?0:v; }
+  function money(v){ return (v<0?"-$":"$")+Math.abs(v).toFixed(2); }
+  function pct(v,p){ return p>0 ? (v/p*100).toFixed(1)+"%" : "-"; }
+  function row(name,val,price,cls){ return "<tr"+(cls?" class='"+cls+"'":"")+"><td>"+name+"</td><td class='r'>"+money(val)+"</td><td class='r'>"+pct(val,price)+"</td></tr>"; }
+  function calc(){
+    var price=num("price");
+    var labor=num("laborMin")/60*num("laborRate");
+    var lines=[["Ingredients",num("ingredients")],["Packaging",num("pack")],["Labels and stickers",num("labels")],["Your time (labor)",labor],["Other cost per item",num("other")]];
+    var cogs=0,i; for(i=0;i<lines.length;i++) cogs+=lines[i][1];
+    var ipo=Math.max(1,num("itemsPerOrder"));
+    var feeAmt=price*num("feePct")/100;
+    var feeShare=num("feeFixed")/ipo, shipShare=num("shipCost")/ipo, chargedShare=num("shipCharged")/ipo;
+    var overhead=num("itemsPerMonth")>0 ? num("overheadMonth")/num("itemsPerMonth") : 0;
+    var gross=price-cogs;
+    var total=cogs+feeAmt+feeShare+shipShare-chargedShare+overhead;
+    var net=price-total;
+    var html="";
+    for(i=0;i<lines.length;i++) html+=row(lines[i][0],lines[i][1],price);
+    html+=row("Total cost to make it (COGS)",cogs,price,"sub");
+    html+=row("Gross profit after COGS",gross,price,"sub");
+    html+=row("Card processing ("+num("feePct")+"% of price)",feeAmt,price);
+    html+=row("Card fee per order (share)",feeShare,price);
+    if(shipShare>0) html+=row("Delivery or shipping (share)",shipShare,price);
+    if(chargedShare>0) html+=row("Delivery fee charged to customer",-chargedShare,price,"neg");
+    if(overhead>0) html+=row("Overhead (share per item)",overhead,price);
+    html+=row("TOTAL COST PER ITEM",total,price,"sub");
+    $("rows").innerHTML=html;
+    $("netBig").textContent=money(net);
+    $("netBig").style.color = net<0 ? "#C0392B" : "#B84A1F";
+    var nm = price>0 ? net/price*100 : 0;
+    $("netMargin").textContent = price>0 ? ("Net margin "+nm.toFixed(1)+"%") : "Net margin -";
+    var h;
+    if(price<=0) h="Punch in a price and your costs to see where you stand.";
+    else if(nm<0) h="You lose money on every sale at this price. Raise the price or cut a cost.";
+    else if(nm<20) h="Thin. One surprise cost and this item makes nothing. Price it up or trim costs.";
+    else if(nm<35) h="Workable. Keep an eye on your biggest cost line above.";
+    else if(nm<50) h="Healthy. This is a solid margin for a bakery item.";
+    else h="Strong. This item is carrying its weight.";
+    $("health").textContent=h;
+    $("scale").textContent = price>0 ? ("That is "+money(net*10)+" net on 10 sold, "+money(net*100)+" on 100 sold.") : "";
+    var target=num("targetMargin");
+    var fixed=cogs+feeShare+shipShare-chargedShare+overhead;
+    var denom=1-num("feePct")/100-target/100;
+    var f=$("finder");
+    if(fixed<=0){ f.innerHTML="Add your costs and the finder shows the price that hits your target margin."; }
+    else if(denom<=0){ f.innerHTML="That target is too high once card fees come out. Lower the target margin."; }
+    else{
+      var req=fixed/denom;
+      var nice=Math.ceil(req*4)/4;
+      var nmNow = price>0 ? (net/price*100) : 0;
+      f.innerHTML="To keep a <b>"+target+"% net margin</b> with these costs, price it at <b>"+money(req)+"</b> or higher. A clean shelf price: <b>"+money(nice)+"</b>."+(price>0?(" At your current price of "+money(price)+", your net margin is "+nmNow.toFixed(1)+"%."):"");
+    }
+  }
+  function applyState(){ FIELDS.forEach(function(id){ var el=$(id); if(el) el.value=state[id]; }); }
+  load(); applyState(); calc();
+  FIELDS.forEach(function(id){ var el=$(id); if(!el) return; el.addEventListener("input",function(){ state[id]=el.value; save(); calc(); }); });
+  if(window.hatchWidget){ window.addEventListener("hatch-widget-state",function(e){ var s=e.detail.state||{}; for(var k in DEF) if(s[k]!==undefined) state[k]=s[k]; applyState(); calc(); }); }
+})();
+</script>
+</body>
+</html>
