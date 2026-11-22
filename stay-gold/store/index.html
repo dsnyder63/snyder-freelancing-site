@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script>if(sessionStorage.getItem("sg_unlocked")!=="1"){location.replace("/");}</script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="Stay Gold Apparel. Dark, gritty streetwear in black and white. For the outcasts, the black sheep, and the misfits." />
+<link rel="icon" href="../assets/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="../assets/icon-180.png" />
+<title>Stay Gold Apparel · Official Store</title>
+<style>
+  :root{
+    --bg:#0b0b0b;
+    --bg2:#111111;
+    --panel:#242424;
+    --panel2:#1a1a1a;
+    --line:#3a3a3a;
+    --ink:#f5f5f5;
+    --muted:#a9a9a9;
+    --faint:#6f6f6f;
+    --gold:#d4af37;
+    --gold-hi:#e6c964;
+    --display:"Arial Narrow","Liberation Sans Narrow","Franklin Gothic Medium",Impact,"Helvetica Neue",sans-serif;
+    --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:var(--ink)}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+  .display{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  .eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.28em;font-size:.78rem;color:var(--gold);font-weight:700}
+
+  /* Announce bar */
+  .announce{background:var(--gold);color:#0b0b0b;text-align:center;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-weight:700;font-size:.82rem;padding:9px 12px}
+  .announce b{font-weight:900}
+
+  /* Store nav */
+  .store-nav{position:sticky;top:0;z-index:40;background:rgba(11,11,11,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+  .store-nav-in{display:flex;align-items:center;gap:18px;max-width:1180px;margin:0 auto;padding:10px 18px}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
+  .brand img{width:38px;height:42px;object-fit:contain}
+  .brand .brand-name{font-family:var(--display);font-size:1.28rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;line-height:1}
+  .brand .brand-name small{display:block;font-size:.62rem;letter-spacing:.34em;color:var(--muted);font-weight:700;margin-top:3px}
+  .store-links{display:flex;gap:20px;margin-left:auto;flex-wrap:wrap}
+  .store-links a{text-decoration:none;font-family:var(--display);text-transform:uppercase;letter-spacing:.12em;font-size:.92rem;font-weight:700;color:var(--muted);padding:6px 2px}
+  .store-links a:hover{color:var(--ink)}
+  .cart-btn{display:inline-flex;align-items:center;background:var(--ink);color:#0b0b0b;border:0;border-radius:8px;padding:10px 16px;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-weight:700;font-size:.95rem;min-height:44px;flex:none;margin-left:6px}
+  .cart-count{background:var(--gold);color:#0b0b0b;font-size:.75rem;font-weight:700;min-width:24px;height:24px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;margin-left:8px}
+
+  /* Hero */
+  .hero{position:relative;text-align:center;padding:56px 18px 44px;overflow:hidden;background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, #1d1d1d 0%, var(--bg) 62%)}
+  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.012) 3px 4px)}
+  .hero-logo{width:min(340px,72vw);margin:0 auto;position:relative;z-index:1}
+  .hero h1{font-family:var(--display);font-size:clamp(3rem,11vw,6.2rem);line-height:.95;margin:26px 0 6px;text-transform:uppercase;letter-spacing:.03em;position:relative;z-index:1}
+  .hero .hero-sub{font-family:var(--display);text-transform:uppercase;letter-spacing:.42em;color:var(--muted);font-size:clamp(.72rem,2.6vw,.95rem);font-weight:700;margin:0 0 18px;position:relative;z-index:1}
+  .hero p.lede{max-width:560px;margin:0 auto 26px;color:#d8d8d8;font-size:1.06rem;position:relative;z-index:1}
+  .hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:13px 26px;font-family:var(--display);text-transform:uppercase;letter-spacing:.12em;font-weight:700;font-size:1rem;text-decoration:none;min-height:48px;border:2px solid var(--ink)}
+  .btn-main{background:var(--gold);color:#0b0b0b;border-color:var(--gold)}
+  .btn-main:hover{background:var(--gold-hi)}
+  .btn-ghost{background:transparent;color:var(--ink)}
+  .btn-ghost:hover{background:var(--panel)}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+
+  /* Featured drop */
+  .featured{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
+  .featured-in{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:1180px;margin:0 auto}
+  .featured-art{background:radial-gradient(circle at 50% 42%, #2b2b2b 0%, #131313 78%);display:flex;align-items:center;justify-content:center;padding:44px 24px;position:relative;overflow:hidden}
+  .featured-art img.mark{width:min(300px,70vw);opacity:.96}
+  .featured-art .art-name{display:none}
+  .featured-art .photo-tag,.modal-art .photo-tag{position:absolute;top:14px;left:14px;z-index:2}
+  .featured-copy{padding:48px 34px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+  .featured-copy h2{font-family:var(--display);font-size:clamp(2rem,5vw,3.1rem);line-height:1;margin:0;text-transform:uppercase}
+  .featured-copy p{color:var(--muted);margin:0;max-width:44ch}
+  .price-line{font-family:var(--display);font-size:1.25rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+  .price-soon{color:var(--muted)!important}
+  .tag{display:inline-block;background:var(--gold);color:#0b0b0b;font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;align-self:flex-start}
+  .tag-dark{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+
+  /* Sections */
+  section.block{padding:56px 0}
+  .sec-head{margin-bottom:26px}
+  .sec-head h2{font-family:var(--display);font-size:clamp(1.9rem,5vw,2.7rem);text-transform:uppercase;margin:6px 0 8px;line-height:1.05}
+  .sec-head p{color:var(--muted);margin:0;max-width:62ch}
+
+  /* Category chips */
+  .cats{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 24px}
+  .chip{border:1px solid var(--line);background:var(--panel2);color:var(--muted);border-radius:999px;padding:9px 18px;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-weight:700;font-size:.88rem;min-height:42px}
+  .chip:hover{color:var(--ink);border-color:var(--muted)}
+  .chip.on{background:var(--gold);color:#0b0b0b;border-color:var(--gold)}
+
+  /* Product grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-align:left;padding:0;color:var(--ink);display:flex;flex-direction:column;width:100%}
+  .card:hover{border-color:var(--muted)}
+  .card-art{position:relative;aspect-ratio:1/1;background:radial-gradient(circle at 50% 40%, #2e2e2e 0%, #141414 80%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .card-art img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .card-art img.mark{width:44%;opacity:.16}
+  .card-art .art-name{position:absolute;left:14px;right:14px;bottom:14px;font-family:var(--display);text-transform:uppercase;font-size:1.45rem;line-height:1.02;letter-spacing:.03em;font-weight:700;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+  .card-art .photo-tag{position:absolute;top:12px;left:12px}
+  .card-body{padding:15px 16px 17px;display:flex;flex-direction:column;gap:4px}
+  .card-body h3{margin:0;font-family:var(--display);text-transform:uppercase;font-size:1.18rem;letter-spacing:.04em;line-height:1.1}
+  .card-body .cat{color:var(--faint);font-size:.82rem;text-transform:uppercase;letter-spacing:.14em;font-family:var(--display);font-weight:700}
+  .card-body .price{font-weight:700;margin-top:4px;color:var(--gold)}
+  .card-body .hint{color:var(--muted);font-size:.88rem;margin-top:6px;font-weight:600}
+
+  /* Story */
+  .story{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .story-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center}
+  .story-art{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+  .story-art img{width:min(280px,64vw)}
+  .founder{text-align:center}
+  .founder-frame{width:176px;height:176px;border-radius:50%;border:2px solid var(--gold);background:radial-gradient(circle at 50% 38%, #2e2e2e 0%, #131313 82%);display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 auto 12px}
+  .founder-frame img{width:62%;height:auto}
+  .founder-frame img.photo{width:100%;height:100%;object-fit:cover}
+  .founder-name{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:1.05rem;font-weight:700;margin:0}
+  .founder-role{color:var(--muted);font-size:.9rem;margin:3px 0 0}
+  .story-quote{border-left:3px solid var(--gold);padding:4px 0 4px 16px;margin:20px 0 4px;color:var(--ink);font-size:1.08rem;line-height:1.45}
+  .story-quote span{display:block;color:var(--muted);font-size:.88rem;margin-top:6px}
+  .story-copy h2{font-family:var(--display);font-size:clamp(2.1rem,5.4vw,3.2rem);text-transform:uppercase;margin:6px 0 14px;line-height:1.02}
+  .story-copy p{color:#cfcfcf;margin:0 0 14px;max-width:58ch}
+  .story-copy p strong{color:var(--ink)}
+  .creed{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .creed span{border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.82rem;font-weight:700;color:var(--muted)}
+
+  /* Customs + gift cards */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel-card{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:30px 28px}
+  .panel-card h3{font-family:var(--display);text-transform:uppercase;font-size:1.7rem;margin:12px 0 8px;line-height:1.05}
+  .panel-card p{color:var(--muted);margin:0 0 14px}
+
+  /* Policies */
+  .policies{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .policy{border:1px solid var(--line);border-radius:12px;padding:22px;background:var(--panel2)}
+  .policy h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;font-size:1.15rem;margin:0 0 6px}
+  .policy p{color:var(--muted);margin:0;font-size:.95rem}
+
+  /* Footer + signup */
+  footer{border-top:1px solid var(--line);background:#080808;padding:52px 0 40px}
+  .signup{max-width:640px}
+  .signup h2{font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,5vw,2.5rem);margin:6px 0 8px;line-height:1.05}
+  .signup p{color:var(--muted);margin:0 0 18px}
+  .signup-form{display:flex;gap:10px;flex-wrap:wrap}
+  .signup-form input{flex:1 1 260px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:13px 16px;font-size:1rem;min-height:48px;font-family:var(--body)}
+  .signup-form input::placeholder{color:var(--faint)}
+  .signup-form input:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .form-msg{margin-top:12px;font-weight:600;min-height:1.4em}
+  .form-msg.ok{color:#fff}
+  .form-msg.err{color:#ffb3b3}
+  .foot-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:36px;margin-bottom:44px}
+  .foot-links h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.95rem;margin:8px 0 12px}
+  .foot-links a{display:block;color:var(--muted);text-decoration:none;padding:4px 0}
+  .foot-links a:hover{color:var(--ink)}
+  .foot-links p{color:var(--muted);margin:0 0 6px}
+  .legal{border-top:1px solid var(--line);padding-top:20px;color:var(--faint);font-size:.86rem;display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between}
+
+  /* Product modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:60;opacity:0;pointer-events:none;transition:opacity .22s ease}
+  .overlay.open{opacity:1;pointer-events:auto}
+  .modal{position:fixed;inset:0;z-index:61;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+  .modal-card{background:var(--bg2);border:1px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;width:min(880px,100%);max-height:92vh;overflow:auto;transform:translateY(24px);opacity:0;transition:all .22s ease;pointer-events:none}
+  .modal.open .modal-card{transform:none;opacity:1;pointer-events:auto}
+  .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .modal-art{position:relative;background:radial-gradient(circle at 50% 40%, #2e2e2e 0%, #131313 82%);min-height:320px;display:flex;align-items:center;justify-content:center}
+  .modal-art img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .modal-art img.mark{width:46%;opacity:.16}
+  .modal-art .art-name{position:absolute;left:20px;right:20px;bottom:20px;font-family:var(--display);text-transform:uppercase;font-size:2rem;line-height:1;font-weight:700;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+  .modal-body{padding:28px 26px 30px}
+  .modal-body h3{font-family:var(--display);text-transform:uppercase;font-size:1.9rem;line-height:1.02;margin:8px 0 6px}
+  .modal-body .desc{color:var(--muted);margin:10px 0 4px}
+  .field-label{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.82rem;font-weight:700;margin:18px 0 8px;color:var(--muted)}
+  .sizes{display:flex;gap:8px;flex-wrap:wrap}
+  .size-btn{border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:8px;min-width:48px;min-height:46px;padding:8px 13px;font-family:var(--display);font-weight:700;letter-spacing:.06em;font-size:.98rem}
+  .size-btn:hover{border-color:var(--muted)}
+  .size-btn.on{background:var(--ink);color:#0b0b0b;border-color:var(--ink)}
+  .qty-row{display:flex;align-items:center;gap:12px}
+  .qty-btn{width:46px;height:46px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-size:1.25rem;font-weight:700;line-height:1}
+  .qty-num{font-family:var(--display);font-size:1.3rem;font-weight:700;min-width:30px;text-align:center}
+  .modal-actions{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+  .ship-note{color:var(--faint);font-size:.88rem;margin:2px 0 0}
+  .icon-btn{position:absolute;top:12px;right:12px;z-index:2;width:42px;height:42px;border-radius:999px;border:1px solid var(--line);background:rgba(11,11,11,.85);color:var(--ink);font-size:1.15rem;line-height:1}
+
+  /* Cart drawer */
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,94vw);background:var(--bg2);border-left:1px solid var(--line);z-index:61;transform:translateX(102%);transition:transform .24s ease;display:flex;flex-direction:column}
+  .drawer.open{transform:none}
+  .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}
+  .drawer-head h3{font-family:var(--display);text-transform:uppercase;font-size:1.4rem;margin:0;letter-spacing:.05em}
+  .drawer-close{width:42px;height:42px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-size:1.1rem}
+  .drawer-body{flex:1;overflow:auto;padding:16px 20px}
+  .ship-progress{margin-bottom:18px}
+  .ship-progress p{margin:0 0 8px;font-size:.92rem;color:var(--muted);font-weight:600}
+  .bar{height:10px;border-radius:999px;background:var(--panel);overflow:hidden;border:1px solid var(--line)}
+  .bar-fill{height:100%;background:var(--gold);width:0%;transition:width .3s ease}
+  .cartline{display:flex;gap:12px;padding:13px 0;border-bottom:1px dashed var(--line)}
+  .cartline:last-child{border-bottom:0}
+  .cartline .cl-main{flex:1}
+  .cartline .cl-name{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-weight:700;line-height:1.15}
+  .cartline .cl-meta{color:var(--muted);font-size:.88rem;margin-top:2px}
+  .cartline .cl-price{font-weight:700;white-space:nowrap}
+  .cl-remove{background:none;border:0;color:var(--faint);text-decoration:underline;font-size:.84rem;padding:2px 0 0}
+  .cl-remove:hover{color:var(--ink)}
+  .empty{color:var(--muted)}
+  .drawer-foot{border-top:1px solid var(--line);padding:16px 20px 20px;background:#0e0e0e}
+  .totals{display:grid;gap:7px;margin-bottom:14px}
+  .totals .row{display:flex;justify-content:space-between;color:var(--muted)}
+  .totals .row span:last-child{color:var(--ink);font-weight:600}
+  .totals .grand{border-top:1px solid var(--line);padding-top:9px;font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:1.08rem}
+  .totals .grand span{color:var(--ink);font-weight:700}
+  .drawer-actions{display:flex;gap:10px}
+  .drawer-actions .btn{flex:1;padding:13px 10px}
+  .toast{margin:12px 0 0;font-weight:600;min-height:1.3em;color:var(--ink)}
+  .checkout-note{color:var(--faint);font-size:.84rem;margin:10px 0 0}
+
+  @media (max-width:860px){
+    .featured-in{grid-template-columns:1fr}
+    .featured-copy{padding:30px 22px 38px}
+    .story-grid{grid-template-columns:1fr;gap:26px}
+    .duo{grid-template-columns:1fr}
+    .policies{grid-template-columns:1fr}
+    .modal-grid{grid-template-columns:1fr}
+    .modal-art{min-height:250px}
+    .foot-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .store-links{display:none}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+    .card-art .art-name{font-size:1.12rem}
+    .hero{padding-top:40px}
+    section.block{padding:42px 0}
+  }
+</style>
+</head>
+<body>
+
+<div class="announce">Free shipping on orders over <b>$75</b> &nbsp;·&nbsp; The first drop is coming</div>
+
+<header class="store-nav">
+  <div class="store-nav-in">
+    <a class="brand" href="#top" aria-label="Stay Gold Apparel, back to top">
+      <img src="../assets/logo-distressed-white.svg" alt="" />
+      <span class="brand-name">Stay Gold<small>Apparel</small></span>
+    </a>
+    <nav class="store-links" aria-label="Store">
+      <a href="#shop">Shop</a>
+      <a href="#shop" data-navcat="shirts">Shirts</a>
+      <a href="#shop" data-navcat="hoodies">Hoodies</a>
+      <a href="#shop" data-navcat="headwear">Headwear</a>
+      <a href="#customs">Customs</a>
+      <a href="#story">Story</a>
+      <a href="#giftcards">Gift Cards</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" type="button" aria-haspopup="dialog">Cart <span class="cart-count" id="cartCount">0</span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <img class="hero-logo" src="../assets/logo-distressed-white.svg" alt="Stay Gold Apparel logo, distressed white gothic SG monogram in a diamond frame over crossed bones on black" />
+    <h1>Stay Gold</h1>
+    <p class="hero-sub">Apparel · Est. in spirit 15+ years ago</p>
+    <p class="lede">Dark, gritty streetwear for the ones who never fit the mold. Built like walking into a tattoo shop that sells clothes. Black and white, with a hit of gold.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-main" href="#shop">Shop the drop</a>
+      <a class="btn btn-ghost" href="#story">The story</a>
+    </div>
+  </div>
+
+  <!-- FEATURED / NEWEST DROP -->
+  <div class="featured" id="featured"></div>
+
+  <!-- SHOP -->
+  <section class="block" id="shop">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">The launch lineup</p>
+        <h2>Shop the drop</h2>
+        <p>Seven pieces open the store. Tap a piece to pick your size and add it to the cart. Real photos and prices land right before launch, and everything here updates the moment they do.</p>
+      </div>
+      <div class="cats" id="cats" role="group" aria-label="Filter products"></div>
+      <div class="grid" id="shopGrid"></div>
+      <div id="customsTeaser"></div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="block story" id="story">
+    <div class="wrap story-grid">
+      <div class="story-art">
+        <img src="../assets/logo-distressed-white.svg" alt="Stay Gold Apparel logo, distressed white gothic SG monogram in a diamond frame over crossed bones" />
+        <!-- JEFF HEADSHOT: replace this placeholder with ../assets/jeff-headshot.jpg when the headshot arrives -->
+        <div class="founder">
+          <div class="founder-frame"><img src="../assets/logo-distressed-white.svg" alt="Stay Gold Apparel logo" /></div>
+          <p class="founder-name">Jeff</p>
+          <p class="founder-role">Founder, Stay Gold Apparel</p>
+        </div>
+      </div>
+      <div class="story-copy">
+        <p class="eyebrow">Why Stay Gold exists</p>
+        <h2>Stay golden.</h2>
+        <p>Stay Gold did not start as a business plan. It started more than 15 years ago with a book. Jeff read <strong>The Outsiders</strong>, and two words stayed with him: <strong>stay golden</strong>. He has carried them ever since, and he lives his life around them.</p>
+        <p>That is what Stay Gold Apparel is. A brand built for the ones who rarely get a brand built for them: the <strong>outcasts, the black sheep, the misfits</strong>. People from all walks of life who live in the <strong>fast lane</strong>, who love <strong>heavy music and tattoos</strong>, and who never quite fit the clean, polished mold.</p>
+        <p>Jeff wants anyone who puts on a Stay Gold shirt or hoodie to feel three things: <strong>proud, rebellious, and part of something</strong>. Proud of who they are. Rebellious enough not to sand off their edges for anyone. And part of something bigger than a shirt, a group of people who get it.</p>
+        <div class="story-quote">Designs, message, togetherness.<span>Jeff, on what makes Stay Gold different</span></div>
+        <p>This has been a <strong>side project</strong> for a long time. Now Jeff is turning it into something real, a side project into <strong>steady income</strong>. He runs it all himself, day to day, and he is building it drop by drop, at markets, pop ups, and events, and on Instagram, where his people already find him. In the next 2 to 3 years he wants a known name with a bigger following behind it.</p>
+        <p>Stay Gold is <strong>dark, gritty, and rough around the edges on purpose</strong>. Like walking into a <strong>tattoo shop</strong> that sells clothes. The logo stays distressed. The colors stay black and white, with a hit of gold. Nothing is cleaned up to look like everyone else, because the people it is for never asked it to be.</p>
+        <p>Stay golden. That was never just a line from a book for Jeff. It is the whole reason this exists.</p>
+        <p>Nobody here fits in. Everybody here belongs.</p>
+        <div class="creed"><span>Proud</span><span>Rebellious</span><span>Part of something</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOMS + GIFT CARDS -->
+  <section class="block" id="customs">
+    <div class="wrap">
+      <div class="duo">
+        <div class="panel-card">
+          <span class="tag">Coming soon</span>
+          <h3>Stay Gold Customs</h3>
+          <p>Custom work is the second line, and it is next. One of a kind, made to order pieces will launch right here under the Stay Gold Apparel umbrella. Same store, same brand, a second line next to the apparel.</p>
+          <p>Workwear and custom orders are on the roadmap too. Join the drop list below and customs news lands in your inbox first.</p>
+          <a class="btn btn-ghost" href="#drops">Get customs news</a>
+        </div>
+        <div class="panel-card" id="giftcards">
+          <span class="tag tag-dark">With the launch</span>
+          <h3>Gift Cards</h3>
+          <p>Gift cards arrive with the store at launch. The cleanest way to put somebody in the drop without guessing their size.</p>
+          <p>There is no gift card checkout in this preview build, on purpose. When the store opens, gift cards will sit right here next to the apparel.</p>
+          <a class="btn btn-ghost" href="#drops">Hear it first</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POLICIES -->
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="policies">
+        <div class="policy">
+          <h3>Shipping</h3>
+          <p>One flat rate at checkout. Orders over $75 ship free, no code needed.</p>
+        </div>
+        <div class="policy">
+          <h3>Returns</h3>
+          <p>Changed your mind? You have 30 days to send it back.</p>
+        </div>
+        <div class="policy">
+          <h3>Out in the wild</h3>
+          <p>Drops are announced on Instagram first. Catch Stay Gold at markets, pop-ups, and events around Pennsylvania.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER + DROP SIGNUP -->
+<footer id="drops">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="signup">
+        <p class="eyebrow">Email signup for drops</p>
+        <h2>Get the drop first.</h2>
+        <p>New drops, restocks, and customs news, straight to your inbox. Built for the ones who check Instagram too late and miss their size.</p>
+        <form class="signup-form" id="signupForm" novalidate>
+          <label class="eyebrow" for="signupEmail" style="position:absolute;left:-9999px">Email address</label>
+          <input type="email" id="signupEmail" name="email" placeholder="your@email.com" autocomplete="email" required />
+          <button class="btn btn-main" id="signupBtn" type="submit">Join the list</button>
+        </form>
+        <p class="form-msg" id="signupMsg" role="status"></p>
+      </div>
+      <div class="foot-links">
+        <h3>The store</h3>
+        <a href="#shop">Shop the drop</a>
+        <a href="#customs">Stay Gold Customs · Soon</a>
+        <a href="#giftcards">Gift Cards</a>
+        <a href="#story">The story</a>
+        <h3 style="margin-top:22px">Find Stay Gold</h3>
+        <p>Instagram is home base. Drops, restocks, and pop-up dates land there first.</p>
+        <p>Markets, pop-ups, and events across Pennsylvania.</p>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© Stay Gold Apparel. Stay golden.</span>
+      <span>Store preview build. Checkout, prices, and gift cards open at launch.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="productModal" role="dialog" aria-modal="true" aria-label="Product details">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+
+<!-- CART DRAWER -->
+<aside class="drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Your cart">
+  <div class="drawer-head">
+    <h3>Your cart</h3>
+    <button class="drawer-close" id="cartClose" type="button" aria-label="Close cart">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="ship-progress" id="shipProgress"></div>
+    <div id="cartLines"></div>
+  </div>
+  <div class="drawer-foot">
+    <div class="totals" id="cartTotals" style="display:none">
+      <div class="row"><span>Subtotal</span><span id="subTotal">$0.00</span></div>
+      <div class="row"><span>Shipping</span><span id="shipCost">Flat rate at checkout</span></div>
+      <div class="row grand"><span>Total</span><span id="grandTotal">$0.00</span></div>
+    </div>
+    <div class="drawer-actions">
+      <button class="btn btn-main" id="checkoutBtn" type="button">Checkout</button>
+      <button class="btn btn-ghost" id="clearBtn" type="button">Clear</button>
+    </div>
+    <p class="toast" id="cartToast" role="status"></p>
+    <p class="checkout-note">Checkout opens at launch. This preview stops at the cart, so no payment is ever taken here.</p>
+  </div>
+</aside>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     PRODUCT DATA · the one place to edit the store.
+     Prices: set price to a number (like 38) when Jeff locks them.
+             price: null renders as "Price coming soon".
+     Photos: set image to a file path (like "../assets/crossbone-shirt.jpg")
+             when Jeff's real photos arrive. image: null renders the
+             logo placeholder card with the product name in big type.
+     ============================================================ */
+  var PRODUCTS = [
+    { id:"crossbone-shirt",   name:"Crossbone Shirt",                 category:"shirts",   catLabel:"Shirts",   price:null, image:null, oneSize:false, featured:false, tag:"",
+      blurb:"The crossbones under the diamond SG. The piece that started the whole conversation." },
+    { id:"crossbone-hoodie",  name:"Crossbone Hoodie",                category:"hoodies",  catLabel:"Hoodies",  price:null, image:null, oneSize:false, featured:false, tag:"",
+      blurb:"The crossbones, on a hoodie built for cold nights and loud rooms." },
+    { id:"every-dog-shirt",   name:"Every Dog Has Its Day Shirt",     category:"shirts",   catLabel:"Shirts",   price:null, image:null, oneSize:false, featured:false, tag:"",
+      blurb:"For the ones still waiting on their day. It is coming." },
+    { id:"protect-peace-shirt", name:"Protect Your Peace Shirt",      category:"shirts",   catLabel:"Shirts",   price:null, image:null, oneSize:false, featured:false, tag:"",
+      blurb:"Guard your headspace. Say less, mean more." },
+    { id:"pumpkin-ghoul-shirt", name:"Pumpkin Ghoul Shirt",           category:"shirts",   catLabel:"Shirts",   price:null, image:null, oneSize:false, featured:false, tag:"Seasonal energy",
+      blurb:"The ghoul gets his season. Spooky, gritty, gone too soon." },
+    { id:"barbed-wire-hoodie", name:"Stay Gold Barbed Wire Logo Hoodie", category:"hoodies", catLabel:"Hoodies", price:null, image:null, oneSize:false, featured:true, tag:"Newest drop",
+      blurb:"The flagship of the first drop. The SG wrapped in barbed wire, the way it was always meant to be worn." },
+    { id:"barbed-wire-hat",   name:"Barbed Wire Logo Hat",            category:"headwear", catLabel:"Headwear", price:null, image:null, oneSize:true,  featured:false, tag:"",
+      blurb:"One size, zero apologies. The barbed wire SG up front." }
+  ];
+
+  var CATEGORIES = [
+    { id:"all",      label:"All" },
+    { id:"shirts",   label:"Shirts" },
+    { id:"hoodies",  label:"Hoodies" },
+    { id:"headwear", label:"Headwear" },
+    { id:"customs",  label:"Customs · Soon" }
+  ];
+
+  var SIZES = ["S","M","L","XL","2XL","3XL+"];
+  var FREE_SHIP_AT = 75;      /* free shipping threshold, dollars */
+  var HQ_SUBMIT = "https://snyder-freelancing-hq.onrender.com/api/submit";
+  var LOGO = "../assets/logo-distressed-white.svg";
+
+  /* ---------- helpers ---------- */
+  function $(id){ return document.getElementById(id); }
+  function money(n){ return "$" + n.toFixed(2); }
+  function priceText(p){ return p.price == null ? "Price coming soon" : money(p.price); }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+  function artHTML(p, nameClass){
+    if (p.image){
+      return '<img class="photo" src="' + p.image + '" alt="' + esc(p.name) + ' product photo" />' +
+             (p.tag ? '<span class="tag photo-tag">' + esc(p.tag) + "</span>" : "");
+    }
+    return '<img class="mark" src="' + LOGO + '" alt="" aria-hidden="true" />' +
+           '<span class="' + nameClass + '">' + esc(p.name) + "</span>" +
+           (p.tag ? '<span class="tag photo-tag">' + esc(p.tag) + "</span>" : "");
+  }
+
+  /* ---------- featured drop ---------- */
+  var featured = PRODUCTS.filter(function(p){ return p.featured; })[0] || PRODUCTS[0];
+  $("featured").innerHTML =
+    '<div class="featured-in">' +
+      '<div class="featured-art">' + artHTML(featured, "art-name") + "</div>" +
+      '<div class="featured-copy">' +
+        '<span class="tag">' + esc(featured.tag || "Newest drop") + "</span>" +
+        '<p class="eyebrow" style="margin:0">Front and center</p>' +
+        "<h2>" + esc(featured.name) + "</h2>" +
+        "<p>" + esc(featured.blurb) + "</p>" +
+        '<p class="price-line ' + (featured.price == null ? "price-soon" : "") + '">' + priceText(featured) + "</p>" +
+        '<div><button class="btn btn-main" type="button" id="featuredBtn">View the piece</button></div>' +
+      "</div>" +
+    "</div>";
+  $("featuredBtn").addEventListener("click", function(){ openProduct(featured.id); });
+
+  /* ---------- category chips + grid ---------- */
+  var activeCat = "all";
+  var catsEl = $("cats");
+  CATEGORIES.forEach(function(c){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip" + (c.id === activeCat ? " on" : "");
+    b.textContent = c.label;
+    b.setAttribute("data-cat", c.id);
+    b.addEventListener("click", function(){ setCategory(c.id); });
+    catsEl.appendChild(b);
+  });
+
+  function setCategory(id){
+    activeCat = id;
+    var chips = catsEl.querySelectorAll(".chip");
+    for (var i = 0; i < chips.length; i++){
+      chips[i].classList.toggle("on", chips[i].getAttribute("data-cat") === id);
+    }
+    renderGrid();
+  }
+
+  function renderGrid(){
+    var grid = $("shopGrid");
+    var teaser = $("customsTeaser");
+    grid.innerHTML = "";
+    teaser.innerHTML = "";
+    if (activeCat === "customs"){
+      grid.style.display = "none";
+      teaser.innerHTML =
+        '<div class="panel-card" style="margin-top:4px">' +
+          '<span class="tag">Coming soon</span>' +
+          "<h3>Stay Gold Customs</h3>" +
+          "<p>One of a kind, made to order pieces. The customs line opens after the first drop. Join the drop list below and you will hear the day it does.</p>" +
+          '<a class="btn btn-ghost" href="#drops">Get customs news</a>' +
+        "</div>";
+      return;
+    }
+    grid.style.display = "";
+    PRODUCTS.filter(function(p){ return activeCat === "all" || p.category === activeCat; })
+    .forEach(function(p){
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "card";
+      card.setAttribute("aria-label", "View " + p.name + ", " + priceText(p));
+      card.innerHTML =
+        '<span class="card-art">' + artHTML(p, "art-name") + "</span>" +
+        '<span class="card-body">' +
+          '<span class="cat">' + esc(p.catLabel) + (p.oneSize ? " · One size" : "") + "</span>" +
+          "<h3>" + esc(p.name) + "</h3>" +
+          '<span class="price">' + priceText(p) + "</span>" +
+          '<span class="hint">Tap to pick a size</span>' +
+        "</span>";
+      card.addEventListener("click", function(){ openProduct(p.id); });
+      grid.appendChild(card);
+    });
+  }
+
+  /* nav category shortcuts */
+  var navCats = document.querySelectorAll("[data-navcat]");
+  for (var n = 0; n < navCats.length; n++){
+    navCats[n].addEventListener("click", function(){
+      setCategory(this.getAttribute("data-navcat"));
+    });
+  }
+
+  /* ---------- product modal ---------- */
+  var overlay = $("overlay");
+  var modal = $("productModal");
+  var modalCard = $("modalCard");
+  var current = null, currentSize = "M", currentQty = 1;
+
+  function openProduct(id){
+    current = PRODUCTS.filter(function(p){ return p.id === id; })[0];
+    if (!current) return;
+    currentSize = current.oneSize ? "One size" : "M";
+    currentQty = 1;
+    renderModal();
+    overlay.classList.add("open");
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeProduct(){
+    overlay.classList.remove("open");
+    modal.classList.remove("open");
+    if (!cartOpen) document.body.style.overflow = "";
+  }
+
+  function renderModal(){
+    var p = current;
+    var sizes = p.oneSize ? ["One size"] : SIZES;
+    var sizeBtns = sizes.map(function(s){
+      return '<button type="button" class="size-btn' + (s === currentSize ? " on" : "") + '" data-size="' + s + '">' + s + "</button>";
+    }).join("");
+    modalCard.innerHTML =
+      '<div class="modal-grid">' +
+        '<div class="modal-art">' + artHTML(p, "art-name") + "</div>" +
+        '<div class="modal-body">' +
+          '<button class="icon-btn" type="button" id="modalClose" aria-label="Close product view" style="position:absolute;top:12px;right:12px">✕</button>' +
+          (p.tag ? '<span class="tag">' + esc(p.tag) + "</span>" : "") +
+          "<h3>" + esc(p.name) + "</h3>" +
+          '<p class="price-line ' + (p.price == null ? "price-soon" : "") + '">' + priceText(p) + "</p>" +
+          '<p class="desc">' + esc(p.blurb) + "</p>" +
+          '<p class="desc">Black and white, the way Stay Gold does everything.</p>' +
+          '<div class="field-label">Size</div>' +
+          '<div class="sizes">' + sizeBtns + "</div>" +
+          '<div class="field-label">Quantity</div>' +
+          '<div class="qty-row">' +
+            '<button class="qty-btn" type="button" id="qtyMinus" aria-label="One less">−</button>' +
+            '<span class="qty-num" id="qtyNum">1</span>' +
+            '<button class="qty-btn" type="button" id="qtyPlus" aria-label="One more">+</button>' +
+          "</div>" +
+          '<div class="modal-actions">' +
+            '<button class="btn btn-main" type="button" id="addBtn">Add to cart' + (p.price == null ? "" : ", " + money(p.price)) + "</button>" +
+            (p.price == null ? '<p class="ship-note">Price lands at launch. Add it now to build your cart, and the total updates the day prices drop.</p>' : "") +
+            '<p class="ship-note">Flat rate shipping, free over $75. 30 day returns.</p>' +
+          "</div>" +
+        "</div>" +
+      "</div>";
+    $("modalClose").addEventListener("click", closeProduct);
+    var btns = modalCard.querySelectorAll(".size-btn");
+    for (var i = 0; i < btns.length; i++){
+      btns[i].addEventListener("click", function(){
+        currentSize = this.getAttribute("data-size");
+        renderModal();
+      });
+    }
+    $("qtyMinus").addEventListener("click", function(){ if (currentQty > 1){ currentQty--; $("qtyNum").textContent = currentQty; } });
+    $("qtyPlus").addEventListener("click", function(){ if (currentQty < 99){ currentQty++; $("qtyNum").textContent = currentQty; } });
+    $("addBtn").addEventListener("click", function(){
+      addToCart(current, currentSize, currentQty);
+      closeProduct();
+      openCart();
+      $("cartToast").textContent = "Added: " + current.name + " (" + currentSize + ") × " + currentQty + ".";
+    });
+  }
+
+  /* ---------- cart ---------- */
+  var cart = [];   /* {id, name, size, qty, price}  price may be null */
+  var cartOpen = false;
+  var drawer = $("cartDrawer");
+
+  function addToCart(p, size, qty){
+    for (var i = 0; i < cart.length; i++){
+      if (cart[i].id === p.id && cart[i].size === size){
+        cart[i].qty += qty;
+        renderCart();
+        return;
+      }
+    }
+    cart.push({ id:p.id, name:p.name, size:size, qty:qty, price:p.price });
+    renderCart();
+  }
+
+  function cartCountTotal(){
+    return cart.reduce(function(s, it){ return s + it.qty; }, 0);
+  }
+  function cartPricedSubtotal(){
+    return cart.reduce(function(s, it){ return s + (it.price == null ? 0 : it.price * it.qty); }, 0);
+  }
+  function cartHasUnpriced(){
+    return cart.some(function(it){ return it.price == null; });
+  }
+
+  function renderCart(){
+    $("cartCount").textContent = cartCountTotal();
+    var lines = $("cartLines");
+    var totals = $("cartTotals");
+    var progress = $("shipProgress");
+
+    if (!cart.length){
+      lines.innerHTML = '<p class="empty">Your cart is empty. The drop is waiting.</p>';
+      totals.style.display = "none";
+      progress.innerHTML = "<p>Free shipping unlocks at " + money(FREE_SHIP_AT) + ".</p>" +
+        '<div class="bar"><div class="bar-fill" style="width:0%"></div></div>';
+      return;
+    }
+
+    var html = "";
+    cart.forEach(function(it, idx){
+      html += '<div class="cartline"><div class="cl-main">' +
+        '<div class="cl-name">' + esc(it.name) + "</div>" +
+        '<div class="cl-meta">Size ' + esc(it.size) + " · Qty " + it.qty + "</div>" +
+        '<button type="button" class="cl-remove" data-remove="' + idx + '">Remove</button>' +
+        '</div><div class="cl-price">' + (it.price == null ? "TBD" : money(it.price * it.qty)) + "</div></div>";
+    });
+    lines.innerHTML = html;
+    var removers = lines.querySelectorAll("[data-remove]");
+    for (var r = 0; r < removers.length; r++){
+      removers[r].addEventListener("click", function(){
+        cart.splice(Number(this.getAttribute("data-remove")), 1);
+        renderCart();
+      });
+    }
+
+    var sub = cartPricedSubtotal();
+    var unpriced = cartHasUnpriced();
+    var pct = Math.min(100, Math.round((sub / FREE_SHIP_AT) * 100));
+    var msg;
+    if (sub >= FREE_SHIP_AT){
+      msg = "Free shipping unlocked. Your order ships on us.";
+    } else if (unpriced && sub === 0){
+      msg = "Prices land at launch. The free shipping line wakes up the day they do: free over " + money(FREE_SHIP_AT) + ".";
+    } else {
+      msg = "You are " + money(FREE_SHIP_AT - sub) + " away from free shipping.";
+      if (unpriced) msg += " Priced items only, TBD items count once prices drop.";
+    }
+    progress.innerHTML = "<p>" + msg + '</p><div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div>';
+
+    totals.style.display = "grid";
+    $("subTotal").textContent = unpriced ? money(sub) + " + TBD" : money(sub);
+    $("shipCost").textContent = sub >= FREE_SHIP_AT ? "Free, over $75" : "Flat rate at checkout";
+    $("grandTotal").textContent = unpriced ? "Set at launch" : money(sub);
+  }
+
+  function openCart(){
+    cartOpen = true;
+    drawer.classList.add("open");
+    overlay.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeCart(){
+    cartOpen = false;
+    drawer.classList.remove("open");
+    if (!modal.classList.contains("open")){ overlay.classList.remove("open"); document.body.style.overflow = ""; }
+  }
+
+  $("cartBtn").addEventListener("click", openCart);
+  $("cartClose").addEventListener("click", closeCart);
+  overlay.addEventListener("click", function(){ closeProduct(); closeCart(); });
+  $("clearBtn").addEventListener("click", function(){
+    cart = [];
+    renderCart();
+    $("cartToast").textContent = "Cart cleared.";
+  });
+  $("checkoutBtn").addEventListener("click", function(){
+    $("cartToast").textContent = cart.length
+      ? "Checkout opens at launch. Your cart is saved right here until then."
+      : "Your cart is empty, add a piece from the drop first.";
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape"){ closeProduct(); closeCart(); }
+  });
+
+  /* ---------- drop list signup ---------- */
+  $("signupForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    var input = $("signupEmail");
+    var msg = $("signupMsg");
+    var btn = $("signupBtn");
+    var email = (input.value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      msg.className = "form-msg err";
+      msg.textContent = "That email does not look right. Check it and try again.";
+      input.focus();
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = "Joining...";
+    msg.className = "form-msg";
+    msg.textContent = "";
+    fetch(HQ_SUBMIT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sourcePage: "stay-gold-drops",
+        signerName: "",
+        package: "Stay Gold Apparel, drop list signup",
+        paymentPlan: "",
+        addons: [],
+        questionnaire: { type: "drop-signup", email: email },
+        summaryText: "Stay Gold drop list signup: " + email,
+        signatureDataUrl: ""
+      })
+    }).then(function(r){ return r.json(); }).then(function(res){
+      if (res && res.ok){
+        btn.textContent = "You are in ✓";
+        msg.className = "form-msg ok";
+        msg.textContent = "You are on the list. Watch your inbox, the first drop lands there before it lands anywhere else.";
+        input.value = "";
+      } else {
+        throw new Error("not ok");
+      }
+    }).catch(function(){
+      btn.disabled = false;
+      btn.textContent = "Join the list";
+      msg.className = "form-msg err";
+      msg.textContent = "That did not go through. Give it a minute and try again.";
+    });
+  });
+
+  renderGrid();
+  renderCart();
+})();
+</script>
+</body>
+</html>
