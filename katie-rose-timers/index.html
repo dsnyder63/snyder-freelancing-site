@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oven Timers & Conversions · Katie Rose Kreations</title>
+<link rel="icon" href="assets/logo.jpg">
+<link rel="apple-touch-icon" href="assets/logo.jpg">
+<style>
+  :root{
+    --bg:#F9E3E7; --header:#FDE7EA; --card:#FFF9FA; --rose:#C44E6D; --deep:#B03A5B;
+    --teal:#347A75; --ink:#40222c; --muted:#96707C; --line:#EBCBD2;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system, "Segoe UI", Roboto, Arial, sans-serif; padding:18px 14px 40px}
+  .wrap{max-width:860px; margin:0 auto}
+  header{background:var(--header); border:1px solid var(--line); border-bottom:4px solid var(--teal); border-radius:18px; padding:18px 16px 14px; text-align:center}
+  header img{width:300px; max-width:88%; height:auto; display:block; margin:0 auto 4px}
+  header h1{margin:2px 0 2px; font-size:30px; letter-spacing:2px; color:var(--deep)}
+  header p{margin:0; color:var(--muted); font-size:16px}
+  h2.section{margin:30px 0 4px; font-size:24px; letter-spacing:2px; color:var(--deep); text-align:center}
+  p.sub{text-align:center; color:var(--muted); margin:0 0 6px; font-size:15px}
+  .grid{display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px}
+  @media (min-width:640px){ .grid{grid-template-columns:1fr 1fr} }
+  .timer{background:var(--card); border:2px solid var(--line); border-radius:18px; padding:16px; position:relative}
+  .timer.running{border-color:var(--teal)}
+  .timer.done{border-color:var(--deep); animation:flash 1s steps(2,start) infinite}
+  @keyframes flash{ 50%{ background:#FBDCE4 } }
+  .timer .name{width:100%; font-size:20px; font-weight:600; color:var(--ink); border:none; border-bottom:2px dashed var(--line); background:transparent; padding:4px 2px 8px; outline:none}
+  .timer .name:focus{border-bottom-color:var(--rose)}
+  .clock{font-size:64px; font-weight:800; text-align:center; letter-spacing:1px; margin:10px 0 4px; font-variant-numeric:tabular-nums; color:var(--ink)}
+  .timer.done .clock{color:var(--deep)}
+  .donelabel{display:none; text-align:center; font-size:22px; font-weight:800; color:var(--deep); letter-spacing:2px}
+  .timer.done .donelabel{display:block}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:10px 0}
+  .chip{border:2px solid var(--line); background:#fff; color:var(--deep); font-size:17px; font-weight:700; border-radius:999px; padding:8px 14px; cursor:pointer}
+  .chip:active{transform:scale(.96)}
+  .row{display:flex; gap:10px; align-items:stretch; margin-top:8px}
+  .stepper{display:flex; gap:8px}
+  .sbtn{width:52px; border:2px solid var(--line); background:#fff; border-radius:12px; font-size:22px; font-weight:800; color:var(--teal); cursor:pointer}
+  .mainbtn{flex:1; border:none; border-radius:12px; font-size:21px; font-weight:800; letter-spacing:1px; padding:14px 10px; cursor:pointer; background:var(--teal); color:#fff}
+  .mainbtn.pause{background:var(--rose)}
+  .mainbtn:active{transform:scale(.98)}
+  .subrow{display:flex; gap:10px; margin-top:10px}
+  .ghostbtn{flex:1; border:2px solid var(--line); background:#fff; color:var(--muted); border-radius:12px; font-size:16px; font-weight:700; padding:10px; cursor:pointer}
+  .remove{position:absolute; top:10px; right:12px; border:none; background:transparent; color:var(--muted); font-size:20px; cursor:pointer; padding:4px 8px}
+  .addbtn{width:100%; margin-top:16px; border:2px dashed var(--rose); background:var(--header); color:var(--deep); border-radius:16px; font-size:20px; font-weight:800; padding:16px; cursor:pointer}
+  .hint{text-align:center; color:var(--muted); font-size:14px; margin-top:14px}
+  .panel{background:var(--card); border:2px solid var(--line); border-radius:18px; padding:18px 16px; margin-top:14px}
+  .panel h3{margin:0 0 4px; font-size:19px; color:var(--deep); letter-spacing:1px}
+  .panel p.note{margin:0 0 12px; color:var(--muted); font-size:14px}
+  .convrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .convrow input[type=number]{flex:1 1 110px; font-size:22px; font-weight:700; padding:12px; border:2px solid var(--line); border-radius:12px; color:var(--ink); background:#fff; min-width:0}
+  .convrow select{flex:2 1 150px; font-size:18px; padding:12px; border:2px solid var(--line); border-radius:12px; color:var(--ink); background:#fff; min-width:0}
+  .convrow .arrow{font-size:24px; color:var(--rose); font-weight:800; text-align:center; flex:0 0 auto}
+  .answer{margin-top:14px; background:var(--header); border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; font-size:30px; font-weight:800; color:var(--deep); min-height:34px}
+  .answer small{display:block; font-size:14px; font-weight:600; color:var(--muted); margin-top:2px}
+  .swapbtn{margin-top:10px; width:100%; border:2px solid var(--line); background:#fff; color:var(--teal); border-radius:12px; font-size:16px; font-weight:700; padding:10px; cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="assets/logo.jpg" alt="Katie Rose Kreations logo">
+    <h1>OVEN TIMERS</h1>
+    <p>Timers and conversions, all in one place</p>
+  </header>
+
+  <div class="grid" id="grid"></div>
+  <button class="addbtn" id="add">+ Add a timer</button>
+  <p class="hint">Tap a time, name what is baking, and press Start. A finished timer beeps and flashes until you tap Done.</p>
+
+  <h2 class="section">CONVERSIONS</h2>
+  <p class="sub">Cups, ounces, grams, and oven temperatures</p>
+
+  <div class="panel">
+    <h3>Convert anything</h3>
+    <p class="note">Type an amount, pick what you have and what you want.</p>
+    <div class="convrow">
+      <input type="number" id="cv-amt" inputmode="decimal" placeholder="0">
+      <select id="cv-from"></select>
+      <span class="arrow">→</span>
+      <select id="cv-to"></select>
+    </div>
+    <div class="answer" id="cv-answer">Type an amount to convert</div>
+    <button class="swapbtn" id="cv-swap">Swap the two units</button>
+  </div>
+
+  <div class="panel">
+    <h3>Cups to grams, baking staples</h3>
+    <p class="note">For weighing ingredients on the scale. Works both ways.</p>
+    <div class="convrow">
+      <input type="number" id="st-amt" inputmode="decimal" placeholder="0">
+      <select id="st-ing"></select>
+    </div>
+    <div class="answer" id="st-answer">Pick an ingredient to convert</div>
+    <button class="swapbtn" id="st-swap">Switch: grams to cups</button>
+  </div>
+</div>
+<script>
+  /* ---------------- Timers ---------------- */
+  const KEY = "krk-timers";
+  const MAX = 6;
+  let timers = load();
+  let audioCtx = null, beepTimer = null, wakeLock = null;
+
+  function load(){
+    try {
+      const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (Array.isArray(raw) && raw.length) return raw;
+    } catch(e) {}
+    return [ fresh("Oven 1"), fresh("Oven 2") ];
+  }
+  function fresh(name){
+    return { id: Math.random().toString(36).slice(2,9), name: name || "", total: 0, remaining: 0, endAt: 0, state: "idle" };
+  }
+  function save(){ localStorage.setItem(KEY, JSON.stringify(timers)); }
+
+  function fmt(s){
+    s = Math.max(0, Math.ceil(s));
+    const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), ss = s%60;
+    const mm = h > 0 ? String(m).padStart(2,"0") : String(m);
+    return (h > 0 ? h + ":" : "") + mm + ":" + String(ss).padStart(2,"0");
+  }
+
+  function render(){
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    timers.forEach(t => {
+      const card = document.createElement("div");
+      card.className = "timer" + (t.state === "running" ? " running" : "") + (t.state === "done" ? " done" : "");
+      const rem = t.state === "running" ? (t.endAt - Date.now())/1000 : t.remaining;
+      card.innerHTML =
+        '<button class="remove" title="Remove timer">×</button>' +
+        '<input class="name" type="text" placeholder="What is baking?" value="">' +
+        '<div class="clock">' + fmt(t.state === "done" ? 0 : rem) + '</div>' +
+        '<div class="donelabel">TIME TO COME OUT!</div>' +
+        '<div class="chips">' + [5,10,15,20,30,45,60].map(m => '<button class="chip" data-min="' + m + '">' + m + ' min</button>').join("") + '</div>' +
+        '<div class="row">' +
+          '<div class="stepper"><button class="sbtn" data-step="-60">−</button><button class="sbtn" data-step="60">+</button></div>' +
+          (t.state === "done"
+            ? '<button class="mainbtn" data-act="done">Done</button>'
+            : '<button class="mainbtn' + (t.state === "running" ? ' pause' : '') + '" data-act="toggle">' + (t.state === "running" ? "Pause" : "Start") + '</button>') +
+        '</div>' +
+        '<div class="subrow"><button class="ghostbtn" data-act="reset">Reset</button></div>';
+      const nameInput = card.querySelector(".name");
+      nameInput.value = t.name;
+      nameInput.addEventListener("input", () => { t.name = nameInput.value; save(); });
+      card.querySelector(".remove").addEventListener("click", () => {
+        if (timers.length <= 1) return;
+        timers = timers.filter(x => x.id !== t.id); save(); render(); syncBeep();
+      });
+      card.querySelectorAll(".chip").forEach(ch => ch.addEventListener("click", () => {
+        const secs = parseInt(ch.dataset.min, 10) * 60;
+        if (t.state === "done") t.state = "idle";
+        t.total = secs; t.remaining = secs; t.endAt = 0;
+        if (t.state === "running") t.endAt = Date.now() + secs*1000;
+        save(); render();
+      }));
+      card.querySelectorAll(".sbtn").forEach(b => b.addEventListener("click", () => {
+        const d = parseInt(b.dataset.step, 10);
+        const cur = t.state === "running" ? (t.endAt - Date.now())/1000 : t.remaining;
+        const next = Math.max(0, Math.round(cur) + d);
+        t.total = next; t.remaining = next;
+        if (t.state === "running") t.endAt = Date.now() + next*1000;
+        if (t.state === "done" && next > 0) t.state = "idle";
+        save(); render();
+      }));
+      const main = card.querySelector('[data-act="toggle"], [data-act="done"]');
+      main.addEventListener("click", () => {
+        unlockAudio();
+        if (t.state === "done") { t.state = "idle"; t.remaining = t.total; save(); render(); syncBeep(); return; }
+        if (t.state === "running") {
+          t.remaining = Math.max(0, (t.endAt - Date.now())/1000); t.endAt = 0; t.state = "paused";
+        } else {
+          if (t.remaining <= 0 && t.total > 0) t.remaining = t.total;
+          if (t.remaining <= 0) return;
+          t.endAt = Date.now() + t.remaining*1000; t.state = "running";
+          keepAwake();
+        }
+        save(); render();
+      });
+      card.querySelector('[data-act="reset"]').addEventListener("click", () => {
+        t.state = "idle"; t.endAt = 0; t.remaining = t.total; save(); render(); syncBeep();
+      });
+      grid.appendChild(card);
+    });
+    document.getElementById("add").style.display = timers.length >= MAX ? "none" : "block";
+  }
+
+  function tick(){
+    let changed = false;
+    const now = Date.now();
+    timers.forEach(t => {
+      if (t.state === "running" && t.endAt <= now) {
+        t.state = "done"; t.remaining = 0; t.endAt = 0; changed = true;
+        if (navigator.vibrate) navigator.vibrate([300,150,300,150,300]);
+      }
+    });
+    if (changed) { save(); syncBeep(); }
+    document.querySelectorAll(".timer").forEach((card, i) => {
+      const t = timers[i]; if (!t) return;
+      const clock = card.querySelector(".clock");
+      const rem = t.state === "running" ? (t.endAt - now)/1000 : t.remaining;
+      const text = fmt(t.state === "done" ? 0 : rem);
+      if (clock.textContent !== text) clock.textContent = text;
+      const want = "timer" + (t.state === "running" ? " running" : "") + (t.state === "done" ? " done" : "");
+      if (card.className !== want) render();
+    });
+  }
+
+  function unlockAudio(){
+    if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} }
+    if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+  }
+  function beep(){
+    if (!audioCtx) return;
+    const t0 = audioCtx.currentTime;
+    [0, 0.35, 0.7].forEach(off => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = "sine"; o.frequency.value = 880;
+      g.gain.setValueAtTime(0.0001, t0 + off);
+      g.gain.exponentialRampToValueAtTime(0.5, t0 + off + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + off + 0.28);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(t0 + off); o.stop(t0 + off + 0.3);
+    });
+  }
+  function syncBeep(){
+    const anyDone = timers.some(t => t.state === "done");
+    if (anyDone && !beepTimer) { beep(); beepTimer = setInterval(beep, 2000); }
+    if (!anyDone && beepTimer) { clearInterval(beepTimer); beepTimer = null; }
+  }
+  async function keepAwake(){
+    try { if ("wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen"); } catch(e) {}
+  }
+
+  document.getElementById("add").addEventListener("click", () => {
+    if (timers.length >= MAX) return;
+    timers.push(fresh("")); save(); render();
+  });
+
+  render();
+  setInterval(tick, 250);
+  syncBeep();
+
+  /* ---------------- Conversions ---------------- */
+  const UNITS = [
+    { group: "Volume", items: [
+      ["tsp", "Teaspoons", 4.92892], ["tbsp", "Tablespoons", 14.7868],
+      ["cup", "Cups", 236.588], ["floz", "Fluid ounces", 29.5735],
+      ["ml", "Milliliters", 1], ["liter", "Liters", 1000]
+    ]},
+    { group: "Weight", items: [
+      ["g", "Grams", 1], ["kg", "Kilograms", 1000],
+      ["oz", "Ounces", 28.3495], ["lb", "Pounds", 453.592]
+    ]},
+    { group: "Oven temperature", items: [
+      ["F", "Fahrenheit", 0], ["C", "Celsius", 0]
+    ]}
+  ];
+  const unitMap = {};
+  UNITS.forEach(g => g.items.forEach(([id, label, factor]) => unitMap[id] = { label, factor, group: g.group }));
+
+  function fillUnits(sel, selected){
+    sel.innerHTML = UNITS.map(g =>
+      '<optgroup label="' + g.group + '">' +
+      g.items.map(([id, label]) => '<option value="' + id + '"' + (id === selected ? " selected" : "") + '>' + label + '</option>').join("") +
+      '</optgroup>').join("");
+  }
+  const cvAmt = document.getElementById("cv-amt"), cvFrom = document.getElementById("cv-from"),
+        cvTo = document.getElementById("cv-to"), cvAns = document.getElementById("cv-answer");
+  fillUnits(cvFrom, "cup"); fillUnits(cvTo, "tbsp");
+
+  function num(n){
+    if (!isFinite(n)) return "";
+    const r = Math.abs(n) >= 100 ? Math.round(n * 10) / 10 : Math.round(n * 100) / 100;
+    return String(r);
+  }
+  function convert(){
+    const amt = parseFloat(cvAmt.value);
+    const f = unitMap[cvFrom.value], t = unitMap[cvTo.value];
+    if (isNaN(amt)) { cvAns.innerHTML = "Type an amount to convert"; return; }
+    if (f.group !== t.group) {
+      cvAns.innerHTML = "Those two do not convert<small>Pick two from the same group: volume, weight, or temperature</small>";
+      return;
+    }
+    let out;
+    if (f.group === "Oven temperature") {
+      out = cvFrom.value === cvTo.value ? amt
+        : cvFrom.value === "F" ? (amt - 32) * 5 / 9
+        : amt * 9 / 5 + 32;
+      cvAns.innerHTML = num(amt) + " " + f.label + " = " + num(Math.round(out)) + " " + t.label;
+    } else {
+      out = amt * f.factor / t.factor;
+      cvAns.innerHTML = num(amt) + " " + f.label + " = " + num(out) + " " + t.label;
+    }
+  }
+  [cvAmt, cvFrom, cvTo].forEach(el => el.addEventListener("input", convert));
+  document.getElementById("cv-swap").addEventListener("click", () => {
+    const v = cvFrom.value; cvFrom.value = cvTo.value; cvTo.value = v; convert();
+  });
+
+  const STAPLES = [
+    ["All-purpose flour", 120], ["Granulated sugar", 200], ["Brown sugar (packed)", 220],
+    ["Powdered sugar", 120], ["Butter", 227], ["Cocoa powder", 100],
+    ["Chocolate chips", 170], ["Honey", 340]
+  ];
+  const stAmt = document.getElementById("st-amt"), stIng = document.getElementById("st-ing"),
+        stAns = document.getElementById("st-answer"), stSwap = document.getElementById("st-swap");
+  let stToGrams = true;
+  stIng.innerHTML = STAPLES.map(([n], i) => '<option value="' + i + '">' + n + '</option>').join("");
+  function stapleConvert(){
+    const amt = parseFloat(stAmt.value);
+    const [name, perCup] = STAPLES[parseInt(stIng.value, 10)];
+    if (isNaN(amt)) { stAns.innerHTML = "Pick an ingredient to convert"; return; }
+    if (stToGrams) {
+      stAns.innerHTML = num(amt) + (amt === 1 ? " cup " : " cups ") + name.toLowerCase() + " = " + num(Math.round(amt * perCup)) + " grams";
+    } else {
+      stAns.innerHTML = num(amt) + " grams " + name.toLowerCase() + " = " + num(amt / perCup) + (amt / perCup === 1 ? " cup" : " cups");
+    }
+  }
+  [stAmt, stIng].forEach(el => el.addEventListener("input", stapleConvert));
+  stSwap.addEventListener("click", () => {
+    stToGrams = !stToGrams;
+    stSwap.textContent = stToGrams ? "Switch: grams to cups" : "Switch: cups to grams";
+    stapleConvert();
+  });
+  convert();
+  stapleConvert();
+</script>
+</body>
+</html>
