@@ -216,19 +216,22 @@
   function beep(){
     if (!audioCtx) return;
     const t0 = audioCtx.currentTime;
-    [0, 0.35, 0.7].forEach(off => {
-      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-      o.type = "sine"; o.frequency.value = 880;
-      g.gain.setValueAtTime(0.0001, t0 + off);
-      g.gain.exponentialRampToValueAtTime(0.5, t0 + off + 0.03);
-      g.gain.exponentialRampToValueAtTime(0.0001, t0 + off + 0.28);
-      o.connect(g); g.connect(audioCtx.destination);
-      o.start(t0 + off); o.stop(t0 + off + 0.3);
+    // Loud burst: four sharp beeps, square wave plus a higher harmonic, near full volume.
+    [0, 0.28, 0.56, 0.84].forEach(off => {
+      [[1046, "square", 0.55], [1568, "sine", 0.35]].forEach(([freq, type, vol]) => {
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.type = type; o.frequency.value = freq;
+        g.gain.setValueAtTime(0.0001, t0 + off);
+        g.gain.exponentialRampToValueAtTime(vol, t0 + off + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + off + 0.22);
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(t0 + off); o.stop(t0 + off + 0.24);
+      });
     });
   }
   function syncBeep(){
     const anyDone = timers.some(t => t.state === "done");
-    if (anyDone && !beepTimer) { beep(); beepTimer = setInterval(beep, 2000); }
+    if (anyDone && !beepTimer) { beep(); beepTimer = setInterval(beep, 1600); }
     if (!anyDone && beepTimer) { clearInterval(beepTimer); beepTimer = null; }
   }
   async function keepAwake(){
