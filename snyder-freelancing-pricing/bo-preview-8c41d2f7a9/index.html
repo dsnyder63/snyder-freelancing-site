@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="assets/favicon.ico" sizes="any" />
+<title>Stay Gold Apparel · Admin (Pre-Development)</title>
+<style>
+  :root{
+    --bg:#0b0b0b; --bg2:#111111; --panel:#1a1a1a; --panel2:#242424;
+    --line:#3a3a3a; --ink:#f5f5f5; --muted:#a9a9a9; --faint:#6f6f6f;
+    --gold:#d4af37;
+    --display:"Arial Narrow","Liberation Sans Narrow","Franklin Gothic Medium",Impact,"Helvetica Neue",sans-serif;
+    --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+  button{font-family:inherit;cursor:pointer}
+  a.btn{text-decoration:none}
+  .predev-banner{background:var(--ink);color:#0b0b0b;text-align:center;font-weight:700;font-size:.84rem;padding:8px 14px;letter-spacing:.02em}
+  .admin{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 37px)}
+
+  /* Sidebar */
+  .side{background:#080808;border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:2px}
+  .side .brand{display:flex;align-items:center;gap:10px;padding:4px 10px 16px;text-decoration:none;color:var(--ink)}
+  .side .brand img{width:30px;height:33px;object-fit:contain}
+  .side .brand b{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:1.12rem}
+  .side .brand small{display:block;font-family:var(--body);font-size:.66rem;letter-spacing:.24em;color:var(--gold);text-transform:uppercase}
+  .nav-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-radius:8px;color:var(--muted);padding:10px 12px;font-size:.96rem;font-weight:600;min-height:44px}
+  .nav-item:hover{background:var(--panel);color:var(--ink)}
+  .nav-item.on{background:var(--ink);color:#0b0b0b}
+  .nav-item .ic{width:18px;text-align:center;flex:none}
+  .nav-item .pill{margin-left:auto}
+  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:999px;font-size:.72rem;font-weight:700;padding:2px 9px;white-space:nowrap}
+  .pill.gold{background:var(--gold);border-color:var(--gold);color:#0b0b0b}
+  .pill.soon{background:transparent;color:var(--muted)}
+  .nav-item.on .pill{background:#0b0b0b;color:#fff;border-color:#0b0b0b}
+  .nav-item.on .pill.gold{background:#0b0b0b;color:var(--gold);border-color:#0b0b0b}
+  .side .foot{margin-top:auto;padding:12px 10px 2px;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line)}
+
+  /* Main */
+  .main{padding:0 26px 40px;min-width:0}
+  .topbar{display:flex;gap:14px;align-items:center;padding:18px 0 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .search{flex:1 1 260px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--faint);padding:11px 14px;font-size:.94rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:11px 20px;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-weight:700;font-size:.92rem;border:2px solid var(--ink);background:var(--ink);color:#0b0b0b;min-height:44px}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.gold{background:var(--gold);border-color:var(--gold);color:#0b0b0b}
+  .btn.small{padding:8px 14px;min-height:38px;font-size:.84rem}
+  .screen{display:none;padding-top:22px}
+  .screen.on{display:block}
+  .screen h2{font-family:var(--display);text-transform:uppercase;font-size:1.9rem;margin:0 0 4px;letter-spacing:.03em}
+  .screen .sub{color:var(--muted);margin:0 0 20px}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .stat .k{color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.12em;font-family:var(--display);font-weight:700}
+  .stat .v{font-family:var(--display);font-size:2.1rem;font-weight:700;line-height:1.1;margin:4px 0 2px}
+  .stat .v.gold{color:var(--gold)}
+  .stat .d{color:var(--faint);font-size:.86rem}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+  .panel h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:1.05rem;margin:0 0 10px}
+  .panel h3 .pill{margin-left:8px;vertical-align:2px}
+  .order-row,.stock-row{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+  .order-row:last-child,.stock-row:last-child{border-bottom:0}
+  .order-row .grow,.stock-row .grow{flex:1;min-width:160px}
+  .order-row.clickable{cursor:pointer}
+  .low{color:#fff;font-weight:700}
+  .low::before{content:"● ";color:var(--gold)}
+  .muted{color:var(--muted)}
+  .gold{color:var(--gold)}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none}
+  .quickrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .quickrow .btn{flex:1 1 150px}
+
+  .tablewrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.94rem}
+  th{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:.76rem;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  td{padding:11px 12px;border-bottom:1px solid #2a2a2a;vertical-align:middle}
+  tr:last-child td{border-bottom:0}
+  tbody tr.clickable{cursor:pointer}
+  tbody tr.clickable:hover td{background:#202020}
+  .status{font-weight:700;white-space:nowrap}
+  .status.paid{color:#fff}
+  .status.ship{color:var(--muted)}
+  .tagchip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:.76rem;font-weight:700;color:var(--muted);white-space:nowrap}
+  .tagchip.live{color:#0b0b0b;background:var(--ink);border-color:var(--ink)}
+  .tagchip.gold{color:var(--gold);border-color:var(--gold)}
+  .filterchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .fchip{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 16px;font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:.84rem;min-height:40px}
+  .fchip.on{background:var(--ink);color:#0b0b0b;border-color:var(--ink)}
+  .detail-box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;display:none}
+  .detail-box.open{display:block}
+  .detail-box h3{font-family:var(--display);text-transform:uppercase;margin:0 0 8px;font-size:1.1rem;letter-spacing:.06em}
+  .detail-box p{margin:4px 0;color:var(--muted)}
+  .detail-box p b{color:var(--ink)}
+  .stock-input{width:74px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;color:var(--ink);padding:7px 9px;font-size:.92rem}
+  .field{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:11px 12px;font-size:.95rem;font-family:inherit}
+  .field:focus{outline:none;border-color:var(--gold)}
+  textarea.field{resize:vertical;min-height:64px}
+  .flabel{display:block;font-family:var(--display);font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:12px 0 5px}
+  .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  .setrow{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+  .setrow:last-child{border-bottom:0}
+  .setrow .grow{flex:1;min-width:170px}
+  .setrow .lab{font-weight:700}
+  .set-input{width:180px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;color:var(--ink);padding:10px 12px;font-size:.95rem}
+  .set-input:focus{outline:none;border-color:var(--gold)}
+  .tool-card{border:1px solid var(--gold)}
+  .switch{position:relative;display:inline-block;width:48px;height:28px;flex:none;vertical-align:middle}
+  .switch input{appearance:none;-webkit-appearance:none;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;cursor:pointer;z-index:2}
+  .switch .track{position:absolute;inset:0;background:var(--panel2);border:1px solid var(--line);border-radius:999px;pointer-events:none;transition:background .18s ease,border-color .18s ease}
+  .switch .track::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#cfcfcf;transition:transform .18s ease,background .18s ease}
+  .switch input:checked + .track{background:var(--gold);border-color:var(--gold)}
+  .switch input:checked + .track::after{transform:translateX(20px);background:#0b0b0b}
+  .switch input:focus-visible + .track{outline:2px solid var(--gold);outline-offset:2px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#0b0b0b;font-weight:700;padding:12px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:all .22s ease;z-index:50;max-width:92vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%)}
+  @media (max-width:820px){
+    .admin{grid-template-columns:1fr}
+    .side{flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--line)}
+    .side .brand{padding-bottom:4px}
+    .side .foot{display:none}
+    .stats{grid-template-columns:1fr}
+    .formgrid{grid-template-columns:1fr}
+    .main{padding:0 16px 32px}
+    table{font-size:.86rem}
+    th,td{padding:8px}
+  }
+</style>
+</head>
+<body>
+<div class="predev-banner">PRE-DEVELOPMENT MOCK · Sample data only · Not connected to the live store · Not for distribution</div>
+<div class="admin">
+
+  <aside class="side" aria-label="Admin">
+    <a class="brand" href="#" onclick="return false">
+      <img src="assets/logo-distressed-white.svg" alt="" />
+      <span><b>Stay Gold</b><small>Admin</small></span>
+    </a>
+    <button class="nav-item on" type="button" data-screen="today"><span class="ic">⌂</span> Today</button>
+    <button class="nav-item" type="button" data-screen="orders"><span class="ic">▤</span> Orders <span class="pill gold">3 new</span></button>
+    <button class="nav-item" type="button" data-screen="products"><span class="ic">▦</span> Products</button>
+    <button class="nav-item" type="button" data-screen="stock"><span class="ic">▥</span> Stock</button>
+    <button class="nav-item" type="button" data-screen="customers"><span class="ic">◉</span> Customers</button>
+    <button class="nav-item" type="button" data-screen="discounts"><span class="ic">%</span> Discounts</button>
+    <button class="nav-item" type="button" data-screen="money"><span class="ic">$</span> Money</button>
+    <button class="nav-item" type="button" data-screen="messages"><span class="ic">✉</span> Messages <span class="pill gold" id="msgPill">2 new</span></button>
+    <button class="nav-item" type="button" data-screen="customs"><span class="ic">✎</span> Customs <span class="pill soon">soon</span></button>
+    <button class="nav-item" type="button" data-screen="settings"><span class="ic">⚙</span> Settings</button>
+    <div class="foot">Design prototype. Every screen runs on sample data so the full layout can be reviewed before the real build. Daniel's eyes only.</div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search">Search orders, products, customers</div>
+      <button class="btn" type="button" data-goto="products">Add product</button>
+    </div>
+
+    <!-- TODAY -->
+    <section class="screen on" id="screen-today">
+      <h2>Today</h2>
+      <p class="sub">The day at a glance. Sample numbers for layout review.</p>
+      <div class="stats">
+        <div class="stat"><div class="k">Sales today (sample)</div><div class="v">$1,284.00</div><div class="d">Up 18% vs yesterday</div></div>
+        <div class="stat"><div class="k">Orders today (sample)</div><div class="v">32</div><div class="d">3 waiting to ship</div></div>
+        <div class="stat"><div class="k">Store visits today (sample)</div><div class="v">1,140</div><div class="d">Top source: Instagram</div></div>
+      </div>
+      <div class="quickrow">
+        <button class="btn gold" type="button" data-goto="orders" data-open-manual="1">New manual order</button>
+        <button class="btn ghost" type="button" data-goto="products">Add product</button>
+        <button class="btn ghost" type="button" data-goto="messages">Check messages</button>
+        <a class="btn ghost" href="https://snyder-freelancing-pricing.onrender.com" target="_blank" rel="noopener">Pricing Tool</a>
+      </div>
+      <div class="panel">
+        <h3>Recent orders</h3>
+        <div id="homeOrders"></div>
+      </div>
+      <div class="panel" style="margin-bottom:0">
+        <h3>Low stock watch</h3>
+        <div id="homeStock"></div>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="screen" id="screen-orders">
+      <h2>Orders</h2>
+      <p class="sub">Every order in one list, website and in person sales together. Tap an order to see its details. Sample orders only.</p>
+      <div class="filterchips" id="orderFilters">
+        <button class="fchip on" type="button" data-filter="all">All</button>
+        <button class="fchip" type="button" data-filter="To ship">To ship</button>
+        <button class="fchip" type="button" data-filter="Shipped">Shipped</button>
+        <button class="fchip" type="button" data-filter="Delivered">Delivered</button>
+      </div>
+      <div class="detail-box" id="manualBox">
+        <h3>New manual order</h3>
+        <p>For market, pop-up, and in person sales, so every sale lives in one book.</p>
+        <div class="formgrid">
+          <div><label class="flabel" for="moName">Customer name</label><input class="field" id="moName" type="text" placeholder="Example: Walk-up buyer" /></div>
+          <div><label class="flabel" for="moItem">Item</label><input class="field" id="moItem" type="text" placeholder="Example: Crossbone Tee" /></div>
+          <div><label class="flabel" for="moSize">Size</label>
+            <select class="field" id="moSize">
+              <option>S</option><option selected>M</option><option>L</option><option>XL</option><option>2XL</option><option>3XL+</option><option>One size</option>
+            </select></div>
+          <div><label class="flabel" for="moTotal">Total paid ($)</label><input class="field" id="moTotal" type="number" min="0" step="0.01" placeholder="0.00" /></div>
+        </div>
+        <label class="flabel" for="moNote">Note on this order</label>
+        <textarea class="field" id="moNote" placeholder="Anything worth remembering about this sale"></textarea>
+        <p style="margin-top:14px"><button class="btn gold small" type="button" id="moAdd">Add order</button>
+        <button class="btn ghost small" type="button" id="moCancel">Cancel</button></p>
+      </div>
+      <div class="detail-box" id="orderDetail"></div>
+      <p style="margin:0 0 14px"><button class="btn gold small" type="button" id="openManual">New manual order</button></p>
+      <div class="panel" style="padding:6px 6px">
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>Order</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Fulfillment</th></tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="screen" id="screen-products">
+      <h2>Products</h2>
+      <p class="sub">The launch lineup as it will appear in the backend. Prices and photos land before launch, so every product sits in Draft until then.</p>
+      <div class="panel" style="padding:6px 6px">
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>Product</th><th>Status</th><th>Price</th><th>Variants</th><th>Inventory</th><th></th></tr></thead>
+          <tbody id="productsBody"></tbody>
+        </table>
+        </div>
+      </div>
+      <button class="btn ghost" type="button" data-stub="Add product">Add product</button>
+    </section>
+
+    <!-- STOCK -->
+    <section class="screen" id="screen-stock">
+      <h2>Stock</h2>
+      <p class="sub">Stock by product and size. Counts here are sample numbers for layout review. Low stock is flagged at 5 or under.</p>
+      <div class="panel" style="padding:6px 6px">
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>Variant</th><th>SKU</th><th>On hand</th><th>Status</th></tr></thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+        </div>
+      </div>
+      <button class="btn ghost" type="button" data-stub="Save stock counts">Save counts</button>
+    </section>
+
+    <!-- CUSTOMERS -->
+    <section class="screen" id="screen-customers">
+      <h2>Customers</h2>
+      <p class="sub">The customer book builds itself from orders. Tap a customer to see their details. Sample customers only.</p>
+      <div class="detail-box" id="customerDetail"></div>
+      <div class="panel" style="padding:6px 6px">
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>Customer</th><th>Orders</th><th>Total spent</th><th>Last order</th></tr></thead>
+          <tbody id="customersBody"></tbody>
+        </table>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Email signups, the drop list <span class="pill gold" id="signupCount">128 signups</span></h3>
+        <p class="muted" style="margin-top:0">People who signed up on the website to hear about drops. Latest signups below, sample list. The full list exports as one file for email blasts.</p>
+        <div id="signupList"></div>
+        <p style="margin:14px 0 0"><button class="btn ghost small" type="button" data-stub="Export the drop list">Export list</button></p>
+      </div>
+    </section>
+
+    <!-- DISCOUNTS -->
+    <section class="screen" id="screen-discounts">
+      <h2>Discounts</h2>
+      <p class="sub">Codes and automatic offers. Sample codes for layout review; the switches move, but nothing here reaches the storefront in pre-dev.</p>
+      <div class="panel" style="padding:6px 6px">
+        <div class="tablewrap">
+        <table>
+          <thead><tr><th>Code</th><th>Offer</th><th>Applies to</th><th>Used</th><th>Active</th></tr></thead>
+          <tbody id="discountsBody"></tbody>
+        </table>
+        </div>
+      </div>
+      <button class="btn ghost" type="button" data-stub="Create discount">Create discount</button>
+    </section>
+
+    <!-- MONEY -->
+    <section class="screen" id="screen-money">
+      <h2>Money</h2>
+      <p class="sub">What came in, what went out, and what shipping really costs. Sample numbers for layout review.</p>
+      <div class="stats">
+        <div class="stat"><div class="k">Sales today (sample)</div><div class="v">$1,284.00</div><div class="d">32 orders</div></div>
+        <div class="stat"><div class="k">Sales this week (sample)</div><div class="v">$4,930.50</div><div class="d">118 orders</div></div>
+        <div class="stat"><div class="k">Sales this month (sample)</div><div class="v gold">$12,460.25</div><div class="d">296 orders</div></div>
+      </div>
+      <div class="panel">
+        <h3>Shipping money, this month (sample)</h3>
+        <div class="order-row"><span class="grow">Shipping collected from customers</span><span><b>$486.00</b></span></div>
+        <div class="order-row"><span class="grow">What the labels cost</span><span><b>$612.40</b></span></div>
+        <div class="order-row"><span class="grow">Difference</span><span class="gold"><b>Shipping cost the store $126.40</b></span></div>
+        <p class="muted" style="margin-bottom:0">Flat rate shipping, free on orders over $75. Free shipping orders are most of that difference. Labels run through Pirate Ship at launch.</p>
+      </div>
+      <div class="panel">
+        <h3>Expenses (sample)</h3>
+        <div id="expenseList"></div>
+        <div class="order-row"><span class="grow"><b>Total out, listed expenses</b></span><span><b>$803.75</b></span></div>
+        <p style="margin:14px 0 0"><button class="btn ghost small" type="button" data-stub="Add expense">Add expense</button></p>
+      </div>
+      <div class="panel">
+        <h3>The rough picture, this month (sample)</h3>
+        <div class="order-row"><span class="grow">Sales in</span><span><b>$12,460.25</b></span></div>
+        <div class="order-row"><span class="grow">Expenses and labels out</span><span><b>$1,416.15</b></span></div>
+        <div class="order-row"><span class="grow">Left before other costs</span><span class="gold"><b>$11,044.10</b></span></div>
+      </div>
+      <div class="panel tool-card" style="margin-bottom:0">
+        <h3>Pricing Tool</h3>
+        <p class="muted" style="margin-top:0">Work out what a product should sell for. Punch in what it costs to make and ship, and the tool shows the breakdown and the net margin, line by line.</p>
+        <a class="btn gold" href="https://snyder-freelancing-pricing.onrender.com" target="_blank" rel="noopener">Open the Pricing Tool</a>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section class="screen" id="screen-messages">
+      <h2>Messages</h2>
+      <p class="sub">Messages from the website land here, contact questions and custom order requests together. Tap one to read it. Sample messages only.</p>
+      <div class="detail-box" id="msgDetail"></div>
+      <div class="panel">
+        <div id="msgList"></div>
+      </div>
+    </section>
+
+    <!-- CUSTOMS -->
+    <section class="screen" id="screen-customs">
+      <h2>Customs</h2>
+      <p class="sub">Stay Gold Customs, the custom work line under the same brand. Sample requests only.</p>
+      <div class="panel tool-card">
+        <h3>Stay Gold Customs <span class="tagchip gold">Coming soon</span></h3>
+        <p class="muted" style="margin:0">Custom work stays separate from store products. The storefront shows Customs as coming soon, and when it opens, requests from the website land in the inbox below and get worked from here, one job at a time.</p>
+      </div>
+      <div class="detail-box" id="customsDetail"></div>
+      <div class="panel" style="margin-bottom:0">
+        <h3>Request inbox</h3>
+        <div id="customsList"></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="screen" id="screen-settings">
+      <h2>Settings</h2>
+      <p class="sub">The store settings, all in one place. Values shown are the current ones where they are set. Sample screen for layout review.</p>
+      <div class="panel">
+        <h3>Store settings</h3>
+        <div class="setrow"><span class="grow"><span class="lab">Flat rate shipping</span><br /><span class="muted">What every customer pays for shipping, before the free shipping line.</span></span><input class="set-input" type="text" placeholder="Not set" aria-label="Flat rate shipping" /><button class="btn ghost small" type="button" data-stub="Save flat rate shipping">Save</button></div>
+        <div class="setrow"><span class="grow"><span class="lab">Free shipping over</span><br /><span class="muted">Orders at or over this amount ship free.</span></span><input class="set-input" type="text" value="$75" aria-label="Free shipping over" /><button class="btn ghost small" type="button" data-stub="Save free shipping line">Save</button></div>
+        <div class="setrow"><span class="grow"><span class="lab">Returns window</span><br /><span class="muted">How long customers have to send something back.</span></span><input class="set-input" type="text" value="30 days" aria-label="Returns window" /><button class="btn ghost small" type="button" data-stub="Save returns window">Save</button></div>
+        <div class="setrow"><span class="grow"><span class="lab">Ship from address</span><br /><span class="muted">Where orders ship from, and where returns go.</span></span><span class="muted">Not set</span><button class="btn ghost small" type="button" data-stub="Add ship from address">Add</button></div>
+        <div class="setrow"><span class="grow"><span class="lab">Instagram</span><br /><span class="muted">The handle the store links to.</span></span><span class="muted">Not set</span><button class="btn ghost small" type="button" data-stub="Add Instagram handle">Add</button></div>
+        <div class="setrow"><span class="grow"><span class="lab">Business email</span><br /><span class="muted">Where store mail and order copies go.</span></span><span>staygoldapparelpa@gmail.com</span><button class="btn ghost small" type="button" data-stub="Change business email">Change</button></div>
+      </div>
+      <div class="panel">
+        <h3>Coming soon gate</h3>
+        <div class="setrow"><span class="grow"><span class="lab">Gate password</span><br /><span class="muted">The password page at the front of staygoldapparel.com. Changing it here changes it on the site, no rebuild needed.</span></span><span aria-label="Password is set">•••••••</span><button class="btn ghost small" type="button" data-stub="Change gate password">Change</button></div>
+      </div>
+      <div class="panel" style="margin-bottom:0">
+        <h3>Backup</h3>
+        <p class="muted" style="margin-top:0">One file with everything: products, orders, customers, settings. The safety net, same as the bakery backup. Run one before any big change.</p>
+        <button class="btn gold" type="button" data-stub="Export backup">Export backup</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Sample data for layout review only. Nothing here is real. */
+  var ORDERS = [
+    { id:"#1042", date:"Today, 11:42 AM", customer:"Marcus T.", items:"Crossbone Hoodie · L × 1",            total:68.00,  payment:"Paid",    fulfillment:"To ship",   source:"Website", discount:"None",        note:"" },
+    { id:"#1041", date:"Today, 10:15 AM", customer:"Dana R.",   items:"Crossbone Tee · M × 1, Barbed Wire Hat × 1", total:70.00, payment:"Paid", fulfillment:"To ship", source:"Website", discount:"None", note:"Customer asked for the hat in its own box." },
+    { id:"#1040", date:"Today, 9:03 AM",  customer:"Chris P.",  items:"Stay Gold Barbed Wire Hoodie · XL × 1", total:72.00, payment:"Paid", fulfillment:"To ship", source:"Website", discount:"None", note:"" },
+    { id:"#1039", date:"Yesterday",       customer:"Sam K.",    items:"Crossbone Tee · S × 1, Crossbone Tee · M × 1", total:76.00, payment:"Paid", fulfillment:"Shipped", source:"Website", discount:"None", note:"" },
+    { id:"#1038", date:"Yesterday",       customer:"Jordan L.", items:"Protect Your Peace Tee · L × 1",     total:38.00,  payment:"Paid",    fulfillment:"Shipped",  source:"Website", discount:"None",        note:"" },
+    { id:"#1037", date:"Mon",             customer:"Alex M.",   items:"Every Dog Has Its Day Tee · 2XL × 1, Pumpkin Ghoul Tee · L × 1", total:76.00, payment:"Paid", fulfillment:"Delivered", source:"Website", discount:"STAYGOLD10", note:"" },
+    { id:"#1036", date:"Last week",       customer:"Riley J.",  items:"Crossbone Tee · M × 1",              total:35.00,  payment:"Paid",    fulfillment:"Delivered", source:"Pop-up sale", discount:"None",    note:"Sold at the flea market booth." },
+    { id:"#1035", date:"Last week",       customer:"Marcus T.", items:"Barbed Wire Hat × 1",                total:32.00,  payment:"Paid",    fulfillment:"Delivered", source:"Website", discount:"None",        note:"" }
+  ];
+
+  var PRODUCTS = [
+    { name:"Crossbone Tee",               status:"Draft", price:null, variants:6, stock:84 },
+    { name:"Crossbone Hoodie",            status:"Draft", price:null, variants:6, stock:57 },
+    { name:"Every Dog Has Its Day Tee",   status:"Draft", price:null, variants:6, stock:63 },
+    { name:"Protect Your Peace Tee",      status:"Draft", price:null, variants:6, stock:71 },
+    { name:"Pumpkin Ghoul Tee",           status:"Draft", price:null, variants:6, stock:40 },
+    { name:"Stay Gold Barbed Wire Hoodie", status:"Draft", price:null, variants:6, stock:48 },
+    { name:"Barbed Wire Hat",             status:"Draft", price:null, variants:1, stock:35 }
+  ];
+
+  var INVENTORY = [
+    { variant:"Crossbone Hoodie · L",        sku:"SG-CH-L",   count:3 },
+    { variant:"Barbed Wire Hat · One size",  sku:"SG-HAT-OS", count:5 },
+    { variant:"Crossbone Tee · M",           sku:"SG-CS-M",   count:24 },
+    { variant:"Stay Gold Barbed Wire Hoodie · XL", sku:"SG-BWH-XL", count:12 },
+    { variant:"Pumpkin Ghoul Tee · L",       sku:"SG-PG-L",   count:9 },
+    { variant:"Protect Your Peace Tee · S",  sku:"SG-PPP-S", count:16 },
+    { variant:"Every Dog Has Its Day Tee · 2XL", sku:"SG-ED-2XL", count:7 }
+  ];
+
+  var DISCOUNTS = [
+    { code:"STAYGOLD10", offer:"10% off the order",      applies:"Everything",        used:0, active:true },
+    { code:"FIRSTDROP",  offer:"Free shipping",          applies:"Orders over $75",   used:0, active:true },
+    { code:"MISFITS",    offer:"$5 off",                 applies:"Shirts",            used:0, active:false }
+  ];
+
+  var CONTACTS = {
+    "Marcus T.": { email:"marcus.t@example.com", phone:"(412) 555-0142", area:"Ross Township, PA",    note:"Repeat buyer. Grabbed the hat after the hoodie." },
+    "Dana R.":   { email:"dana.r@example.com",   phone:"(412) 555-0117", area:"McCandless, PA",       note:"" },
+    "Chris P.":  { email:"chris.p@example.com",  phone:"(412) 555-0190", area:"Pittsburgh, PA",       note:"" },
+    "Sam K.":    { email:"sam.k@example.com",    phone:"(724) 555-0133", area:"Cranberry Township, PA", note:"Bought two sizes, kept both." },
+    "Jordan L.": { email:"jordan.l@example.com", phone:"(412) 555-0161", area:"Glenshaw, PA",         note:"" },
+    "Alex M.":   { email:"alex.m@example.com",   phone:"(412) 555-0128", area:"Allison Park, PA",     note:"" },
+    "Riley J.":  { email:"riley.j@example.com",  phone:"(412) 555-0155", area:"Pittsburgh, PA",       note:"Met at the pop-up booth." }
+  };
+
+  var SIGNUPS = [
+    { email:"misfit.mike@example.com", when:"Nov 20", source:"Coming soon page" },
+    { email:"sarah.j@example.com",     when:"Nov 19", source:"Website footer" },
+    { email:"dre.l@example.com",       when:"Nov 18", source:"Instagram link" },
+    { email:"t.walsh@example.com",     when:"Nov 17", source:"Website footer" }
+  ];
+  var SIGNUP_TOTAL = 128;
+
+  var EXPENSES = [
+    { item:"Blank hoodies, restock", amount:420.00, when:"Nov 18" },
+    { item:"Print shop run",         amount:260.00, when:"Nov 15" },
+    { item:"Mailers and packaging",  amount:48.75,  when:"Nov 12" },
+    { item:"Market booth fee",       amount:75.00,  when:"Nov 9" }
+  ];
+
+  var MESSAGES = [
+    { from:"Kayla M.", email:"kayla.m@example.com", subject:"Question about sizes", time:"Today, 9:12 AM", unread:true, custom:false,
+      preview:"Do the hoodies run true to size? I am between a large and an extra large.",
+      body:"Do the hoodies run true to size? I am between a large and an extra large and want to get it right on drop day. Also, will the Crossbone Hoodie come in black only?" },
+    { from:"Tom W.", email:"tom.w@example.com", subject:"Custom order for our crew", time:"Yesterday", unread:true, custom:true,
+      preview:"Looking to get about 12 tees made for our shop crew, our name on the front.",
+      body:"Looking to get about 12 tees made for our shop crew. Black tees, the crossbone design on the back, and our shop name on the front. Can you give me a price before Christmas? Sizes would be mostly large and extra large." },
+    { from:"Priya S.", email:"priya.s@example.com", subject:"Bulk pricing question", time:"Mon", unread:false, custom:false,
+      preview:"Do you offer bulk pricing on 25 or more shirts for a fundraiser?",
+      body:"Do you offer bulk pricing on 25 or more shirts? Our school is doing a fundraiser in the spring and your Protect Your Peace design fits the theme. Happy to talk numbers whenever." }
+  ];
+
+  var CUSTOMS = [
+    { from:"Tom W.", title:"Shop crew tees, about 12", status:"New", time:"Yesterday",
+      detail:"Black tees with the crossbone design on the back and his shop name on the front. Mostly large and extra large. Wants a price before Christmas. This request came in through Messages and lives here too." },
+    { from:"Dre L.", title:"Band hoodies, about 20", status:"In talks", time:"Last week",
+      detail:"Black hoodies with gold print, band logo on the chest. Asked about sizes up to 3XL. Waiting on his final artwork file before a price goes out." }
+  ];
+
+  function $(id){ return document.getElementById(id); }
+  function money(n){ return "$" + n.toFixed(2); }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+  var toastTimer = null;
+  function toast(msg){
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2600);
+  }
+
+  /* Screen switching */
+  var navItems = document.querySelectorAll(".nav-item[data-screen]");
+  function goTo(screen){
+    navItems.forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-screen") === screen); });
+    document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
+    $("screen-" + screen).classList.add("on");
+    window.scrollTo(0, 0);
+  }
+  navItems.forEach(function(btn){
+    btn.addEventListener("click", function(){ goTo(btn.getAttribute("data-screen")); });
+  });
+  document.addEventListener("click", function(e){
+    var stub = e.target.closest("[data-stub]");
+    if (stub) toast(stub.getAttribute("data-stub") + " is a stub in pre-dev. It wires up in the backend phase.");
+    var go = e.target.closest("[data-goto]");
+    if (go) {
+      goTo(go.getAttribute("data-goto"));
+      if (go.getAttribute("data-open-manual")) openManual();
+    }
+  });
+
+  /* Today */
+  $("homeOrders").innerHTML = ORDERS.slice(0, 4).map(function(o){
+    return '<div class="order-row"><span><b>' + o.id + '</b></span><span class="grow">' + esc(o.items) + "</span><span>" + money(o.total) +
+      '</span><span class="pill">' + o.fulfillment + "</span></div>";
+  }).join("");
+  $("homeStock").innerHTML = INVENTORY.slice(0, 4).map(function(v){
+    var low = v.count <= 5;
+    return '<div class="stock-row"><span class="grow">' + esc(v.variant) + '</span><span class="' + (low ? "low" : "muted") + '">' +
+      (low ? "Only " + v.count + " left" : v.count + " in stock") + "</span></div>";
+  }).join("");
+
+  /* Orders */
+  var activeFilter = "all";
+  var nextOrderNum = 1043;
+  function openManual(){
+    $("manualBox").classList.add("open");
+    $("manualBox").scrollIntoView({ behavior:"smooth", block:"nearest" });
+  }
+  $("openManual").addEventListener("click", openManual);
+  $("moCancel").addEventListener("click", function(){ $("manualBox").classList.remove("open"); });
+  $("moAdd").addEventListener("click", function(){
+    var name = $("moName").value.trim() || "Walk-up buyer";
+    var item = $("moItem").value.trim() || "Crossbone Tee";
+    var total = parseFloat($("moTotal").value) || 0;
+    ORDERS.unshift({
+      id:"#" + (nextOrderNum++), date:"Today, now", customer:name,
+      items: item + " · " + $("moSize").value + " × 1", total: total,
+      payment:"Paid", fulfillment:"To ship", source:"Manual", discount:"None",
+      note: $("moNote").value.trim()
+    });
+    activeFilter = "all";
+    document.querySelectorAll("#orderFilters .fchip").forEach(function(c){ c.classList.toggle("on", c.getAttribute("data-filter") === "all"); });
+    renderOrders();
+    $("manualBox").classList.remove("open");
+    $("moName").value = ""; $("moItem").value = ""; $("moTotal").value = ""; $("moNote").value = "";
+    toast("Manual order added in this mock only. It saves for real in the backend phase.");
+  });
+
+  function renderOrders(){
+    $("ordersBody").innerHTML = ORDERS.filter(function(o){
+      return activeFilter === "all" || o.fulfillment === activeFilter;
+    }).map(function(o){
+      return '<tr class="clickable" data-order="' + esc(o.id) + '"><td><b>' + o.id + "</b></td><td>" + esc(o.date) + "</td><td>" + esc(o.customer) +
+        "</td><td>" + esc(o.items) + "</td><td>" + money(o.total) + '</td><td><span class="status paid">' + o.payment +
+        '</span></td><td><span class="status ship">' + o.fulfillment + "</span></td></tr>";
+    }).join("") || '<tr><td colspan="7" class="muted">No sample orders in this view.</td></tr>';
+    document.querySelectorAll("[data-order]").forEach(function(row){
+      row.addEventListener("click", function(){
+        var o = ORDERS.filter(function(x){ return x.id === row.getAttribute("data-order"); })[0];
+        var c = CONTACTS[o.customer] || { email:"Not on file", phone:"Not on file", area:"Not on file" };
+        var box = $("orderDetail");
+        box.innerHTML = "<h3>Order " + o.id + " · sample</h3>" +
+          "<p><b>Customer:</b> " + esc(o.customer) + " &nbsp;·&nbsp; <b>Placed:</b> " + esc(o.date) + " &nbsp;·&nbsp; <b>From:</b> " + esc(o.source) + "</p>" +
+          "<p><b>Contact:</b> " + esc(c.email) + " &nbsp;·&nbsp; " + esc(c.phone) + " &nbsp;·&nbsp; <b>Ship to:</b> " + esc(c.area) + "</p>" +
+          "<p><b>Items:</b> " + esc(o.items) + "</p>" +
+          "<p><b>Total:</b> " + money(o.total) + " &nbsp;·&nbsp; <b>Payment:</b> " + o.payment + " &nbsp;·&nbsp; <b>Fulfillment:</b> " + o.fulfillment + " &nbsp;·&nbsp; <b>Discount used:</b> " + esc(o.discount) + "</p>" +
+          '<label class="flabel" for="odNote">Note on this order</label>' +
+          '<textarea class="field" id="odNote" placeholder="Add a note only your team sees">' + esc(o.note || "") + "</textarea>" +
+          '<p style="margin-top:12px"><button class="btn gold small" type="button" id="odSave">Save note</button> ' +
+          '<button class="btn ghost small" type="button" data-stub="Mark shipped">Mark shipped</button> ' +
+          '<button class="btn ghost small" type="button" data-stub="Print packing slip">Packing slip</button></p>' +
+          '<p class="muted">Shipping labels run through Pirate Ship at launch. Label buying inside this screen is the later step.</p>';
+        box.classList.add("open");
+        $("odSave").addEventListener("click", function(){
+          o.note = $("odNote").value;
+          toast("Note saved in this mock only.");
+        });
+        box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+      });
+    });
+  }
+  document.querySelectorAll("#orderFilters .fchip").forEach(function(chip){
+    chip.addEventListener("click", function(){
+      activeFilter = chip.getAttribute("data-filter");
+      document.querySelectorAll("#orderFilters .fchip").forEach(function(c){ c.classList.toggle("on", c === chip); });
+      renderOrders();
+    });
+  });
+  renderOrders();
+
+  /* Products */
+  $("productsBody").innerHTML = PRODUCTS.map(function(p){
+    return "<tr><td><b>" + esc(p.name) + '</b></td><td><span class="tagchip">' + p.status + '</span></td><td class="muted">' +
+      (p.price == null ? "Not set" : money(p.price)) + "</td><td>" + p.variants + '</td><td class="muted">' + p.stock + ' on hand (sample)</td>' +
+      '<td><button class="btn ghost small" type="button" data-stub="Edit product">Edit</button></td></tr>';
+  }).join("");
+
+  /* Stock */
+  $("inventoryBody").innerHTML = INVENTORY.map(function(v){
+    var low = v.count <= 5;
+    return "<tr><td><b>" + esc(v.variant) + "</b></td><td class=\"muted\">" + v.sku + '</td><td><input class="stock-input" type="number" min="0" value="' + v.count + '" aria-label="On hand for ' + esc(v.variant) + '" /></td>' +
+      '<td><span class="' + (low ? "low" : "muted") + '">' + (low ? "Low stock" : "In stock") + "</span></td></tr>";
+  }).join("");
+
+  /* Customers, built from the orders */
+  function customerBook(){
+    var book = {};
+    ORDERS.forEach(function(o){
+      if (!book[o.customer]) book[o.customer] = { name:o.customer, orders:0, spent:0, last:o.date, list:[] };
+      book[o.customer].orders += 1;
+      book[o.customer].spent += o.total;
+      book[o.customer].list.push(o);
+    });
+    return Object.keys(book).map(function(k){ return book[k]; });
+  }
+  $("customersBody").innerHTML = customerBook().map(function(c){
+    return '<tr class="clickable" data-customer="' + esc(c.name) + '"><td><b>' + esc(c.name) + "</b></td><td>" + c.orders +
+      "</td><td>" + money(c.spent) + '</td><td class="muted">' + esc(c.last) + "</td></tr>";
+  }).join("");
+  document.querySelectorAll("[data-customer]").forEach(function(row){
+    row.addEventListener("click", function(){
+      var c = customerBook().filter(function(x){ return x.name === row.getAttribute("data-customer"); })[0];
+      var ct = CONTACTS[c.name] || { email:"Not on file", phone:"Not on file", area:"Not on file", note:"" };
+      var box = $("customerDetail");
+      box.innerHTML = "<h3>" + esc(c.name) + " · sample</h3>" +
+        "<p><b>Email:</b> " + esc(ct.email) + " &nbsp;·&nbsp; <b>Phone:</b> " + esc(ct.phone) + " &nbsp;·&nbsp; <b>Area:</b> " + esc(ct.area) + "</p>" +
+        "<p><b>Orders:</b> " + c.orders + " &nbsp;·&nbsp; <b>Total spent:</b> " + money(c.spent) + "</p>" +
+        c.list.map(function(o){ return "<p><b>" + o.id + "</b> · " + esc(o.items) + " · " + money(o.total) + "</p>"; }).join("") +
+        (ct.note ? '<p><b>Note:</b> ' + esc(ct.note) + "</p>" : '<p class="muted">No notes on this customer yet.</p>');
+      box.classList.add("open");
+      box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+    });
+  });
+
+  /* Drop list */
+  $("signupCount").textContent = SIGNUP_TOTAL + " signups";
+  $("signupList").innerHTML = SIGNUPS.map(function(s){
+    return '<div class="order-row"><span class="grow"><b>' + esc(s.email) + '</b></span><span class="muted">' + esc(s.source) + '</span><span class="muted">' + esc(s.when) + "</span></div>";
+  }).join("");
+
+  /* Discounts */
+  $("discountsBody").innerHTML = DISCOUNTS.map(function(d){
+    return "<tr><td><b>" + d.code + "</b></td><td>" + esc(d.offer) + "</td><td class=\"muted\">" + esc(d.applies) + "</td><td class=\"muted\">" + d.used +
+      '</td><td><label class="switch"><input type="checkbox" ' + (d.active ? "checked" : "") + ' aria-label="Toggle ' + d.code + '" /><span class="track"></span></label></td></tr>';
+  }).join("");
+  document.querySelectorAll("#discountsBody .switch input").forEach(function(toggle){
+    toggle.addEventListener("change", function(){
+      toast("Saved in this mock only. Discounts reach the store in the backend phase.");
+    });
+  });
+
+  /* Money */
+  $("expenseList").innerHTML = EXPENSES.map(function(x){
+    return '<div class="order-row"><span class="grow">' + esc(x.item) + '</span><span class="muted">' + esc(x.when) + "</span><span><b>" + money(x.amount) + "</b></span></div>";
+  }).join("");
+
+  /* Messages */
+  function renderMessages(){
+    $("msgList").innerHTML = MESSAGES.map(function(m, i){
+      return '<div class="order-row clickable" data-msg="' + i + '">' +
+        (m.unread ? '<span class="dot"></span>' : "") +
+        '<span style="min-width:110px"><b>' + esc(m.from) + "</b></span>" +
+        '<span class="grow">' + (m.unread ? "<b>" : "") + esc(m.subject) + (m.unread ? "</b>" : "") +
+        '<br /><span class="muted">' + esc(m.preview) + "</span></span>" +
+        (m.custom ? '<span class="tagchip gold">Customs</span>' : "") +
+        '<span class="muted">' + esc(m.time) + "</span></div>";
+    }).join("");
+    var unread = MESSAGES.filter(function(m){ return m.unread; }).length;
+    var pill = $("msgPill");
+    pill.textContent = unread + " new";
+    pill.style.display = unread ? "" : "none";
+    document.querySelectorAll("[data-msg]").forEach(function(row){
+      row.addEventListener("click", function(){
+        var m = MESSAGES[Number(row.getAttribute("data-msg"))];
+        m.unread = false;
+        var box = $("msgDetail");
+        box.innerHTML = "<h3>" + esc(m.subject) + "</h3>" +
+          "<p><b>From:</b> " + esc(m.from) + " &nbsp;·&nbsp; " + esc(m.email) + " &nbsp;·&nbsp; " + esc(m.time) + "</p>" +
+          "<p>" + esc(m.body) + "</p>" +
+          (m.custom ? '<p><span class="tagchip gold">Customs</span> <span class="muted">Custom requests also live in the Customs section.</span></p>' : "") +
+          '<p style="margin-top:12px"><button class="btn gold small" type="button" data-stub="Reply by email">Reply by email</button></p>';
+        box.classList.add("open");
+        renderMessages();
+        box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+      });
+    });
+  }
+  renderMessages();
+
+  /* Customs */
+  $("customsList").innerHTML = CUSTOMS.map(function(r, i){
+    return '<div class="order-row clickable" data-custom="' + i + '"><span style="min-width:110px"><b>' + esc(r.from) + '</b></span><span class="grow">' +
+      esc(r.title) + '</span><span class="pill">' + esc(r.status) + '</span><span class="muted">' + esc(r.time) + "</span></div>";
+  }).join("");
+  document.querySelectorAll("[data-custom]").forEach(function(row){
+    row.addEventListener("click", function(){
+      var r = CUSTOMS[Number(row.getAttribute("data-custom"))];
+      var box = $("customsDetail");
+      box.innerHTML = "<h3>" + esc(r.title) + " · sample</h3>" +
+        "<p><b>From:</b> " + esc(r.from) + " &nbsp;·&nbsp; <b>Status:</b> " + esc(r.status) + " &nbsp;·&nbsp; " + esc(r.time) + "</p>" +
+        "<p>" + esc(r.detail) + "</p>" +
+        '<p style="margin-top:12px"><button class="btn gold small" type="button" data-stub="Reply by email">Reply by email</button> ' +
+        '<button class="btn ghost small" type="button" data-stub="Change request status">Change status</button></p>';
+      box.classList.add("open");
+      box.scrollIntoView({ behavior:"smooth", block:"nearest" });
+    });
+  });
+})();
+</script>
+</body>
+</html>
