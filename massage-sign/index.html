@@ -511,70 +511,125 @@
       <!-- ================= STEP 2 : ADD-ONS ================= -->
       <section class="page" id="pageAddons">
         <h2 class="sec">Add a little extra</h2>
-        <p class="lede">Optional extras for your project. Each one is a <b>one-time charge</b> added to your project total — it can be financed right along with your plan, or paid in full. Take any, all, or none.</p>
+        <p class="lede">Optional extras for your project. <b>Every add-on is 25% off</b> — the regular price is shown struck through. Each one is a <b>one-time charge</b> added to your project total — it can be financed right along with your plan, or paid in full. Take any, all, or none.</p>
 
         <div id="addonList">
           <label class="addon">
             <input type="checkbox" data-addon="booking" />
             <span class="addon-body">
-              <span class="addon-head"><b>Online booking setup</b><span class="addon-price">$250</span></span>
+              <span class="addon-head"><b>Online booking setup</b><span class="addon-price"><s>$250</s>$187.50</span></span>
               <span class="addon-desc">Clients schedule themselves right on the site.</span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="giftcards" />
             <span class="addon-body">
-              <span class="addon-head"><b>Online gift certificates</b><span class="addon-price">$150</span></span>
+              <span class="addon-head"><b>Online gift certificates</b><span class="addon-price"><s>$150</s>$112.50</span></span>
               <span class="addon-desc">Sell gift cards from the site.</span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="google" />
             <span class="addon-body">
-              <span class="addon-head"><b>Google Business + reviews setup</b><span class="addon-price">$100</span></span>
+              <span class="addon-head"><b>Google Business + reviews setup</b><span class="addon-price"><s>$100</s>$75</span></span>
               <span class="addon-desc">Profile tuned up plus a review funnel.</span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="copywriting" />
             <span class="addon-body">
-              <span class="addon-head"><b>Professional copywriting</b><span class="addon-price">$200</span></span>
+              <span class="addon-head"><b>Professional copywriting</b><span class="addon-price"><s>$200</s>$150</span></span>
               <span class="addon-desc">I write the site's words, up to 5 pages.</span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="email" />
             <span class="addon-body">
-              <span class="addon-head"><b>Email list setup</b><span class="addon-price">$150</span></span>
+              <span class="addon-head"><b>Email list setup</b><span class="addon-price"><s>$150</s>$112.50</span></span>
               <span class="addon-desc">Newsletter signup with a welcome email.</span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="pages" />
             <span class="addon-body">
-              <span class="addon-head"><b>Extra pages</b><span class="addon-price">$75 each</span></span>
+              <span class="addon-head"><b>Extra pages</b><span class="addon-price"><s>$75</s>$56.25 each</span></span>
               <span class="addon-desc">Beyond what's included in your package.</span>
               <span class="qty" id="pagesQtyRow" hidden>
                 <button type="button" id="qtyMinus" aria-label="One fewer page">−</button>
                 <span class="qv" id="qtyVal">1</span>
                 <button type="button" id="qtyPlus" aria-label="One more page">+</button>
-                <span class="qt"><span id="qtyNoun">page</span> × $75 = <b id="qtyTotal">$75</b></span>
+                <span class="qt"><span id="qtyNoun">page</span> × $56.25 = <b id="qtyTotal">$56.25</b></span>
               </span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="consult1" />
             <span class="addon-body">
-              <span class="addon-head"><b>Strategy consulting — 1 hour</b><span class="addon-price">$100</span></span>
-              <span class="addon-desc">One hour of one-on-one strategy time with Daniel — launch plans, pricing, marketing, whatever you need most.</span>
+              <span class="addon-head"><b>Strategy consulting, 1 hour</b><span class="addon-price"><s>$100</s>$75</span></span>
+              <span class="addon-desc">One hour of one-on-one strategy time with Daniel: launch plans, pricing, marketing, whatever you need most.</span>
             </span>
           </label>
           <label class="addon">
             <input type="checkbox" data-addon="consult5" />
             <span class="addon-body">
-              <span class="addon-head"><b>Consulting block — 5 hours</b><span class="addon-price"><s>$500</s>$300</span></span>
-              <span class="addon-desc">Five hours of one-on-one strategy time, yours to use whenever you need it.</span>
-              <span class="deal">5 hours for the price of 3 · save $200 vs the $100/hr rate</span>
+              <span class="addon-head"><b>Consulting block, 5 hours</b><span class="addon-price"><s>$300</s>$225</span></span>
+              <span class="addon-desc">5 hours of one-on-one strategy time. $500 if bought by the hour, so you save $275 at this price.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="bizemail" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Business email setup</b><span class="addon-price"><s>$100</s>$75</span></span>
+              <span class="addon-desc">Your name at your own domain, so your email looks professional from day one.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="loyalty" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Loyalty and rewards setup</b><span class="addon-price"><s>$200</s>$150</span></span>
+              <span class="addon-desc">Points for repeat customers, set up in your back office.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="reviewcards" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Review cards with QR code</b><span class="addon-price"><s>$75</s>$56.25</span></span>
+              <span class="addon-desc">Printed cards for the counter or the truck that take customers straight to leaving a Google review.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="brandkit" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Brand kit upgrade</b><span class="addon-price"><s>$200</s>$150</span></span>
+              <span class="addon-desc">Full logo files, colors, fonts, and social templates, so everything you post matches.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="social" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Social media starter month</b><span class="addon-price"><s>$250</s>$187.50</span></span>
+              <span class="addon-desc">A month of posts made and scheduled for you.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="qrmenu" />
+            <span class="addon-body">
+              <span class="addon-head"><b>QR price list or service menu page</b><span class="addon-price"><s>$125</s>$93.75</span></span>
+              <span class="addon-desc">Your services and prices behind one QR code, easy to update when prices change.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="ordering" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Online ordering setup</b><span class="addon-price"><s>$400</s>$300</span></span>
+              <span class="addon-desc">Customers order and pay online, and orders land in your back office.</span>
+            </span>
+          </label>
+          <label class="addon">
+            <input type="checkbox" data-addon="training" />
+            <span class="addon-body">
+              <span class="addon-head"><b>Team training hour</b><span class="addon-price"><s>$100</s>$75</span></span>
+              <span class="addon-desc">One hour teaching you or your staff the new system.</span>
             </span>
           </label>
         </div>
@@ -856,14 +911,22 @@
       ];
 
       var ADDONS = [
-        { id: "booking", name: "Online booking setup", price: 250 },
-        { id: "giftcards", name: "Online gift certificates", price: 150 },
-        { id: "google", name: "Google Business + reviews setup", price: 100 },
-        { id: "copywriting", name: "Professional copywriting", price: 200 },
-        { id: "email", name: "Email list setup", price: 150 },
-        { id: "pages", name: "Extra pages", price: 75, perUnit: true },
-        { id: "consult1", name: "Strategy consulting (1 hour)", price: 100 },
-        { id: "consult5", name: "Consulting block (5 hours)", price: 300 }
+        { id: "booking", name: "Online booking setup", price: 187.50, was: 250 },
+        { id: "giftcards", name: "Online gift certificates", price: 112.50, was: 150 },
+        { id: "google", name: "Google Business + reviews setup", price: 75, was: 100 },
+        { id: "copywriting", name: "Professional copywriting", price: 150, was: 200 },
+        { id: "email", name: "Email list setup", price: 112.50, was: 150 },
+        { id: "pages", name: "Extra pages", price: 56.25, was: 75, perUnit: true },
+        { id: "consult1", name: "Strategy consulting, 1 hour", price: 75, was: 100 },
+        { id: "consult5", name: "Consulting block, 5 hours", price: 225, was: 300 },
+        { id: "bizemail", name: "Business email setup", price: 75, was: 100 },
+        { id: "loyalty", name: "Loyalty and rewards setup", price: 150, was: 200 },
+        { id: "reviewcards", name: "Review cards with QR code", price: 56.25, was: 75 },
+        { id: "brandkit", name: "Brand kit upgrade", price: 150, was: 200 },
+        { id: "social", name: "Social media starter month", price: 187.50, was: 250 },
+        { id: "qrmenu", name: "QR price list or service menu page", price: 93.75, was: 125 },
+        { id: "ordering", name: "Online ordering setup", price: 300, was: 400 },
+        { id: "training", name: "Team training hour", price: 75, was: 100 }
       ];
 
       var state = { step: 1, pkg: null, plan: null, addons: {}, extraPagesQty: 1 };
@@ -978,7 +1041,7 @@
         document.getElementById("pagesQtyRow").hidden = !state.addons.pages;
         document.getElementById("qtyVal").textContent = state.extraPagesQty;
         document.getElementById("qtyNoun").textContent = state.extraPagesQty === 1 ? "page" : "pages";
-        document.getElementById("qtyTotal").textContent = money0(75 * state.extraPagesQty);
+        document.getElementById("qtyTotal").textContent = money(56.25 * state.extraPagesQty);
         var box = document.getElementById("addonsTotalBox");
         if (state.pkg) {
           var pkg = PACKAGES[state.pkg], sub = addonsSubtotal();
