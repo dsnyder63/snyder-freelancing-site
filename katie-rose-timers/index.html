@@ -97,12 +97,14 @@
     <button class="swapbtn" id="st-swap">Switch: grams to cups</button>
   </div>
 </div>
+<audio id="alarm-audio" src="assets/alarm.wav" loop preload="auto" style="display:none"></audio>
 <script>
   /* ---------------- Timers ---------------- */
   const KEY = "krk-timers";
   const MAX = 6;
   let timers = load();
-  let audioCtx = null, beepTimer = null, wakeLock = null;
+  let audioCtx = null, beepTimer = null, wakeLock = null, wakeLockBusy = false, lastWakeCheck = 0;
+  const alarmAudio = document.getElementById("alarm-audio");
 
   function load(){
     try {
@@ -198,6 +200,15 @@
       }
     });
     if (changed) { save(); syncBeep(); }
+    // iOS suspends the audio context and drops the wake lock while the page
+    // sits idle. Re-check both every few seconds while a timer is active.
+    const anyActive = timers.some(t => t.state === "running" || t.state === "done");
+    if (anyActive && now - lastWakeCheck > 4000) {
+      lastWakeCheck = now;
+      keepAwake();
+      if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+      if (timers.some(t => t.state === "done")) { startAlarm(); if (!beepTimer) syncBeep(); }
+    }
     document.querySelectorAll(".timer").forEach((card, i) => {
       const t = timers[i]; if (!t) return;
       const clock = card.querySelector(".clock");
@@ -212,9 +223,38 @@
   function unlockAudio(){
     if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} }
     if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+    unlockAlarm();
+  }
+  // The alarm file is the backup sound path: a plain audio element keeps
+  // working in cases where the WebAudio context will not restart.
+  function unlockAlarm(){
+    if (!alarmAudio) return;
+    if (timers.some(t => t.state === "done")) { startAlarm(); return; }
+    // Silent play and pause on a real tap, so iOS marks the element as
+    // user activated and lets it play for real when a timer finishes.
+    try {
+      alarmAudio.volume = 0;
+      const p = alarmAudio.play();
+      if (p && p.then) {
+        p.then(() => { alarmAudio.pause(); try { alarmAudio.currentTime = 0; } catch(e) {} alarmAudio.volume = 1; })
+         .catch(() => { alarmAudio.volume = 1; });
+      } else { alarmAudio.volume = 1; }
+    } catch(e) { alarmAudio.volume = 1; }
+  }
+  function startAlarm(){
+    if (!alarmAudio) return;
+    try {
+      alarmAudio.volume = 1;
+      if (alarmAudio.paused) { const p = alarmAudio.play(); if (p && p.catch) p.catch(() => {}); }
+    } catch(e) {}
+  }
+  function stopAlarm(){
+    if (!alarmAudio) return;
+    try { if (!alarmAudio.paused) alarmAudio.pause(); alarmAudio.currentTime = 0; } catch(e) {}
   }
   function beep(){
     if (!audioCtx) return;
+    if (audioCtx.state === "suspended") audioCtx.resume();
     const t0 = audioCtx.currentTime;
     // Loud burst: four sharp beeps, square wave plus a higher harmonic, near full volume.
     [0, 0.28, 0.56, 0.84].forEach(off => {
@@ -231,12 +271,41 @@
   }
   function syncBeep(){
     const anyDone = timers.some(t => t.state === "done");
-    if (anyDone && !beepTimer) { beep(); beepTimer = setInterval(beep, 1600); }
-    if (!anyDone && beepTimer) { clearInterval(beepTimer); beepTimer = null; }
+    if (anyDone) {
+      if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+      startAlarm();
+      if (!beepTimer) { beep(); beepTimer = setInterval(beep, 1600); }
+    }
+    if (!anyDone) {
+      if (beepTimer) { clearInterval(beepTimer); beepTimer = null; }
+      stopAlarm();
+    }
   }
   async function keepAwake(){
-    try { if ("wakeLock" in navigator && !wakeLock) wakeLock = await navigator.wakeLock.request("screen"); } catch(e) {}
+    // iOS releases the wake lock on its own when the page hides or the
+    // screen dims. The release listener clears the variable, and the
+    // released check lets us ask for a fresh lock afterwards.
+    if (!("wakeLock" in navigator) || wakeLockBusy) return;
+    if (wakeLock && !wakeLock.released) return;
+    wakeLockBusy = true;
+    try {
+      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", () => { wakeLock = null; });
+    } catch(e) { wakeLock = null; }
+    wakeLockBusy = false;
   }
+  // Any return to the page, and any tap anywhere, is a chance to restore
+  // the sound and the wake lock before a timer needs them.
+  function wakeEverything(){
+    unlockAudio();
+    if (timers.some(t => t.state === "running" || t.state === "done")) keepAwake();
+    if (timers.some(t => t.state === "done")) syncBeep();
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) wakeEverything(); });
+  window.addEventListener("pageshow", wakeEverything);
+  window.addEventListener("focus", wakeEverything);
+  document.addEventListener("pointerdown", unlockAudio, true);
+  document.addEventListener("touchstart", unlockAudio, { capture: true, passive: true });
 
   document.getElementById("add").addEventListener("click", () => {
     if (timers.length >= MAX) return;
