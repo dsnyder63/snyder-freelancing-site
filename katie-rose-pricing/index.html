@@ -22,6 +22,7 @@ body{background:#e8f0f5;margin:0;padding:14px;font-family:Helvetica,Arial,sans-s
     <div class="cogs-title">Pricing Tool</div>
     <div class="cogs-sub">Know your numbers, price it right</div>
   </div>
+  <div id="loadedNote" style="display:none;margin-top:10px;background:#eef4f8;border:1px solid #c9a227;border-radius:8px;padding:8px 10px;font-size:13px;color:#31435a;text-align:center"></div>
 
   <label class="cogs-lab">Product name</label>
   <input id="pname" class="cogs-in cogs-text" type="text" placeholder="Example: Pumpkin Roll">
@@ -179,6 +180,20 @@ body{background:#e8f0f5;margin:0;padding:14px;font-family:Helvetica,Arial,sans-s
   load(); applyState(); calc();
   FIELDS.forEach(function(id){ var el=$(id); if(!el) return; el.addEventListener("input",function(){ state[id]=el.value; save(); calc(); }); });
   if(window.hatchWidget){ window.addEventListener("hatch-widget-state",function(e){ var s=e.detail.state||{}; for(var k in DEF) if(s[k]!==undefined) state[k]=s[k]; applyState(); calc(); }); }
+  // The back office Pricing Tool tile can pre load a product: it posts the
+  // product name, its current price, and its recipe ingredient cost per item.
+  // Only the back office origins (and local test pages) may do this.
+  var LOAD_ORIGINS=["https://katie-rose-kreations.onrender.com","https://katierosekreations.com","https://www.katierosekreations.com"];
+  window.addEventListener("message",function(e){
+    var localOk=/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(e.origin);
+    if(!localOk && LOAD_ORIGINS.indexOf(e.origin)<0) return;
+    var d=e.data||{};
+    if(d.type!=="krk-pricing-load" || !d.fields) return;
+    for(var k in DEF){ if(d.fields[k]!==undefined && d.fields[k]!==null) state[k]=String(d.fields[k]); }
+    save(); applyState(); calc();
+    var note=document.getElementById("loadedNote");
+    if(note){ note.style.display="block"; note.textContent="Loaded from your back office"+(state.pname?(": "+state.pname):"")+". Change any number, everything updates live."; }
+  });
 })();
 </script>
 </body>
