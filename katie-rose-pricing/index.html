@@ -67,6 +67,11 @@ body{background:#e8f0f5;margin:0;padding:14px;font-family:Helvetica,Arial,sans-s
   <div class="cogs-row"><span>Net margin you want, percent</span><div class="cogs-money"><em>%</em><input id="targetMargin" type="number" min="0" step="1"></div></div>
   <div class="cogs-finder" id="finder">Add your costs and the finder shows the price that hits your target margin.</div>
 
+  <div id="saveRow" style="display:none;margin-top:14px">
+    <button class="cogs-print" id="savePriceBtn" style="background:#31435a;margin-top:0">Save price to menu</button>
+    <div class="cogs-foot" id="saveNote"></div>
+  </div>
+
   <button class="cogs-print" onclick="window.print()">Print or save this breakdown</button>
   <div class="cogs-foot">Katie Rose Kreations Pricing Tool. COGS means cost of goods sold, every cost of making and selling one item. Card processing defaults to Square online, 3.3% plus 30 cents per order. For in person sales Square is 2.6% plus 15 cents, just change the two card fee numbers. Tip: the Recipes tab in your back office already figures the ingredient cost per item for every recipe. Change any number, everything updates live.</div>
 </div>
@@ -184,15 +189,51 @@ body{background:#e8f0f5;margin:0;padding:14px;font-family:Helvetica,Arial,sans-s
   // product name, its current price, and its recipe ingredient cost per item.
   // Only the back office origins (and local test pages) may do this.
   var LOAD_ORIGINS=["https://katie-rose-kreations.onrender.com","https://katierosekreations.com","https://www.katierosekreations.com"];
+  function originOk(o){ return /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o) || LOAD_ORIGINS.indexOf(o)>=0; }
+  // When a real menu product is loaded, the selling price can be saved back
+  // to the menu: the button asks the back office (the parent page) to confirm
+  // and save, since the menu lives there. Manual calculations never show it.
+  var loadedItemId=null, loadedScenario=null, replyOrigin=null;
+  var saveRow=document.getElementById("saveRow"), saveBtn=document.getElementById("savePriceBtn"), saveNote=document.getElementById("saveNote");
+  function armSaveButton(){
+    if(!saveBtn) return;
+    saveBtn.disabled=false;
+    saveBtn.textContent="Save price to menu";
+  }
+  if(saveBtn){ saveBtn.addEventListener("click",function(){
+    if(loadedItemId===null || !replyOrigin) return;
+    try{ window.parent.postMessage({type:"krk-pricing-save-price", itemId:loadedItemId, scenario:loadedScenario, price:state.price}, replyOrigin); }catch(err){ return; }
+    saveBtn.disabled=true;
+    saveBtn.textContent="Sent. Confirm at the top of the page";
+    if(saveNote) saveNote.textContent="Look at the top of the page to confirm the new price before it saves.";
+  }); }
   window.addEventListener("message",function(e){
-    var localOk=/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(e.origin);
-    if(!localOk && LOAD_ORIGINS.indexOf(e.origin)<0) return;
+    if(!originOk(e.origin)) return;
     var d=e.data||{};
+    if(d.type==="krk-pricing-saved"){
+      if(saveNote) saveNote.textContent="Saved to the menu. One more step: tap Sync to Square in the Menu tab so Square matches.";
+      armSaveButton();
+      return;
+    }
+    if(d.type==="krk-pricing-save-failed"){
+      if(saveNote) saveNote.textContent="That did not save. Check the top of the page and try again.";
+      armSaveButton();
+      return;
+    }
     if(d.type!=="krk-pricing-load" || !d.fields) return;
     for(var k in DEF){ if(d.fields[k]!==undefined && d.fields[k]!==null) state[k]=String(d.fields[k]); }
     save(); applyState(); calc();
     var note=document.getElementById("loadedNote");
     if(note){ note.style.display="block"; note.textContent="Loaded from your back office"+(state.pname?(": "+state.pname):"")+". Change any number, everything updates live."; }
+    if(d.meta && d.meta.itemId!==undefined && d.meta.itemId!==null){
+      loadedItemId=d.meta.itemId; loadedScenario=d.meta.scenario||"each"; replyOrigin=e.origin;
+      if(saveRow) saveRow.style.display="block";
+      if(saveNote) saveNote.textContent="This saves the selling price above as the "+(loadedScenario==="dozen"?"dozen":"each")+" price of "+state.pname+" on the menu.";
+      armSaveButton();
+    } else {
+      loadedItemId=null; loadedScenario=null; replyOrigin=null;
+      if(saveRow) saveRow.style.display="none";
+    }
   });
 })();
 </script>
