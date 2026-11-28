@@ -210,6 +210,11 @@ body{background:#e8f0f5;margin:0;padding:14px;font-family:Helvetica,Arial,sans-s
   window.addEventListener("message",function(e){
     if(!originOk(e.origin)) return;
     var d=e.data||{};
+    if(d.type==="krk-pricing-save-cancelled"){
+      if(saveNote) saveNote.textContent="Not saved. The menu price was not changed.";
+      armSaveButton();
+      return;
+    }
     if(d.type==="krk-pricing-saved"){
       if(saveNote) saveNote.textContent="Saved to the menu. One more step: tap Sync to Square in the Menu tab so Square matches.";
       armSaveButton();
